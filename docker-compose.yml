@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      # Allow child_process in Code nodes and enable Execute Command node
+      - NODE_FUNCTION_ALLOW_EXTERNAL=child_process
+      - N8N_BLOCK_SVC_COMMAND_RESOURCE=false
+      # Timezone
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - TZ=Europe/Madrid
+      # Java
+      - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+    # Running as root to avoid permission issues with bind-mounted host volumes.
+    # For tighter security, remove this line and adjust volume ownership instead.
+    user: root
+    volumes:
+      # n8n data and configuration
+      - ~/.n8n:/home/node/.n8n
+      # Spring Boot project – override LAUNCHER_PROJECT_PATH in a .env file
+      # if your project lives in a different directory.
+      - ${LAUNCHER_PROJECT_PATH:-/home/usuario/launcher-project}:/home/usuario/launcher-project
