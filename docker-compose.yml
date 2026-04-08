@@ -18,9 +18,12 @@ services:
       - TZ=Europe/Madrid
       # Java
       - JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+    # Running as root to avoid permission issues with bind-mounted host volumes.
+    # For tighter security, remove this line and adjust volume ownership instead.
     user: root
     volumes:
       # n8n data and configuration
       - ~/.n8n:/home/node/.n8n
-      # Spring Boot project (adjust the host path to your project location)
-      - /home/usuario/launcher-project:/home/usuario/launcher-project
+      # Spring Boot project – override LAUNCHER_PROJECT_PATH in a .env file
+      # if your project lives in a different directory.
+      - ${LAUNCHER_PROJECT_PATH:-/home/usuario/launcher-project}:/home/usuario/launcher-project
