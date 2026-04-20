@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Tools 💪</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      color: #718096;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      padding: 2rem;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #4a5568;
+      margin-bottom: 1rem;
+      padding-bottom: .4rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-grid.single { grid-template-columns: 1fr; }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+      font-size: .875rem;
+      font-weight: 500;
+    }
+    label span.hint {
+      font-weight: 400;
+      color: #718096;
+      font-size: .78rem;
+    }
+
+    input[type="number"] {
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      padding: .45rem .7rem;
+      font-size: .95rem;
+      transition: border-color .2s;
+      width: 100%;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66,153,225,.2);
+    }
+
+    .required-star { color: #e53e3e; }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: .7rem;
+      background: #3182ce;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: .5rem;
+    }
+    button[type="submit"]:hover { background: #2b6cb0; }
+
+    .alert-error {
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      color: #c53030;
+      border-radius: 8px;
+      padding: .9rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: .9rem;
+    }
+
+    /* ── Results ── */
+    .results { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .result-section { margin-top: 0; }
+    .result-section h2 { color: #2d3748; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+    tr:nth-child(even) td { background: #f7fafc; }
+    td {
+      padding: .45rem .6rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    td:last-child { text-align: right; font-weight: 600; color: #2b6cb0; }
+
+    .badge-delta {
+      font-size: .78rem;
+      font-weight: 400;
+      color: #718096;
+      margin-left: .4rem;
+    }
+    .badge-delta.pos { color: #e53e3e; }
+    .badge-delta.neg { color: #38a169; }
+  </style>
+</head>
+<body>
+
+  <h1>Fitness Tools 💪</h1>
+  <p class="subtitle">Composición corporal y distribución de macronutrientes</p>
+
+  <div class="card">
+    {% if error %}
+    <div class="alert-error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="post" novalidate>
+
+      <h2>Datos obligatorios</h2>
+      <div class="form-grid">
+        <label>
+          Calorías totales (kcal) <span class="required-star">*</span>
+          <input type="number" name="calorias" step="any" min="1" required
+                 value="{{ request.form.get('calorias', '') }}" placeholder="ej. 3343" />
+        </label>
+        <label>
+          Peso (kg) <span class="required-star">*</span>
+          <input type="number" name="peso" step="any" min="1" required
+                 value="{{ request.form.get('peso', '') }}" placeholder="ej. 72.25" />
+        </label>
+        <label>
+          Altura (cm) <span class="required-star">*</span>
+          <input type="number" name="altura" step="any" min="1" required
+                 value="{{ request.form.get('altura', '') }}" placeholder="ej. 175" />
+        </label>
+        <label>
+          Cintura (cm) <span class="required-star">*</span>
+          <input type="number" name="cintura" step="any" min="1" required
+                 value="{{ request.form.get('cintura', '') }}" placeholder="ej. 84" />
+        </label>
+        <label>
+          Cuello (cm) <span class="required-star">*</span>
+          <input type="number" name="cuello" step="any" min="1" required
+                 value="{{ request.form.get('cuello', '') }}" placeholder="ej. 38" />
+        </label>
+      </div>
+
+      <h2>Datos opcionales</h2>
+      <div class="form-grid">
+        <label>
+          Grasa directa (%)
+          <span class="hint">p.ej. báscula de bioimpedancia</span>
+          <input type="number" name="grasa" step="any" min="0" max="100"
+                 value="{{ request.form.get('grasa', '') }}" placeholder="ej. 14.5" />
+        </label>
+        <label>
+          Bíceps (cm)
+          <input type="number" name="biceps" step="any" min="0"
+                 value="{{ request.form.get('biceps', '') }}" placeholder="ej. 35" />
+        </label>
+        <label>
+          Cuádriceps (cm)
+          <input type="number" name="cuadriceps" step="any" min="0"
+                 value="{{ request.form.get('cuadriceps', '') }}" placeholder="ej. 55" />
+        </label>
+        <label>
+          Cadera (cm)
+          <input type="number" name="cadera" step="any" min="0"
+                 value="{{ request.form.get('cadera', '') }}" placeholder="ej. 95" />
+        </label>
+        <label>
+          Gemelos (cm)
+          <input type="number" name="gemelos" step="any" min="0"
+                 value="{{ request.form.get('gemelos', '') }}" placeholder="ej. 37" />
+        </label>
+        <label>
+          Pectoral (cm)
+          <input type="number" name="pectoral" step="any" min="0"
+                 value="{{ request.form.get('pectoral', '') }}" placeholder="ej. 100" />
+        </label>
+      </div>
+
+      <button type="submit">Calcular →</button>
+    </form>
+
+    {% if resultados %}
+    <div class="results">
+
+      <div class="result-section">
+        <h2>📏 Medidas corporales</h2>
+        <table>
+          {% for nombre, valor in resultados.medidas.items() %}
+          <tr>
+            <td>{{ nombre }}</td>
+            <td>{{ valor }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="result-section">
+        <h2>⚖️ Composición corporal (US Navy)</h2>
+        <table>
+          <tr>
+            <td>Grasa corporal (%)</td>
+            <td>
+              {{ resultados.grasa_navy }} %
+              {% if resultados.diferencia_grasa is not none %}
+                {% set delta = resultados.diferencia_grasa %}
+                <span class="badge-delta {{ 'pos' if delta > 0 else 'neg' if delta < 0 else '' }}">
+                  (directa {{ resultados.grasa_directa }} % &nbsp;Δ {{ "+" if delta >= 0 else "" }}{{ delta }} %)
+                </span>
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Masa magra (kg)</td>
+            <td>{{ resultados.masa_magra }} kg</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="result-section">
+        <h2>🍽️ Macros del día</h2>
+        <table>
+          {% for nombre, valor in resultados.macros.items() %}
+          <tr>
+            <td>{{ nombre }}</td>
+            <td>{{ valor }} {{ "kcal" if "Calorías" in nombre else "g" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>

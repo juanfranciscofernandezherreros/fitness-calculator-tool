@@ -1,10 +1,46 @@
 # fitness_tools 💪
 
-Herramienta de línea de comandos para el seguimiento de **composición corporal** y **distribución de macronutrientes** diarios.
+Herramienta de **composición corporal** y **distribución de macronutrientes** diarios.
+Disponible como **web app Flask** (lista para Heroku) y como CLI de línea de comandos.
 
 ---
 
-## Instalación
+## Web app (Flask)
+
+### Ejecución local
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+python app.py          # abre http://localhost:5000
+```
+
+### Despliegue en Heroku
+
+```bash
+# 1. Crea la app en Heroku (solo la primera vez)
+heroku create <nombre-de-tu-app>
+
+# 2. Despliega
+git push heroku main
+
+# 3. Abre en el navegador
+heroku open
+```
+
+Los archivos necesarios para Heroku ya están incluidos:
+
+| Archivo | Descripción |
+|---------|-------------|
+| `Procfile` | `web: gunicorn app:app` |
+| `requirements.txt` | Flask + gunicorn |
+| `runtime.txt` | Versión de Python |
+
+---
+
+## CLI (línea de comandos)
+
+### Instalación
 
 ```bash
 pip install -e .
@@ -12,9 +48,7 @@ pip install -e .
 
 > Requiere Python ≥ 3.9.
 
----
-
-## Uso
+### Uso
 
 ```bash
 python main.py [OPCIONES]
@@ -129,7 +163,13 @@ repo/
 │   ├── __init__.py          # Exportaciones públicas de la librería
 │   ├── body_composition.py  # Fórmula US Navy + dataclass MedidasCorporales
 │   └── nutrition.py         # Cálculo de macros y carbohidratos rápidos
+├── templates/
+│   └── index.html           # Plantilla HTML de la web app
+├── app.py                   # Web app Flask (punto de entrada para Heroku)
 ├── main.py                  # CLI principal (punto de entrada)
+├── Procfile                 # Comando de arranque para Heroku
+├── requirements.txt         # Dependencias web (Flask, gunicorn)
+├── runtime.txt              # Versión de Python para Heroku
 ├── pyproject.toml
 └── README.md
 ```
