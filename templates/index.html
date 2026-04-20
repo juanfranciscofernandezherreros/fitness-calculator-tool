@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" id="html-root">
+<html lang="es" id="html-root">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fitness Tools 💪</title>
   <!-- hreflang alternate links for SEO -->
-  {% for l in supported_langs %}
-  <link rel="alternate" hreflang="{{ l }}" href="{{ request.host_url.rstrip('/') }}/?lang={{ l }}" />
-  {% endfor %}
-  <link rel="alternate" hreflang="x-default" href="{{ request.host_url }}" />
+  <link rel="alternate" hreflang="es" href="/?lang=es" />
+  <link rel="alternate" hreflang="en" href="/?lang=en" />
+  <link rel="alternate" hreflang="it" href="/?lang=it" />
+  <link rel="alternate" hreflang="fr" href="/?lang=fr" />
+  <link rel="alternate" hreflang="de" href="/?lang=de" />
+  <link rel="alternate" hreflang="pt" href="/?lang=pt" />
+  <link rel="alternate" hreflang="nl" href="/?lang=nl" />
+  <link rel="alternate" hreflang="pl" href="/?lang=pl" />
+  <link rel="alternate" hreflang="ru" href="/?lang=ru" />
+  <link rel="alternate" hreflang="zh" href="/?lang=zh" />
+  <link rel="alternate" hreflang="ja" href="/?lang=ja" />
+  <link rel="alternate" hreflang="x-default" href="/" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -646,17 +654,17 @@
     <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
     <!-- ── Language selector ── -->
     <nav class="lang-selector no-print" aria-label="Language / Idioma">
-      <a href="/?lang=es" class="lang-btn {% if lang == 'es' %}active{% endif %}" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
-      <a href="/?lang=en" class="lang-btn {% if lang == 'en' %}active{% endif %}" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
-      <a href="/?lang=it" class="lang-btn {% if lang == 'it' %}active{% endif %}" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')">🇮🇹</a>
-      <a href="/?lang=fr" class="lang-btn {% if lang == 'fr' %}active{% endif %}" data-lang="fr" title="Français"   onclick="event.preventDefault(); setLang('fr')">🇫🇷</a>
-      <a href="/?lang=de" class="lang-btn {% if lang == 'de' %}active{% endif %}" data-lang="de" title="Deutsch"    onclick="event.preventDefault(); setLang('de')">🇩🇪</a>
-      <a href="/?lang=pt" class="lang-btn {% if lang == 'pt' %}active{% endif %}" data-lang="pt" title="Português"  onclick="event.preventDefault(); setLang('pt')">🇵🇹</a>
-      <a href="/?lang=nl" class="lang-btn {% if lang == 'nl' %}active{% endif %}" data-lang="nl" title="Nederlands" onclick="event.preventDefault(); setLang('nl')">🇳🇱</a>
-      <a href="/?lang=pl" class="lang-btn {% if lang == 'pl' %}active{% endif %}" data-lang="pl" title="Polski"     onclick="event.preventDefault(); setLang('pl')">🇵🇱</a>
-      <a href="/?lang=ru" class="lang-btn {% if lang == 'ru' %}active{% endif %}" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')">🇷🇺</a>
-      <a href="/?lang=zh" class="lang-btn {% if lang == 'zh' %}active{% endif %}" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
-      <a href="/?lang=ja" class="lang-btn {% if lang == 'ja' %}active{% endif %}" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
+      <a href="/?lang=es" class="lang-btn" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
+      <a href="/?lang=en" class="lang-btn" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
+      <a href="/?lang=it" class="lang-btn" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')">🇮🇹</a>
+      <a href="/?lang=fr" class="lang-btn" data-lang="fr" title="Français"   onclick="event.preventDefault(); setLang('fr')">🇫🇷</a>
+      <a href="/?lang=de" class="lang-btn" data-lang="de" title="Deutsch"    onclick="event.preventDefault(); setLang('de')">🇩🇪</a>
+      <a href="/?lang=pt" class="lang-btn" data-lang="pt" title="Português"  onclick="event.preventDefault(); setLang('pt')">🇵🇹</a>
+      <a href="/?lang=nl" class="lang-btn" data-lang="nl" title="Nederlands" onclick="event.preventDefault(); setLang('nl')">🇳🇱</a>
+      <a href="/?lang=pl" class="lang-btn" data-lang="pl" title="Polski"     onclick="event.preventDefault(); setLang('pl')">🇵🇱</a>
+      <a href="/?lang=ru" class="lang-btn" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')">🇷🇺</a>
+      <a href="/?lang=zh" class="lang-btn" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
+      <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
     </nav>
   </div>
 
@@ -770,33 +778,24 @@
 
   <div class="card">
 
-    {% if error %}
-    <div class="alert-error" role="alert">
-      <span class="alert-error-icon">⚠️</span>
-      <div class="alert-error-body">
-        <span class="alert-error-title" data-i18n="err_title">Error</span>
-        <span class="alert-error-message">{{ error }}</span>
-      </div>
-    </div>
-    {% endif %}
+    <!-- ── Error container (rendered by JS) ── -->
+    <div id="error-container" style="display:none;"></div>
 
-    <form method="post" novalidate>
+    <form id="fitness-form" novalidate>
       <!-- Hidden field: current language sent to server for translated errors -->
-      <input type="hidden" name="lang" id="lang-hidden" value="{{ lang }}" />
+      <input type="hidden" name="lang" id="lang-hidden" value="es" />
 
       <!-- ── Sex selector ── -->
       <div class="sex-toggle-group" role="group" aria-label="Sexo">
         <label class="sex-toggle-label">
-          <input type="radio" name="sexo" value="hombre"
-                 {% if request.form.get('sexo','hombre') == 'hombre' %}checked{% endif %} />
+          <input type="radio" name="sexo" value="hombre" checked />
           <div class="sex-card">
             <span class="sex-emoji">♂️</span>
             <span class="sex-name" data-i18n="male">Hombre</span>
           </div>
         </label>
         <label class="sex-toggle-label">
-          <input type="radio" name="sexo" value="mujer"
-                 {% if request.form.get('sexo') == 'mujer' %}checked{% endif %} />
+          <input type="radio" name="sexo" value="mujer" />
           <div class="sex-card">
             <span class="sex-emoji">♀️</span>
             <span class="sex-name" data-i18n="female">Mujer</span>
@@ -819,7 +818,6 @@
               <input type="number" id="calorias" name="calorias"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
-                     value="{{ request.form.get('calorias', '') }}"
                      placeholder="ej. 3343"
                      data-i18n-placeholder="p_calories" />
               <span class="unit">kcal</span>
@@ -833,7 +831,6 @@
               <input type="number" id="peso" name="peso"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
-                     value="{{ request.form.get('peso', '') }}"
                      placeholder="ej. 72.5"
                      data-i18n-placeholder="p_weight" />
               <span class="unit">kg</span>
@@ -847,7 +844,6 @@
               <input type="number" id="altura" name="altura"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
-                     value="{{ request.form.get('altura', '') }}"
                      placeholder="ej. 175.5"
                      data-i18n-placeholder="p_height" />
               <span class="unit">cm</span>
@@ -861,7 +857,6 @@
               <input type="number" id="cintura" name="cintura"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
-                     value="{{ request.form.get('cintura', '') }}"
                      placeholder="ej. 84.0"
                      data-i18n-placeholder="p_waist" />
               <span class="unit">cm</span>
@@ -875,7 +870,6 @@
               <input type="number" id="cuello" name="cuello"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
-                     value="{{ request.form.get('cuello', '') }}"
                      placeholder="ej. 38.0"
                      data-i18n-placeholder="p_neck" />
               <span class="unit">cm</span>
@@ -905,7 +899,6 @@
                 <input type="number" id="grasa" name="grasa"
                        step="any" min="0" max="100" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('grasa', '') }}"
                        placeholder="ej. 14.5"
                        data-i18n-placeholder="p_fat_pct" />
                 <span class="unit">%</span>
@@ -919,7 +912,6 @@
                 <input type="number" id="cadera" name="cadera"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('cadera', '') }}"
                        placeholder="ej. 95.0"
                        data-i18n-placeholder="p_hip" />
                 <span class="unit">cm</span>
@@ -932,7 +924,6 @@
                 <input type="number" id="biceps_der" name="biceps_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('biceps_der', '') }}"
                        placeholder="ej. 35.0"
                        data-i18n-placeholder="p_bicep" />
                 <span class="unit">cm</span>
@@ -945,7 +936,6 @@
                 <input type="number" id="biceps_izq" name="biceps_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('biceps_izq', '') }}"
                        placeholder="ej. 34.5"
                        data-i18n-placeholder="p_bicep" />
                 <span class="unit">cm</span>
@@ -958,7 +948,6 @@
                 <input type="number" id="cuadriceps_der" name="cuadriceps_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('cuadriceps_der', '') }}"
                        placeholder="ej. 55.0"
                        data-i18n-placeholder="p_quad" />
                 <span class="unit">cm</span>
@@ -971,7 +960,6 @@
                 <input type="number" id="cuadriceps_izq" name="cuadriceps_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('cuadriceps_izq', '') }}"
                        placeholder="ej. 54.5"
                        data-i18n-placeholder="p_quad" />
                 <span class="unit">cm</span>
@@ -984,7 +972,6 @@
                 <input type="number" id="gemelos_der" name="gemelos_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('gemelos_der', '') }}"
                        placeholder="ej. 37.0"
                        data-i18n-placeholder="p_calf" />
                 <span class="unit">cm</span>
@@ -997,7 +984,6 @@
                 <input type="number" id="gemelos_izq" name="gemelos_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('gemelos_izq', '') }}"
                        placeholder="ej. 36.5"
                        data-i18n-placeholder="p_calf" />
                 <span class="unit">cm</span>
@@ -1010,7 +996,6 @@
                 <input type="number" id="pectoral" name="pectoral"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
-                       value="{{ request.form.get('pectoral', '') }}"
                        placeholder="ej. 100.0"
                        data-i18n-placeholder="p_chest" />
                 <span class="unit">cm</span>
@@ -1024,330 +1009,12 @@
       <button type="submit" class="btn-submit"><span data-i18n="btn_calculate">🚀 Calcular mi análisis</span></button>
     </form>
 
-    {% if resultados %}
-    <div id="contenido-informe">
-    <div class="results">
+    <!-- Results injected here by JavaScript -->
+    <div id="results-container"></div>
 
-      <div class="result-card">
-        <div class="result-card-header"><span>📏</span> <span data-i18n="r_measurements">Medidas corporales</span></div>
-        <table>
-          <tbody>
-            {% for nombre, valor in resultados.medidas.items() %}
-            <tr>
-              <td>{{ nombre }}</td>
-              <td>{{ valor }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      <div class="result-card">
-        <div class="result-card-header"><span>⚖️</span> <span data-i18n="r_body_comp">Composición corporal (US Navy)</span></div>
-        <table>
-          <tbody>
-            <tr>
-              <td data-i18n="r_body_fat">Grasa corporal</td>
-              <td>
-                {{ resultados.grasa_navy }}&thinsp;%
-                {% if resultados.diferencia_grasa is not none %}
-                  {% set delta = resultados.diferencia_grasa %}
-                  <span class="badge-delta {{ 'pos' if delta > 0 else 'neg' if delta < 0 else '' }}">
-                    (directa {{ resultados.grasa_directa }}&thinsp;% · Δ {{ "+" if delta >= 0 else "" }}{{ delta }}&thinsp;%)
-                  </span>
-                {% endif %}
-              </td>
-            </tr>
-            <tr>
-              <td data-i18n="r_lean_mass">Masa magra</td>
-              <td>{{ resultados.masa_magra }}&thinsp;kg</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="result-card">
-        <div class="result-card-header"><span>📐</span> <span data-i18n="r_imc_ffmi">IMC y FFMI</span></div>
-        <table>
-          <tbody>
-            <tr>
-              <td data-i18n="r_imc">IMC (kg/m²)</td>
-              <td>{{ resultados.bmi }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[{{ resultados.bmi_categoria }}]</span></td>
-            </tr>
-            <tr>
-              <td data-i18n="r_ffmi">FFMI (kg/m²)</td>
-              <td>{{ resultados.ffmi }}&thinsp;kg/m²</td>
-            </tr>
-            <tr>
-              <td data-i18n="r_ffmi_norm">FFMI normalizado (1.80 m)</td>
-              <td>{{ resultados.ffmi_norm }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[ref. ♂&lt;25 / ♀&lt;22]</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="result-card">
-        <div class="result-card-header"><span>🍽️</span> <span data-i18n="r_macros">Macros del día</span></div>
-        <table>
-          <tbody>
-            {% for nombre, valor in resultados.macros.items() %}
-            <tr>
-              <td>{{ nombre }}</td>
-              <td>{{ valor }}&thinsp;{{ "kcal" if "Calorías" in nombre else "g" }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-    <!-- ── Gráficos ── -->
-    <div id="seccion-graficos" class="formula-report" style="margin-top:1.6rem;">
-
-      <div class="section-heading" style="margin-top:.4rem;">
-        <span class="icon">📊</span> <span data-i18n="charts_title">Gráficos — Análisis de resultados</span>
-      </div>
-
-      <!-- Grasa corporal -->
-      <div class="formula-block">
-        <div class="formula-block-header"><span>📉</span> <span data-i18n="chart_fat">Porcentaje de grasa corporal</span></div>
-        <div class="formula-body">
-          <div class="chart-container">
-            <canvas id="chart-grasa"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- IMC -->
-      <div class="formula-block">
-        <div class="formula-block-header"><span>📐</span> <span data-i18n="chart_imc_title">Índice de Masa Corporal (IMC)</span></div>
-        <div class="formula-body">
-          <div class="chart-container">
-            <canvas id="chart-imc"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- FFMI -->
-      <div class="formula-block">
-        <div class="formula-block-header"><span>💪</span> <span data-i18n="chart_ffmi_title">FFMI normalizado (1.80 m)</span></div>
-        <div class="formula-body">
-          <div class="chart-container">
-            <canvas id="chart-ffmi"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- Macros -->
-      <div class="formula-block">
-        <div class="formula-block-header"><span>🍽️</span> <span data-i18n="chart_macros_title">Distribución de macronutrientes (kcal)</span></div>
-        <div class="formula-body">
-          <div class="chart-container-donut">
-            <canvas id="chart-macros"></canvas>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ── Informe detallado con fórmulas ── -->
-    {% set p = resultados.pasos %}
-    <div id="informe-detallado" class="formula-report">
-
-      <div class="section-heading" style="margin-top:1.2rem;">
-        <span class="icon">📑</span> <span data-i18n="report_title">Informe detallado — Fórmulas paso a paso</span>
-      </div>
-
-      <!-- 1. Grasa corporal US Navy -->
-      <div class="formula-block">
-        <div class="formula-block-header">
-          <span>🧮</span> <span data-i18n="report_navy">1. Porcentaje de grasa corporal — Método US Navy</span>
-        </div>
-        <div class="formula-body">
-          <div class="formula-line">
-            <span class="formula-label">Fórmula general ({{ p.navy_sexo }})</span>
-            <span class="formula-expr">%GC = {{ p.navy_formula }}</span>
-          </div>
-
-          {% if p.navy_sexo == "hombre" %}
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · Diferencia cintura − cuello</span>
-            <span class="formula-expr">{{ p.navy_cintura }} − {{ p.navy_cuello }} = <strong>{{ p.navy_dif }} cm</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · log₁₀(cintura − cuello)</span>
-            <span class="formula-expr">log₁₀({{ p.navy_dif }}) = <strong>{{ p.navy_log_dif }}</strong></span>
-          </div>
-          {% else %}
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · Suma cintura + cadera − cuello</span>
-            <span class="formula-expr">{{ p.navy_cintura }} + {{ p.navy_cadera }} − {{ p.navy_cuello }} = <strong>{{ p.navy_dif }} cm</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · log₁₀(cintura + cadera − cuello)</span>
-            <span class="formula-expr">log₁₀({{ p.navy_dif }}) = <strong>{{ p.navy_log_dif }}</strong></span>
-          </div>
-          {% endif %}
-
-          <div class="formula-line">
-            <span class="formula-label">Paso 3 · log₁₀(altura)</span>
-            <span class="formula-expr">log₁₀({{ p.navy_altura }}) = <strong>{{ p.navy_log_alt }}</strong></span>
-          </div>
-
-          {% if p.navy_sexo == "hombre" %}
-          <div class="formula-line">
-            <span class="formula-label">Paso 4 · Denominador</span>
-            <span class="formula-expr">1.0324 − 0.19077 × {{ p.navy_log_dif }} + 0.15456 × {{ p.navy_log_alt }} = <strong>{{ p.navy_denominador }}</strong></span>
-          </div>
-          {% else %}
-          <div class="formula-line">
-            <span class="formula-label">Paso 4 · Denominador</span>
-            <span class="formula-expr">1.29579 − 0.35004 × {{ p.navy_log_dif }} + 0.22100 × {{ p.navy_log_alt }} = <strong>{{ p.navy_denominador }}</strong></span>
-          </div>
-          {% endif %}
-
-          <div class="formula-line">
-            <span class="formula-label">Paso 5 · Resultado</span>
-            <span class="formula-expr">495 / {{ p.navy_denominador }} − 450 = <strong>{{ p.navy_grasa }} %</strong></span>
-            <span class="formula-result">%GC = {{ p.navy_grasa }} %</span>
-          </div>
-
-          <p class="formula-note">
-            La fórmula US Navy fue desarrollada por la marina de los EE.UU. y estima el porcentaje de
-            grasa corporal a partir de medidas de circunferencia, sin necesidad de equipamiento especial.
-          </p>
-        </div>
-      </div>
-
-      <!-- 2. Masa magra -->
-      <div class="formula-block">
-        <div class="formula-block-header">
-          <span>💪</span> <span data-i18n="report_lean">2. Masa magra (Lean Body Mass)</span>
-        </div>
-        <div class="formula-body">
-          <div class="formula-line">
-            <span class="formula-label">Fórmula</span>
-            <span class="formula-expr">Masa grasa (kg) = Peso × (%GC / 100)</span>
-            <span class="formula-expr">Masa magra (kg) = Peso − Masa grasa</span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · Masa grasa</span>
-            <span class="formula-expr">{{ p.mm_peso }} × ({{ p.navy_grasa }} / 100) = <strong>{{ p.mm_masa_grasa }} kg</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · Masa magra</span>
-            <span class="formula-expr">{{ p.mm_peso }} − {{ p.mm_masa_grasa }} = <strong>{{ p.mm_masa_magra }} kg</strong></span>
-            <span class="formula-result">Masa magra = {{ p.mm_masa_magra }} kg</span>
-          </div>
-          <p class="formula-note">
-            La masa magra incluye músculos, huesos, agua corporal y órganos, excluyendo la grasa.
-            Es el indicador clave para seguimiento de rendimiento deportivo.
-          </p>
-        </div>
-      </div>
-
-      <!-- 3. IMC -->
-      <div class="formula-block">
-        <div class="formula-block-header">
-          <span>📐</span> <span data-i18n="report_imc">3. Índice de Masa Corporal (IMC / BMI)</span>
-        </div>
-        <div class="formula-body">
-          <div class="formula-line">
-            <span class="formula-label">Fórmula</span>
-            <span class="formula-expr">IMC = Peso (kg) / Altura (m)²</span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · Convertir altura a metros</span>
-            <span class="formula-expr">{{ p.imc_altura_cm }} cm ÷ 100 = <strong>{{ p.imc_altura_m }} m</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · Calcular IMC</span>
-            <span class="formula-expr">{{ p.imc_peso }} / {{ p.imc_altura_m }}² = {{ p.imc_peso }} / {{ p.imc_altura_m_cuadrado }} = <strong>{{ p.imc_valor }} kg/m²</strong></span>
-            <span class="formula-result">IMC = {{ p.imc_valor }} kg/m² → Categoría OMS: {{ p.imc_categoria }}</span>
-          </div>
-          <p class="formula-note">
-            Clasificación OMS: &lt;18.5 Bajo peso · 18.5–24.9 Peso normal ·
-            25–29.9 Sobrepeso · 30–34.9 Obesidad I · 35–39.9 Obesidad II · ≥40 Obesidad III.
-            El IMC no distingue entre masa grasa y masa magra.
-          </p>
-        </div>
-      </div>
-
-      <!-- 4. FFMI -->
-      <div class="formula-block">
-        <div class="formula-block-header">
-          <span>🏋️</span> <span data-i18n="report_ffmi">4. Índice de Masa Libre de Grasa (FFMI)</span>
-        </div>
-        <div class="formula-body">
-          <div class="formula-line">
-            <span class="formula-label">Fórmula</span>
-            <span class="formula-expr">FFMI = Masa magra (kg) / Altura (m)²</span>
-            <span class="formula-expr">FFMI normalizado = FFMI + 6.1 × (1.80 − Altura m)</span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · FFMI bruto</span>
-            <span class="formula-expr">{{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m }}² = {{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m_cuadrado }} = <strong>{{ p.ffmi_valor }} kg/m²</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · FFMI normalizado a 1.80 m</span>
-            <span class="formula-expr">{{ p.ffmi_valor }} + 6.1 × (1.80 − {{ p.ffmi_altura_m }}) = <strong>{{ p.ffmi_norm_valor }} kg/m²</strong></span>
-            <span class="formula-result">FFMI = {{ p.ffmi_valor }} kg/m² · FFMI norm. = {{ p.ffmi_norm_valor }} kg/m²</span>
-          </div>
-          <p class="formula-note">
-            El FFMI normalizado permite comparar individuos de distintas estaturas.
-            Referencia natural: ♂ &lt;25 kg/m² · ♀ &lt;22 kg/m².
-            Valores superiores pueden indicar uso de sustancias.
-          </p>
-        </div>
-      </div>
-
-      <!-- 5. Macros -->
-      <div class="formula-block">
-        <div class="formula-block-header">
-          <span>🍽️</span> <span data-i18n="report_macros">5. Distribución de macronutrientes</span>
-        </div>
-        <div class="formula-body">
-          <div class="formula-line">
-            <span class="formula-label">Pilares fijos (rendimiento deportivo)</span>
-            <span class="formula-expr">Proteína = Peso × 2.0 g/kg · Grasa = Peso × 0.8 g/kg · Carbohidratos = Calorías restantes / 4</span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 1 · Proteína</span>
-            <span class="formula-expr">{{ p.macro_peso }} kg × 2.0 = <strong>{{ p.macro_proteina_g }} g</strong> → {{ p.macro_proteina_g }} × 4 kcal/g = <strong>{{ p.macro_cal_proteina }} kcal</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 2 · Grasa</span>
-            <span class="formula-expr">{{ p.macro_peso }} kg × 0.8 = <strong>{{ p.macro_grasa_g }} g</strong> → {{ p.macro_grasa_g }} × 9 kcal/g = <strong>{{ p.macro_cal_grasa }} kcal</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 3 · Calorías disponibles para carbohidratos</span>
-            <span class="formula-expr">{{ p.macro_kcal }} − {{ p.macro_cal_proteina }} − {{ p.macro_cal_grasa }} = <strong>{{ p.macro_cal_carbos }} kcal</strong></span>
-          </div>
-          <div class="formula-line">
-            <span class="formula-label">Paso 4 · Carbohidratos</span>
-            <span class="formula-expr">{{ p.macro_cal_carbos }} kcal ÷ 4 kcal/g = <strong>{{ p.macro_carbos_g }} g</strong></span>
-            <span class="formula-result">
-              Proteína: {{ p.macro_proteina_g }} g · Grasa: {{ p.macro_grasa_g }} g · Carbohidratos: {{ p.macro_carbos_g }} g · Total: {{ p.macro_kcal }} kcal
-            </span>
-          </div>
-          <p class="formula-note">
-            La proteína proporciona 4 kcal/g, los carbohidratos 4 kcal/g y las grasas 9 kcal/g.
-            Los pilares de proteína y grasa se fijan en función del peso corporal para garantizar
-            el mantenimiento muscular y el correcto funcionamiento hormonal.
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    </div><!-- /#contenido-informe -->
-    <!-- ── Botón descarga PDF ── -->
-    <button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">
-      <span data-i18n="btn_pdf">📄 Descargar informe en PDF</span>
-    </button>
-    {% endif %}
   </div>
+
+
 
 
     <!-- ── i18n engine (must come before UI scripts that call t()) ── -->
@@ -1933,7 +1600,7 @@
       // Update URL so each language has its own shareable/crawlable address
       try {
         var url = new URL(window.location.href);
-        if (lang === {{ default_lang | tojson }}) {
+        if (lang === 'es') {
           url.searchParams.delete('lang');
         } else {
           url.searchParams.set('lang', lang);
@@ -2025,299 +1692,435 @@
           integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  {% if resultados %}
+  <!-- ── SPA: form submit + results rendering ── -->
   <script>
-  Chart.register(ChartDataLabels);
   (function () {
-    var sexo       = {{ resultados.pasos.navy_sexo | tojson }};
-    var grasaVal   = {{ resultados.grasa_navy }};
-    var imcVal     = {{ resultados.bmi }};
-    var ffmiVal    = {{ resultados.ffmi_norm }};
-    var protKcal   = Math.max(0, {{ resultados.pasos.macro_cal_proteina }});
-    var grasaKcal  = Math.max(0, {{ resultados.pasos.macro_cal_grasa }});
-    var carbosKcal = Math.max(0, {{ resultados.pasos.macro_cal_carbos }});
+    'use strict';
 
-    /* Reference ranges */
-    var grasaRef = sexo === 'hombre' ? { min: 6,  max: 17 } : { min: 14, max: 24 };
-    var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
+    /* ── Destroy any existing Chart.js instances when re-rendering ── */
+    var _activeCharts = [];
+    function destroyCharts() {
+      _activeCharts.forEach(function (c) { try { c.destroy(); } catch (e) {} });
+      _activeCharts = [];
+    }
 
+    /* ── Chart helpers ── */
     var PURPLE = 'rgba(118,75,162,0.85)';
     var GREEN  = 'rgba(22,163,74,0.7)';
     var AMBER  = 'rgba(234,179,8,0.7)';
 
     function crearGraficoRango(id, metricLabel, valor, refMin, refMax, unidad) {
       var el = document.getElementById(id);
-      if (!el) { return; }
-      new Chart(el, {
+      if (!el) return;
+      var c = new Chart(el, {
         type: 'bar',
         data: {
           labels: [metricLabel],
           datasets: [
-            {
-              label: 'Tu valor',
-              data: [valor],
-              backgroundColor: PURPLE,
-              borderColor: 'rgba(118,75,162,1)',
-              borderWidth: 1.5,
-              borderRadius: 6
-            },
-            {
-              label: 'Mín. saludable',
-              data: [refMin],
-              backgroundColor: GREEN,
-              borderColor: 'rgba(22,163,74,1)',
-              borderWidth: 1.5,
-              borderRadius: 6
-            },
-            {
-              label: 'Máx. saludable',
-              data: [refMax],
-              backgroundColor: AMBER,
-              borderColor: 'rgba(202,138,4,1)',
-              borderWidth: 1.5,
-              borderRadius: 6
-            }
+            { label: 'Tu valor',        data: [valor],  backgroundColor: PURPLE, borderColor: 'rgba(118,75,162,1)', borderWidth: 1.5, borderRadius: 6 },
+            { label: 'Mín. saludable',  data: [refMin], backgroundColor: GREEN,  borderColor: 'rgba(22,163,74,1)',  borderWidth: 1.5, borderRadius: 6 },
+            { label: 'Máx. saludable',  data: [refMax], backgroundColor: AMBER,  borderColor: 'rgba(202,138,4,1)',  borderWidth: 1.5, borderRadius: 6 }
           ]
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          responsive: true, maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { font: { size: 11 }, padding: 12 }
-            },
-            tooltip: {
-              callbacks: {
-                label: function (ctx) {
-                  return ctx.dataset.label + ': ' + ctx.parsed.y + '\u2009' + unidad;
-                }
-              }
-            },
-            datalabels: {
-              anchor: 'end',
-              align: 'end',
-              font: { size: 11, weight: 'bold' },
-              color: '#374151',
-              formatter: function (value) {
-                return value + '\u2009' + unidad;
-              }
-            }
+            legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+            tooltip: { callbacks: { label: function (ctx) { return ctx.dataset.label + ': ' + ctx.parsed.y + '\u2009' + unidad; } } },
+            datalabels: { anchor: 'end', align: 'end', font: { size: 11, weight: 'bold' }, color: '#374151',
+              formatter: function (v) { return v + '\u2009' + unidad; } }
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              grid: { color: 'rgba(0,0,0,0.06)' },
-              ticks: { font: { size: 11 } }
-            },
-            x: {
-              grid: { display: false },
-              ticks: { font: { size: 11 } }
-            }
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { size: 11 } } },
+            x: { grid: { display: false }, ticks: { font: { size: 11 } } }
           }
         }
       });
+      _activeCharts.push(c);
     }
 
-    crearGraficoRango('chart-grasa', '% Grasa corporal', grasaVal, grasaRef.min, grasaRef.max, '%');
-    crearGraficoRango('chart-imc',   'IMC (kg/m²)',       imcVal,   18.5,          24.9,          'kg/m²');
-    crearGraficoRango('chart-ffmi',  'FFMI norm. (kg/m²)', ffmiVal, ffmiRef.min,   ffmiRef.max,   'kg/m²');
+    function initCharts(r) {
+      if (typeof Chart === 'undefined' || typeof ChartDataLabels === 'undefined') return;
+      Chart.register(ChartDataLabels);
+      destroyCharts();
+      var p = r.pasos;
+      var sexo     = p.navy_sexo;
+      var grasaRef = sexo === 'hombre' ? { min: 6,  max: 17 } : { min: 14, max: 24 };
+      var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
 
-    /* Macros donut */
-    var elMacros = document.getElementById('chart-macros');
-    if (elMacros && (protKcal + grasaKcal + carbosKcal) > 0) {
-      new Chart(elMacros, {
-        type: 'doughnut',
-        data: {
-          labels: ['Proteína', 'Grasa', 'Carbohidratos'],
-          datasets: [{
-            data: [protKcal, grasaKcal, carbosKcal],
-            backgroundColor: [
-              'rgba(99,102,241,0.85)',
-              'rgba(234,179,8,0.85)',
-              'rgba(249,115,22,0.85)'
-            ],
-            borderColor: [
-              'rgba(79,70,229,1)',
-              'rgba(202,138,4,1)',
-              'rgba(234,88,12,1)'
-            ],
-            borderWidth: 2,
-            hoverOffset: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { font: { size: 11 }, padding: 12 }
-            },
-            tooltip: {
-              callbacks: {
-                label: function (ctx) {
+      crearGraficoRango('chart-grasa', '% Grasa corporal', r.grasa_navy, grasaRef.min, grasaRef.max, '%');
+      crearGraficoRango('chart-imc',   'IMC (kg/m\u00b2)', r.bmi, 18.5, 24.9, 'kg/m\u00b2');
+      crearGraficoRango('chart-ffmi',  'FFMI norm. (kg/m\u00b2)', r.ffmi_norm, ffmiRef.min, ffmiRef.max, 'kg/m\u00b2');
+
+      var elMacros = document.getElementById('chart-macros');
+      var protKcal   = Math.max(0, p.macro_cal_proteina);
+      var grasaKcal  = Math.max(0, p.macro_cal_grasa);
+      var carbosKcal = Math.max(0, p.macro_cal_carbos);
+      if (elMacros && (protKcal + grasaKcal + carbosKcal) > 0) {
+        var mc = new Chart(elMacros, {
+          type: 'doughnut',
+          data: {
+            labels: ['Proteína', 'Grasa', 'Carbohidratos'],
+            datasets: [{
+              data: [protKcal, grasaKcal, carbosKcal],
+              backgroundColor: ['rgba(99,102,241,0.85)', 'rgba(234,179,8,0.85)', 'rgba(249,115,22,0.85)'],
+              borderColor: ['rgba(79,70,229,1)', 'rgba(202,138,4,1)', 'rgba(234,88,12,1)'],
+              borderWidth: 2, hoverOffset: 8
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+              tooltip: { callbacks: { label: function (ctx) {
+                var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                return ctx.label + ': ' + ctx.parsed + '\u2009kcal (' + ((ctx.parsed / total) * 100).toFixed(1) + '%)';
+              }}},
+              datalabels: { color: '#fff', font: { size: 12, weight: 'bold' },
+                formatter: function (value, ctx) {
                   var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                  var pct = ((ctx.parsed / total) * 100).toFixed(1);
-                  return ctx.label + ': ' + ctx.parsed + '\u2009kcal (' + pct + '%)';
+                  return ((value / total) * 100).toFixed(1) + '%\n' + value + '\u2009kcal';
                 }
               }
-            },
-            datalabels: {
-              color: '#fff',
-              font: { size: 12, weight: 'bold' },
-              formatter: function (value, ctx) {
-                var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                var pct = ((value / total) * 100).toFixed(1);
-                return pct + '%\n' + value + '\u2009kcal';
-              }
             }
           }
-        }
+        });
+        _activeCharts.push(mc);
+      }
+    }
+
+    /* ── Build results HTML from JSON data ── */
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function buildResultsHTML(r) {
+      var p = r.pasos;
+      var html = '';
+
+      /* ── Summary result cards ── */
+      html += '<div id="contenido-informe"><div class="results">';
+
+      /* Measurements */
+      html += '<div class="result-card">'
+            + '<div class="result-card-header"><span>\uD83D\uDCCF</span> <span data-i18n="r_measurements">Medidas corporales</span></div>'
+            + '<table><tbody>';
+      Object.keys(r.medidas).forEach(function (k) {
+        html += '<tr><td>' + esc(k) + '</td><td>' + esc(r.medidas[k]) + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+
+      /* Body composition */
+      var deltaBadge = '';
+      if (r.diferencia_grasa !== null && r.diferencia_grasa !== undefined) {
+        var delta = r.diferencia_grasa;
+        var cls   = delta > 0 ? 'pos' : (delta < 0 ? 'neg' : '');
+        var sign  = delta >= 0 ? '+' : '';
+        deltaBadge = '<span class="badge-delta ' + cls + '">(directa ' + esc(r.grasa_directa) + '\u2009% \u00b7 \u0394 ' + sign + esc(delta) + '\u2009%)</span>';
+      }
+      html += '<div class="result-card">'
+            + '<div class="result-card-header"><span>\u2696\uFE0F</span> <span data-i18n="r_body_comp">Composición corporal (US Navy)</span></div>'
+            + '<table><tbody>'
+            + '<tr><td data-i18n="r_body_fat">Grasa corporal</td><td>' + esc(r.grasa_navy) + '\u2009% ' + deltaBadge + '</td></tr>'
+            + '<tr><td data-i18n="r_lean_mass">Masa magra</td><td>' + esc(r.masa_magra) + '\u2009kg</td></tr>'
+            + '</tbody></table></div>';
+
+      /* IMC / FFMI */
+      html += '<div class="result-card">'
+            + '<div class="result-card-header"><span>\uD83D\uDCB0</span> <span data-i18n="r_imc_ffmi">IMC y FFMI</span></div>'
+            + '<table><tbody>'
+            + '<tr><td data-i18n="r_imc">IMC (kg/m\u00b2)</td><td>' + esc(r.bmi) + '\u2009kg/m\u00b2 &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[' + esc(r.bmi_categoria) + ']</span></td></tr>'
+            + '<tr><td data-i18n="r_ffmi">FFMI (kg/m\u00b2)</td><td>' + esc(r.ffmi) + '\u2009kg/m\u00b2</td></tr>'
+            + '<tr><td data-i18n="r_ffmi_norm">FFMI normalizado (1.80 m)</td><td>' + esc(r.ffmi_norm) + '\u2009kg/m\u00b2 &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[ref. \u2642&lt;25 / \u2640&lt;22]</span></td></tr>'
+            + '</tbody></table></div>';
+
+      /* Macros */
+      html += '<div class="result-card">'
+            + '<div class="result-card-header"><span>\uD83C\uDF7D\uFE0F</span> <span data-i18n="r_macros">Macros del día</span></div>'
+            + '<table><tbody>';
+      Object.keys(r.macros).forEach(function (k) {
+        var unit = k.indexOf('Calor') !== -1 ? 'kcal' : 'g';
+        html += '<tr><td>' + esc(k) + '</td><td>' + esc(r.macros[k]) + '\u2009' + unit + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+
+      html += '</div>'; /* .results */
+
+      /* ── Charts ── */
+      html += '<div id="seccion-graficos" class="formula-report" style="margin-top:1.6rem;">'
+            + '<div class="section-heading" style="margin-top:.4rem;"><span class="icon">\uD83D\uDCCA</span> <span data-i18n="charts_title">Gráficos \u2014 Análisis de resultados</span></div>'
+
+            + '<div class="formula-block"><div class="formula-block-header"><span>\uD83D\uDCC9</span> <span data-i18n="chart_fat">Porcentaje de grasa corporal</span></div>'
+            + '<div class="formula-body"><div class="chart-container"><canvas id="chart-grasa"></canvas></div></div></div>'
+
+            + '<div class="formula-block"><div class="formula-block-header"><span>\uD83D\uDCB0</span> <span data-i18n="chart_imc_title">Índice de Masa Corporal (IMC)</span></div>'
+            + '<div class="formula-body"><div class="chart-container"><canvas id="chart-imc"></canvas></div></div></div>'
+
+            + '<div class="formula-block"><div class="formula-block-header"><span>\uD83D\uDCAA</span> <span data-i18n="chart_ffmi_title">FFMI normalizado (1.80 m)</span></div>'
+            + '<div class="formula-body"><div class="chart-container"><canvas id="chart-ffmi"></canvas></div></div></div>'
+
+            + '<div class="formula-block"><div class="formula-block-header"><span>\uD83C\uDF7D\uFE0F</span> <span data-i18n="chart_macros_title">Distribución de macronutrientes (kcal)</span></div>'
+            + '<div class="formula-body"><div class="chart-container-donut"><canvas id="chart-macros"></canvas></div></div></div>'
+
+            + '</div>';
+
+      /* ── Detailed formula report ── */
+      html += '<div id="informe-detallado" class="formula-report">'
+            + '<div class="section-heading" style="margin-top:1.2rem;"><span class="icon">\uD83D\uDCD1</span> <span data-i18n="report_title">Informe detallado \u2014 Fórmulas paso a paso</span></div>';
+
+      /* 1. US Navy */
+      var navyStep1, navyStep2, navyStep4;
+      if (p.navy_sexo === 'hombre') {
+        navyStep1 = '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 Diferencia cintura \u2212 cuello</span>'
+                  + '<span class="formula-expr">' + esc(p.navy_cintura) + ' \u2212 ' + esc(p.navy_cuello) + ' = <strong>' + esc(p.navy_dif) + ' cm</strong></span></div>'
+                  + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 log\u2081\u2080(cintura \u2212 cuello)</span>'
+                  + '<span class="formula-expr">log\u2081\u2080(' + esc(p.navy_dif) + ') = <strong>' + esc(p.navy_log_dif) + '</strong></span></div>';
+        navyStep4 = '<div class="formula-line"><span class="formula-label">Paso 4 \u00b7 Denominador</span>'
+                  + '<span class="formula-expr">1.0324 \u2212 0.19077 \u00d7 ' + esc(p.navy_log_dif) + ' + 0.15456 \u00d7 ' + esc(p.navy_log_alt) + ' = <strong>' + esc(p.navy_denominador) + '</strong></span></div>';
+      } else {
+        navyStep1 = '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 Suma cintura + cadera \u2212 cuello</span>'
+                  + '<span class="formula-expr">' + esc(p.navy_cintura) + ' + ' + esc(p.navy_cadera) + ' \u2212 ' + esc(p.navy_cuello) + ' = <strong>' + esc(p.navy_dif) + ' cm</strong></span></div>'
+                  + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 log\u2081\u2080(cintura + cadera \u2212 cuello)</span>'
+                  + '<span class="formula-expr">log\u2081\u2080(' + esc(p.navy_dif) + ') = <strong>' + esc(p.navy_log_dif) + '</strong></span></div>';
+        navyStep4 = '<div class="formula-line"><span class="formula-label">Paso 4 \u00b7 Denominador</span>'
+                  + '<span class="formula-expr">1.29579 \u2212 0.35004 \u00d7 ' + esc(p.navy_log_dif) + ' + 0.22100 \u00d7 ' + esc(p.navy_log_alt) + ' = <strong>' + esc(p.navy_denominador) + '</strong></span></div>';
+      }
+
+      html += '<div class="formula-block"><div class="formula-block-header"><span>\uD83E\uDDEE</span> <span data-i18n="report_navy">1. Porcentaje de grasa corporal \u2014 Método US Navy</span></div>'
+            + '<div class="formula-body">'
+            + '<div class="formula-line"><span class="formula-label">Fórmula general (' + esc(p.navy_sexo) + ')</span>'
+            + '<span class="formula-expr">%GC = ' + esc(p.navy_formula) + '</span></div>'
+            + navyStep1
+            + '<div class="formula-line"><span class="formula-label">Paso 3 \u00b7 log\u2081\u2080(altura)</span>'
+            + '<span class="formula-expr">log\u2081\u2080(' + esc(p.navy_altura) + ') = <strong>' + esc(p.navy_log_alt) + '</strong></span></div>'
+            + navyStep4
+            + '<div class="formula-line"><span class="formula-label">Paso 5 \u00b7 Resultado</span>'
+            + '<span class="formula-expr">495 / ' + esc(p.navy_denominador) + ' \u2212 450 = <strong>' + esc(p.navy_grasa) + ' %</strong></span>'
+            + '<span class="formula-result">%GC = ' + esc(p.navy_grasa) + ' %</span></div>'
+            + '<p class="formula-note">La fórmula US Navy fue desarrollada por la marina de los EE.UU. y estima el porcentaje de grasa corporal a partir de medidas de circunferencia, sin necesidad de equipamiento especial.</p>'
+            + '</div></div>';
+
+      /* 2. Lean mass */
+      html += '<div class="formula-block"><div class="formula-block-header"><span>\uD83D\uDCAA</span> <span data-i18n="report_lean">2. Masa magra (Lean Body Mass)</span></div>'
+            + '<div class="formula-body">'
+            + '<div class="formula-line"><span class="formula-label">Fórmula</span>'
+            + '<span class="formula-expr">Masa grasa (kg) = Peso \u00d7 (%GC / 100)</span>'
+            + '<span class="formula-expr">Masa magra (kg) = Peso \u2212 Masa grasa</span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 Masa grasa</span>'
+            + '<span class="formula-expr">' + esc(p.mm_peso) + ' \u00d7 (' + esc(p.navy_grasa) + ' / 100) = <strong>' + esc(p.mm_masa_grasa) + ' kg</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 Masa magra</span>'
+            + '<span class="formula-expr">' + esc(p.mm_peso) + ' \u2212 ' + esc(p.mm_masa_grasa) + ' = <strong>' + esc(p.mm_masa_magra) + ' kg</strong></span>'
+            + '<span class="formula-result">Masa magra = ' + esc(p.mm_masa_magra) + ' kg</span></div>'
+            + '<p class="formula-note">La masa magra incluye músculos, huesos, agua corporal y órganos, excluyendo la grasa. Es el indicador clave para seguimiento de rendimiento deportivo.</p>'
+            + '</div></div>';
+
+      /* 3. IMC */
+      html += '<div class="formula-block"><div class="formula-block-header"><span>\uD83D\uDCB0</span> <span data-i18n="report_imc">3. Índice de Masa Corporal (IMC / BMI)</span></div>'
+            + '<div class="formula-body">'
+            + '<div class="formula-line"><span class="formula-label">Fórmula</span>'
+            + '<span class="formula-expr">IMC = Peso (kg) / Altura (m)\u00b2</span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 Convertir altura a metros</span>'
+            + '<span class="formula-expr">' + esc(p.imc_altura_cm) + ' cm \u00f7 100 = <strong>' + esc(p.imc_altura_m) + ' m</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 Calcular IMC</span>'
+            + '<span class="formula-expr">' + esc(p.imc_peso) + ' / ' + esc(p.imc_altura_m) + '\u00b2 = ' + esc(p.imc_peso) + ' / ' + esc(p.imc_altura_m_cuadrado) + ' = <strong>' + esc(p.imc_valor) + ' kg/m\u00b2</strong></span>'
+            + '<span class="formula-result">IMC = ' + esc(p.imc_valor) + ' kg/m\u00b2 \u2192 Categoría OMS: ' + esc(p.imc_categoria) + '</span></div>'
+            + '<p class="formula-note">Clasificación OMS: &lt;18.5 Bajo peso \u00b7 18.5\u201324.9 Peso normal \u00b7 25\u201329.9 Sobrepeso \u00b7 30\u201334.9 Obesidad I \u00b7 35\u201339.9 Obesidad II \u00b7 \u226540 Obesidad III. El IMC no distingue entre masa grasa y masa magra.</p>'
+            + '</div></div>';
+
+      /* 4. FFMI */
+      html += '<div class="formula-block"><div class="formula-block-header"><span>\uD83C\uDFCB\uFE0F</span> <span data-i18n="report_ffmi">4. Índice de Masa Libre de Grasa (FFMI)</span></div>'
+            + '<div class="formula-body">'
+            + '<div class="formula-line"><span class="formula-label">Fórmula</span>'
+            + '<span class="formula-expr">FFMI = Masa magra (kg) / Altura (m)\u00b2</span>'
+            + '<span class="formula-expr">FFMI normalizado = FFMI + 6.1 \u00d7 (1.80 \u2212 Altura m)</span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 FFMI bruto</span>'
+            + '<span class="formula-expr">' + esc(p.ffmi_masa_magra) + ' / ' + esc(p.ffmi_altura_m) + '\u00b2 = ' + esc(p.ffmi_masa_magra) + ' / ' + esc(p.ffmi_altura_m_cuadrado) + ' = <strong>' + esc(p.ffmi_valor) + ' kg/m\u00b2</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 FFMI normalizado a 1.80 m</span>'
+            + '<span class="formula-expr">' + esc(p.ffmi_valor) + ' + 6.1 \u00d7 (1.80 \u2212 ' + esc(p.ffmi_altura_m) + ') = <strong>' + esc(p.ffmi_norm_valor) + ' kg/m\u00b2</strong></span>'
+            + '<span class="formula-result">FFMI = ' + esc(p.ffmi_valor) + ' kg/m\u00b2 \u00b7 FFMI norm. = ' + esc(p.ffmi_norm_valor) + ' kg/m\u00b2</span></div>'
+            + '<p class="formula-note">El FFMI normalizado permite comparar individuos de distintas estaturas. Referencia natural: \u2642 &lt;25 kg/m\u00b2 \u00b7 \u2640 &lt;22 kg/m\u00b2. Valores superiores pueden indicar uso de sustancias.</p>'
+            + '</div></div>';
+
+      /* 5. Macros */
+      html += '<div class="formula-block"><div class="formula-block-header"><span>\uD83C\uDF7D\uFE0F</span> <span data-i18n="report_macros">5. Distribución de macronutrientes</span></div>'
+            + '<div class="formula-body">'
+            + '<div class="formula-line"><span class="formula-label">Pilares fijos (rendimiento deportivo)</span>'
+            + '<span class="formula-expr">Proteína = Peso \u00d7 2.0 g/kg \u00b7 Grasa = Peso \u00d7 0.8 g/kg \u00b7 Carbohidratos = Calorías restantes / 4</span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 1 \u00b7 Proteína</span>'
+            + '<span class="formula-expr">' + esc(p.macro_peso) + ' kg \u00d7 2.0 = <strong>' + esc(p.macro_proteina_g) + ' g</strong> \u2192 ' + esc(p.macro_proteina_g) + ' \u00d7 4 kcal/g = <strong>' + esc(p.macro_cal_proteina) + ' kcal</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 2 \u00b7 Grasa</span>'
+            + '<span class="formula-expr">' + esc(p.macro_peso) + ' kg \u00d7 0.8 = <strong>' + esc(p.macro_grasa_g) + ' g</strong> \u2192 ' + esc(p.macro_grasa_g) + ' \u00d7 9 kcal/g = <strong>' + esc(p.macro_cal_grasa) + ' kcal</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 3 \u00b7 Calorías disponibles para carbohidratos</span>'
+            + '<span class="formula-expr">' + esc(p.macro_kcal) + ' \u2212 ' + esc(p.macro_cal_proteina) + ' \u2212 ' + esc(p.macro_cal_grasa) + ' = <strong>' + esc(p.macro_cal_carbos) + ' kcal</strong></span></div>'
+            + '<div class="formula-line"><span class="formula-label">Paso 4 \u00b7 Carbohidratos</span>'
+            + '<span class="formula-expr">' + esc(p.macro_cal_carbos) + ' kcal \u00f7 4 kcal/g = <strong>' + esc(p.macro_carbos_g) + ' g</strong></span>'
+            + '<span class="formula-result">Proteína: ' + esc(p.macro_proteina_g) + ' g \u00b7 Grasa: ' + esc(p.macro_grasa_g) + ' g \u00b7 Carbohidratos: ' + esc(p.macro_carbos_g) + ' g \u00b7 Total: ' + esc(p.macro_kcal) + ' kcal</span></div>'
+            + '<p class="formula-note">La proteína proporciona 4 kcal/g, los carbohidratos 4 kcal/g y las grasas 9 kcal/g. Los pilares de proteína y grasa se fijan en función del peso corporal para garantizar el mantenimiento muscular y el correcto funcionamiento hormonal.</p>'
+            + '</div></div>';
+
+      html += '</div>'; /* #informe-detallado */
+
+      html += '</div>'; /* #contenido-informe */
+
+      /* ── PDF button ── */
+      html += '<button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">'
+            + '<span data-i18n="btn_pdf">\uD83D\uDCC4 Descargar informe en PDF</span>'
+            + '</button>';
+
+      return html;
+    }
+
+    /* ── Show / hide error ── */
+    function showError(msg) {
+      var el = document.getElementById('error-container');
+      if (!el) return;
+      el.innerHTML = '<div class="alert-error" role="alert">'
+        + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
+        + '<div class="alert-error-body">'
+        + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
+        + '<span class="alert-error-message">' + esc(msg) + '</span>'
+        + '</div></div>';
+      el.style.display = '';
+    }
+    function hideError() {
+      var el = document.getElementById('error-container');
+      if (el) { el.innerHTML = ''; el.style.display = 'none'; }
+    }
+
+    /* ── Show loading state on button ── */
+    function setLoading(on) {
+      var btn = document.querySelector('.btn-submit');
+      if (!btn) return;
+      btn.disabled = on;
+      if (on) btn.style.opacity = '0.6';
+      else    btn.style.opacity = '';
+    }
+
+    /* ── Form submit handler ── */
+    var form = document.getElementById('fitness-form');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        hideError();
+        setLoading(true);
+        destroyCharts();
+
+        var data = new FormData(form);
+
+        fetch('/api/calculate', { method: 'POST', body: data })
+          .then(function (resp) { return resp.json().then(function (body) { return { ok: resp.ok, body: body }; }); })
+          .then(function (res) {
+            setLoading(false);
+            var container = document.getElementById('results-container');
+            if (res.ok && res.body.resultados) {
+              container.innerHTML = buildResultsHTML(res.body.resultados);
+              /* Re-apply i18n translations to newly injected elements */
+              if (typeof applyTranslations === 'function') applyTranslations();
+              /* Scroll to results */
+              container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              /* Initialize charts after DOM is ready */
+              requestAnimationFrame(function () { initCharts(res.body.resultados); });
+            } else {
+              container.innerHTML = '';
+              showError(res.body.error || 'Error inesperado');
+            }
+          })
+          .catch(function (err) {
+            setLoading(false);
+            showError('Error de conexión: ' + err.message);
+          });
       });
     }
-  })();
-  </script>
-  {% endif %}
-  {% if resultados %}
-  <script>
-    function descargarPDF() {
+
+    /* ── PDF download (uses currently rendered #contenido-informe) ── */
+    window.descargarPDF = function () {
       var btn = document.getElementById('btn-descargar-pdf');
-      btn.disabled = true;
-      btn.textContent = '⏳ Generando PDF…';
+      if (btn) { btn.disabled = true; btn.textContent = '\u23F3 Generando PDF\u2026'; }
 
       function resetBtn(err) {
-        btn.disabled = false;
-        btn.textContent = '📄 Descargar informe en PDF';
-        if (err) {
-          alert('No se pudo generar el PDF. Por favor, inténtalo de nuevo.\n' + (err.message || err));
-        }
+        if (btn) { btn.disabled = false; btn.textContent = '\uD83D\uDCC4 Descargar informe en PDF'; }
+        if (err) alert('No se pudo generar el PDF.\n' + (err.message || err));
       }
 
       try {
         var elemento = document.getElementById('contenido-informe');
-        if (!elemento) {
-          resetBtn(new Error('No se encontró el contenido del informe.'));
-          return;
-        }
+        if (!elemento) { resetBtn(new Error('No se encontró el contenido del informe.')); return; }
         var opciones = {
           margin:      [10, 10, 10, 10],
           filename:    'informe-fitness.pdf',
           image:       { type: 'jpeg', quality: 0.95 },
           html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: false,
-            logging: false,
-            backgroundColor: '#ffffff',
-            scrollX: 0,
-            scrollY: 0,
+            scale: 2, useCORS: true, allowTaint: false, logging: false,
+            backgroundColor: '#ffffff', scrollX: 0, scrollY: 0,
             onclone: function (clonedDoc) {
-              /* Replace every chart canvas with a plain-text comparison table so
-                 the data always appears in the PDF regardless of rendering issues. */
-              var sexo     = {{ resultados.pasos.navy_sexo | tojson }};
-              var grasaRef = sexo === 'hombre' ? { min: 6,  max: 17 } : { min: 14, max: 24 };
-              var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
-
-              var TABLE_STYLE   = 'width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem;';
-              var TH_STYLE      = 'text-align:left;padding:5px 8px;border-bottom:2px solid #e5e7eb;color:#374151;font-weight:700;';
-              var TD_STYLE      = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151;';
-              var TD_VAL_STYLE  = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;font-weight:700;color:#6b21a8;';
-
-              function pct(num, total) {
-                return total > 0 ? (num / total * 100).toFixed(1) + '%' : '—';
-              }
-
+              var resultsEl = clonedDoc.getElementById('results-container');
+              if (!resultsEl) return;
+              var TABLE_STYLE  = 'width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem;';
+              var TH_STYLE     = 'text-align:left;padding:5px 8px;border-bottom:2px solid #e5e7eb;color:#374151;font-weight:700;';
+              var TD_STYLE     = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151;';
+              var TD_VAL_STYLE = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;font-weight:700;color:#6b21a8;';
+              function pct(n, tot) { return tot > 0 ? (n / tot * 100).toFixed(1) + '%' : '\u2014'; }
               function makeTable(headers, rows) {
                 var h = '<table style="' + TABLE_STYLE + '"><thead><tr>';
                 headers.forEach(function (hd) { h += '<th style="' + TH_STYLE + '">' + hd + '</th>'; });
                 h += '</tr></thead><tbody>';
                 rows.forEach(function (row) {
                   h += '<tr>';
-                  row.forEach(function (cell, i) {
-                    h += '<td style="' + (i === 1 ? TD_VAL_STYLE : TD_STYLE) + '">' + cell + '</td>';
-                  });
+                  row.forEach(function (cell, i) { h += '<td style="' + (i === 1 ? TD_VAL_STYLE : TD_STYLE) + '">' + cell + '</td>'; });
                   h += '</tr>';
                 });
-                h += '</tbody></table>';
-                return h;
+                return h + '</tbody></table>';
               }
-
-              /* Helper: find the .formula-block that contains a given canvas id */
-              function bloqueDeCanvas(canvasId) {
-                var canvas = clonedDoc.getElementById(canvasId);
+              function bloqueDeCanvas(cid) {
+                var canvas = clonedDoc.getElementById(cid);
                 return canvas ? canvas.closest('.formula-block') : null;
               }
-
-              /* Grasa corporal */
+              /* Read current result values from the DOM data attributes set during rendering */
+              var infoEl = clonedDoc.getElementById('contenido-informe');
+              if (!infoEl) return;
+              var dataEl = clonedDoc.getElementById('spa-result-data');
+              if (!dataEl) return;
+              var rd;
+              try { rd = JSON.parse(dataEl.textContent); } catch (e) { return; }
+              var sexo     = rd.pasos.navy_sexo;
+              var grasaRef = sexo === 'hombre' ? { min: 6, max: 17 } : { min: 14, max: 24 };
+              var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
               var blGrasa = bloqueDeCanvas('chart-grasa');
-              if (blGrasa) {
-                blGrasa.querySelector('.formula-body').innerHTML = makeTable(
-                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
-                  [['% Grasa corporal',
-                    '{{ resultados.grasa_navy }}\u2009%',
-                    grasaRef.min + '\u2009%',
-                    grasaRef.max + '\u2009%']]
-                );
-              }
-
-              /* IMC */
+              if (blGrasa) blGrasa.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['% Grasa corporal', rd.grasa_navy + '\u2009%', grasaRef.min + '\u2009%', grasaRef.max + '\u2009%']]);
               var blImc = bloqueDeCanvas('chart-imc');
-              if (blImc) {
-                blImc.querySelector('.formula-body').innerHTML = makeTable(
-                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
-                  [['IMC (kg/m²)',
-                    '{{ resultados.bmi }}\u2009kg/m²',
-                    '18.5\u2009kg/m²',
-                    '24.9\u2009kg/m²']]
-                );
-              }
-
-              /* FFMI */
+              if (blImc) blImc.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['IMC (kg/m\u00b2)', rd.bmi + '\u2009kg/m\u00b2', '18.5\u2009kg/m\u00b2', '24.9\u2009kg/m\u00b2']]);
               var blFfmi = bloqueDeCanvas('chart-ffmi');
-              if (blFfmi) {
-                blFfmi.querySelector('.formula-body').innerHTML = makeTable(
-                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
-                  [['FFMI normalizado (kg/m²)',
-                    '{{ resultados.ffmi_norm }}\u2009kg/m²',
-                    ffmiRef.min + '\u2009kg/m²',
-                    ffmiRef.max + '\u2009kg/m²']]
-                );
-              }
-
-              /* Macros */
+              if (blFfmi) blFfmi.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['FFMI normalizado (kg/m\u00b2)', rd.ffmi_norm + '\u2009kg/m\u00b2', ffmiRef.min + '\u2009kg/m\u00b2', ffmiRef.max + '\u2009kg/m\u00b2']]);
               var blMacros = bloqueDeCanvas('chart-macros');
               if (blMacros) {
-                var totalKcal = {{ resultados.pasos.macro_kcal }};
-                var pKcal     = {{ resultados.pasos.macro_cal_proteina }};
-                var gKcal     = {{ resultados.pasos.macro_cal_grasa }};
-                var cKcal     = {{ resultados.pasos.macro_cal_carbos }};
-                blMacros.querySelector('.formula-body').innerHTML = makeTable(
-                  ['Macronutriente', 'Gramos', 'Calorías', '% total'],
-                  [
-                    ['Proteína',      '{{ resultados.pasos.macro_proteina_g }}\u2009g', pKcal + '\u2009kcal', pct(pKcal, totalKcal)],
-                    ['Grasa',         '{{ resultados.pasos.macro_grasa_g }}\u2009g',    gKcal + '\u2009kcal', pct(gKcal, totalKcal)],
-                    ['Carbohidratos', '{{ resultados.pasos.macro_carbos_g }}\u2009g',   cKcal + '\u2009kcal', pct(cKcal, totalKcal)],
-                    ['Total',         '—', totalKcal + '\u2009kcal', '100%']
-                  ]
-                );
+                var pKcal = rd.pasos.macro_cal_proteina, gKcal = rd.pasos.macro_cal_grasa,
+                    cKcal = rd.pasos.macro_cal_carbos, totalKcal = rd.pasos.macro_kcal;
+                blMacros.querySelector('.formula-body').innerHTML = makeTable(['Macronutriente','Gramos','Calorías','% total'],[
+                  ['Proteína',      rd.pasos.macro_proteina_g + '\u2009g', pKcal + '\u2009kcal', pct(pKcal, totalKcal)],
+                  ['Grasa',         rd.pasos.macro_grasa_g    + '\u2009g', gKcal + '\u2009kcal', pct(gKcal, totalKcal)],
+                  ['Carbohidratos', rd.pasos.macro_carbos_g   + '\u2009g', cKcal + '\u2009kcal', pct(cKcal, totalKcal)],
+                  ['Total', '\u2014', totalKcal + '\u2009kcal', '100%']
+                ]);
               }
             }
           },
-          jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak:   { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
+          jsPDF:     { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
         };
+        html2pdf().set(opciones).from(elemento).save().then(function () { resetBtn(); }).catch(resetBtn);
+      } catch (err) { resetBtn(err); }
+    };
 
-        html2pdf().set(opciones).from(elemento).save().then(function () {
-          btn.disabled = false;
-          btn.textContent = '📄 Descargar informe en PDF';
-        }).catch(resetBtn);
-      } catch (err) {
-        resetBtn(err);
-      }
-    }
+    /* Expose buildResultsHTML so we can embed the data JSON for PDF */
+    var _origBuild = buildResultsHTML;
+    buildResultsHTML = function (r) {
+      var html = _origBuild(r);
+      /* Append hidden JSON data element used by PDF onclone handler */
+      html += '<script id="spa-result-data" type="application/json">' + JSON.stringify(r) + '<\/script>';
+      return html;
+    };
+  })();
   </script>
-  {% endif %}
 
 </body>
 </html>
