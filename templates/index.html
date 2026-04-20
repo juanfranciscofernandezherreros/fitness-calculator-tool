@@ -871,8 +871,8 @@
     var grasaVal   = {{ resultados.grasa_navy }};
     var imcVal     = {{ resultados.bmi }};
     var ffmiVal    = {{ resultados.ffmi_norm }};
-    var protKcal   = {{ resultados.pasos.macro_cal_proteina }};
-    var grasaKcal  = {{ resultados.pasos.macro_cal_grasa }};
+    var protKcal   = Math.max(0, {{ resultados.pasos.macro_cal_proteina }});
+    var grasaKcal  = Math.max(0, {{ resultados.pasos.macro_cal_grasa }});
     var carbosKcal = Math.max(0, {{ resultados.pasos.macro_cal_carbos }});
 
     /* Reference ranges */
@@ -1031,7 +1031,7 @@
           }
         },
         jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak:   { mode: 'css', avoid: '.formula-block, .result-card' }
+        pagebreak:   { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
       };
 
       html2pdf().set(opciones).from(elemento).save().then(function () {
