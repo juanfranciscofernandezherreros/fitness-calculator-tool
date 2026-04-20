@@ -492,6 +492,93 @@
       .chart-container-donut { height: 240px; }
     }
 
+    /* ── FAQ Section ── */
+    .faq-section {
+      width: 100%;
+      max-width: 660px;
+      margin-bottom: 1.8rem;
+    }
+    .faq-section-heading {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .faq-section-heading h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      text-shadow: 0 1px 6px rgba(0,0,0,.2);
+    }
+    .faq-item {
+      background: rgba(255,255,255,.13);
+      border: 1.5px solid rgba(255,255,255,.22);
+      border-radius: 12px;
+      margin-bottom: .55rem;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+      transition: background .2s;
+    }
+    .faq-item:hover { background: rgba(255,255,255,.18); }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      padding: .85rem 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .6rem;
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .faq-question-text { flex: 1; }
+    .faq-chevron {
+      font-size: .75rem;
+      flex-shrink: 0;
+      transition: transform .25s;
+      opacity: .8;
+    }
+    .faq-question[aria-expanded="true"] .faq-chevron {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .35s ease, opacity .3s ease;
+      opacity: 0;
+    }
+    .faq-answer.open {
+      max-height: 600px;
+      opacity: 1;
+    }
+    .faq-answer-inner {
+      padding: 0 1.1rem 1rem;
+      font-size: .86rem;
+      color: rgba(255,255,255,.92);
+      line-height: 1.6;
+    }
+    .faq-answer-inner p { margin-bottom: .5rem; }
+    .faq-answer-inner p:last-child { margin-bottom: 0; }
+    .faq-formula {
+      font-family: 'Courier New', monospace;
+      font-size: .8rem;
+      background: rgba(0,0,0,.25);
+      border-radius: 6px;
+      padding: .3rem .65rem;
+      display: inline-block;
+      margin: .2rem 0;
+      color: #d9f99d;
+      word-break: break-word;
+    }
+    .faq-tag-male   { color: #93c5fd; font-weight: 700; }
+    .faq-tag-female { color: #f9a8d4; font-weight: 700; }
+
     /* ── Language selector ── */
     .lang-selector {
       display: flex;
@@ -572,6 +659,114 @@
       <a href="/?lang=ja" class="lang-btn {% if lang == 'ja' %}active{% endif %}" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
     </nav>
   </div>
+
+  <!-- ── FAQ Section ── -->
+  <section class="faq-section no-print" aria-label="FAQ">
+    <div class="faq-section-heading">
+      <span style="font-size:1.3rem;">❓</span>
+      <h2 data-i18n="faq_title">Preguntas frecuentes — ¿Cómo funcionan las fórmulas?</h2>
+    </div>
+
+    <!-- Q1: US Navy -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q1">¿Qué es la fórmula US Navy y cómo calcula la grasa corporal?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner" data-i18n-html="faq_a1">
+          <p>La fórmula <strong>US Navy</strong> estima el porcentaje de grasa corporal usando medidas de circunferencia corporal y la altura, sin necesidad de equipos especiales.</p>
+          <p><span class="faq-tag-male">♂ Hombre:</span><br>
+            <span class="faq-formula">%GC = 495 / (1.0324 − 0.19077 × log₁₀(cintura − cuello) + 0.15456 × log₁₀(altura)) − 450</span>
+          </p>
+          <p><span class="faq-tag-female">♀ Mujer:</span> requiere la medida de <strong>cadera</strong> adicionalmente.<br>
+            <span class="faq-formula">%GC = 495 / (1.29579 − 0.35004 × log₁₀(cintura + cadera − cuello) + 0.22100 × log₁₀(altura)) − 450</span>
+          </p>
+          <p>Las mujeres acumulan más grasa en la zona de la cadera, por eso esa medida es obligatoria en su fórmula. Los rangos saludables son: <span class="faq-tag-male">♂ 6–17 %</span> y <span class="faq-tag-female">♀ 14–24 %</span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2: Lean Mass -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q2">¿Qué es la masa magra y cómo se calcula?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>La <strong>masa magra</strong> (Lean Body Mass) es todo lo que no es grasa: músculos, huesos, agua y órganos. Es el indicador clave del rendimiento deportivo.</p>
+          <p><span class="faq-formula">Masa grasa (kg) = Peso × (%GC / 100)</span></p>
+          <p><span class="faq-formula">Masa magra (kg) = Peso − Masa grasa</span></p>
+          <p>No hay diferencia de fórmula entre <span class="faq-tag-male">♂</span> y <span class="faq-tag-female">♀</span>, pero los valores normales difieren: los hombres suelen tener mayor proporción de masa magra.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3: IMC/BMI -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q3">¿Qué es el IMC (Índice de Masa Corporal)?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>El <strong>IMC</strong> mide el peso relativo a la talla. No distingue grasa de músculo, por lo que es orientativo.</p>
+          <p><span class="faq-formula">IMC = Peso (kg) / Altura (m)²</span></p>
+          <p>Clasificación OMS (igual para <span class="faq-tag-male">♂</span> y <span class="faq-tag-female">♀</span>): &lt;18.5 Bajo peso · 18.5–24.9 Normal · 25–29.9 Sobrepeso · ≥30 Obesidad.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4: FFMI -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q4">¿Qué es el FFMI y por qué varía entre hombres y mujeres?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>El <strong>FFMI</strong> (Fat-Free Mass Index) mide la masa muscular relativa a la estatura. Es más preciso que el IMC para deportistas.</p>
+          <p><span class="faq-formula">FFMI = Masa magra (kg) / Altura (m)²</span></p>
+          <p><span class="faq-formula">FFMI normalizado = FFMI + 6.1 × (1.80 − Altura m)</span></p>
+          <p>Los límites naturales difieren por hormonas: <span class="faq-tag-male">♂ &lt;25 kg/m²</span> · <span class="faq-tag-female">♀ &lt;22 kg/m²</span>. Valores superiores pueden indicar uso de sustancias.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5: Macros -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q5">¿Cómo se distribuyen los macronutrientes?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Los macros se calculan con valores fijos por kg de peso, optimizados para rendimiento deportivo:</p>
+          <p><span class="faq-formula">Proteína = Peso × 2.0 g/kg → × 4 kcal/g</span></p>
+          <p><span class="faq-formula">Grasa = Peso × 0.8 g/kg → × 9 kcal/g</span></p>
+          <p><span class="faq-formula">Carbohidratos = (Calorías totales − kcal proteína − kcal grasa) / 4</span></p>
+          <p>La misma fórmula aplica a <span class="faq-tag-male">♂</span> y <span class="faq-tag-female">♀</span>, aunque las necesidades calóricas totales suelen diferir según el metabolismo basal.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6: Male vs Female differences -->
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-question-text" data-i18n="faq_q6">¿Cuáles son las diferencias principales entre hombres y mujeres en esta calculadora?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p><span class="faq-tag-male">♂ Hombre</span> usa: <em>cintura y cuello</em> para la fórmula US Navy. Grasa saludable: 6–17 %. FFMI natural: &lt;25 kg/m².</p>
+          <p><span class="faq-tag-female">♀ Mujer</span> usa: <em>cintura, cuello y cadera</em> para la fórmula US Navy (la cadera es obligatoria). Grasa saludable: 14–24 %. FFMI natural: &lt;22 kg/m².</p>
+          <p>Las diferencias reflejan la distribución natural de grasa: las mujeres almacenan más en zona glúteo-femoral, mientras que los hombres lo hacen en zona abdominal. Los rangos de referencia de todos los indicadores están adaptados según el sexo biológico.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
 
   <div class="card">
 
@@ -1196,6 +1391,13 @@
         report_imc: "3. Índice de Masa Corporal (IMC / BMI)",
         report_ffmi: "4. Índice de Masa Libre de Grasa (FFMI)",
         report_macros: "5. Distribución de macronutrientes",
+        faq_title: "Preguntas frecuentes — ¿Cómo funcionan las fórmulas?",
+        faq_q1: "¿Qué es la fórmula US Navy y cómo calcula la grasa corporal?",
+        faq_q2: "¿Qué es la masa magra y cómo se calcula?",
+        faq_q3: "¿Qué es el IMC (Índice de Masa Corporal)?",
+        faq_q4: "¿Qué es el FFMI y por qué varía entre hombres y mujeres?",
+        faq_q5: "¿Cómo se distribuyen los macronutrientes?",
+        faq_q6: "¿Cuáles son las diferencias principales entre hombres y mujeres en esta calculadora?",
         p_calories: "ej. 3343", p_weight: "ej. 72.5", p_height: "ej. 175.5",
         p_waist: "ej. 84.0", p_neck: "ej. 38.0", p_fat_pct: "ej. 14.5",
         p_hip: "ej. 95.0", p_bicep: "ej. 35.0", p_quad: "ej. 55.0",
@@ -1238,6 +1440,13 @@
         report_imc: "3. Body Mass Index (BMI)",
         report_ffmi: "4. Fat-Free Mass Index (FFMI)",
         report_macros: "5. Macronutrient distribution",
+        faq_title: "FAQ — How do the formulas work?",
+        faq_q1: "What is the US Navy formula and how does it calculate body fat?",
+        faq_q2: "What is lean mass and how is it calculated?",
+        faq_q3: "What is the BMI (Body Mass Index)?",
+        faq_q4: "What is FFMI and why does it differ between men and women?",
+        faq_q5: "How are macronutrients distributed?",
+        faq_q6: "What are the main differences between men and women in this calculator?",
         p_calories: "e.g. 3343", p_weight: "e.g. 72.5", p_height: "e.g. 175.5",
         p_waist: "e.g. 84.0", p_neck: "e.g. 38.0", p_fat_pct: "e.g. 14.5",
         p_hip: "e.g. 95.0", p_bicep: "e.g. 35.0", p_quad: "e.g. 55.0",
@@ -1280,6 +1489,13 @@
         report_imc: "3. Indice di Massa Corporea (IMC / BMI)",
         report_ffmi: "4. Indice di Massa Libera da Grassi (FFMI)",
         report_macros: "5. Distribuzione dei macronutrienti",
+        faq_title: "FAQ — Come funzionano le formule?",
+        faq_q1: "Cos'è la formula US Navy e come calcola il grasso corporeo?",
+        faq_q2: "Cos'è la massa magra e come si calcola?",
+        faq_q3: "Cos'è l'IMC (Indice di Massa Corporea)?",
+        faq_q4: "Cos'è il FFMI e perché differisce tra uomini e donne?",
+        faq_q5: "Come vengono distribuiti i macronutrienti?",
+        faq_q6: "Quali sono le principali differenze tra uomini e donne in questo calcolatore?",
         p_calories: "es. 3343", p_weight: "es. 72.5", p_height: "es. 175.5",
         p_waist: "es. 84.0", p_neck: "es. 38.0", p_fat_pct: "es. 14.5",
         p_hip: "es. 95.0", p_bicep: "es. 35.0", p_quad: "es. 55.0",
@@ -1322,6 +1538,13 @@
         report_imc: "3. Indice de Masse Corporelle (IMC / BMI)",
         report_ffmi: "4. Indice de Masse Maigre (FFMI)",
         report_macros: "5. Répartition des macronutriments",
+        faq_title: "FAQ — Comment fonctionnent les formules ?",
+        faq_q1: "Qu'est-ce que la formule US Navy et comment calcule-t-elle la graisse corporelle ?",
+        faq_q2: "Qu'est-ce que la masse maigre et comment est-elle calculée ?",
+        faq_q3: "Qu'est-ce que l'IMC (Indice de Masse Corporelle) ?",
+        faq_q4: "Qu'est-ce que le FFMI et pourquoi varie-t-il entre hommes et femmes ?",
+        faq_q5: "Comment les macronutriments sont-ils distribués ?",
+        faq_q6: "Quelles sont les principales différences entre hommes et femmes dans cette calculatrice ?",
         p_calories: "ex. 3343", p_weight: "ex. 72.5", p_height: "ex. 175.5",
         p_waist: "ex. 84.0", p_neck: "ex. 38.0", p_fat_pct: "ex. 14.5",
         p_hip: "ex. 95.0", p_bicep: "ex. 35.0", p_quad: "ex. 55.0",
@@ -1364,6 +1587,13 @@
         report_imc: "3. Body-Mass-Index (BMI)",
         report_ffmi: "4. Fettfreier Massenindex (FFMI)",
         report_macros: "5. Makronährstoffverteilung",
+        faq_title: "FAQ — Wie funktionieren die Formeln?",
+        faq_q1: "Was ist die US-Navy-Formel und wie berechnet sie den Körperfettanteil?",
+        faq_q2: "Was ist die Magermasse und wie wird sie berechnet?",
+        faq_q3: "Was ist der BMI (Body-Mass-Index)?",
+        faq_q4: "Was ist der FFMI und warum unterscheidet er sich zwischen Männern und Frauen?",
+        faq_q5: "Wie werden die Makronährstoffe aufgeteilt?",
+        faq_q6: "Was sind die Hauptunterschiede zwischen Männern und Frauen in diesem Rechner?",
         p_calories: "z.B. 3343", p_weight: "z.B. 72,5", p_height: "z.B. 175,5",
         p_waist: "z.B. 84,0", p_neck: "z.B. 38,0", p_fat_pct: "z.B. 14,5",
         p_hip: "z.B. 95,0", p_bicep: "z.B. 35,0", p_quad: "z.B. 55,0",
@@ -1406,6 +1636,13 @@
         report_imc: "3. Índice de Massa Corporal (IMC / BMI)",
         report_ffmi: "4. Índice de Massa Livre de Gordura (FFMI)",
         report_macros: "5. Distribuição de macronutrientes",
+        faq_title: "FAQ — Como funcionam as fórmulas?",
+        faq_q1: "O que é a fórmula US Navy e como calcula a gordura corporal?",
+        faq_q2: "O que é a massa magra e como é calculada?",
+        faq_q3: "O que é o IMC (Índice de Massa Corporal)?",
+        faq_q4: "O que é o FFMI e por que difere entre homens e mulheres?",
+        faq_q5: "Como os macronutrientes são distribuídos?",
+        faq_q6: "Quais são as principais diferenças entre homens e mulheres nesta calculadora?",
         p_calories: "ex. 3343", p_weight: "ex. 72,5", p_height: "ex. 175,5",
         p_waist: "ex. 84,0", p_neck: "ex. 38,0", p_fat_pct: "ex. 14,5",
         p_hip: "ex. 95,0", p_bicep: "ex. 35,0", p_quad: "ex. 55,0",
@@ -1448,6 +1685,13 @@
         report_imc: "3. Body Mass Index (BMI)",
         report_ffmi: "4. Vetvrije massa index (FFMI)",
         report_macros: "5. Macronutriëntenverdeling",
+        faq_title: "FAQ — Hoe werken de formules?",
+        faq_q1: "Wat is de US Navy formule en hoe berekent die lichaamsvet?",
+        faq_q2: "Wat is magere massa en hoe wordt die berekend?",
+        faq_q3: "Wat is de BMI (Body Mass Index)?",
+        faq_q4: "Wat is FFMI en waarom verschilt het tussen mannen en vrouwen?",
+        faq_q5: "Hoe worden de macronutriënten verdeeld?",
+        faq_q6: "Wat zijn de belangrijkste verschillen tussen mannen en vrouwen in deze calculator?",
         p_calories: "bijv. 3343", p_weight: "bijv. 72,5", p_height: "bijv. 175,5",
         p_waist: "bijv. 84,0", p_neck: "bijv. 38,0", p_fat_pct: "bijv. 14,5",
         p_hip: "bijv. 95,0", p_bicep: "bijv. 35,0", p_quad: "bijv. 55,0",
@@ -1490,6 +1734,13 @@
         report_imc: "3. Wskaźnik Masy Ciała (BMI)",
         report_ffmi: "4. Wskaźnik Beztłuszczowej Masy (FFMI)",
         report_macros: "5. Rozkład makroskładników",
+        faq_title: "FAQ — Jak działają formuły?",
+        faq_q1: "Co to jest formuła US Navy i jak oblicza tkankę tłuszczową?",
+        faq_q2: "Czym jest masa beztłuszczowa i jak się ją oblicza?",
+        faq_q3: "Co to jest BMI (Wskaźnik Masy Ciała)?",
+        faq_q4: "Co to jest FFMI i dlaczego różni się między mężczyznami a kobietami?",
+        faq_q5: "Jak rozkładają się makroskładniki?",
+        faq_q6: "Jakie są główne różnice między mężczyznami a kobietami w tym kalkulatorze?",
         p_calories: "np. 3343", p_weight: "np. 72,5", p_height: "np. 175,5",
         p_waist: "np. 84,0", p_neck: "np. 38,0", p_fat_pct: "np. 14,5",
         p_hip: "np. 95,0", p_bicep: "np. 35,0", p_quad: "np. 55,0",
@@ -1532,6 +1783,13 @@
         report_imc: "3. Индекс массы тела (ИМТ)",
         report_ffmi: "4. Индекс безжировой массы (FFMI)",
         report_macros: "5. Распределение макронутриентов",
+        faq_title: "FAQ — Как работают формулы?",
+        faq_q1: "Что такое формула US Navy и как она вычисляет жировую массу?",
+        faq_q2: "Что такое безжировая масса и как она рассчитывается?",
+        faq_q3: "Что такое ИМТ (Индекс Массы Тела)?",
+        faq_q4: "Что такое FFMI и почему он различается у мужчин и женщин?",
+        faq_q5: "Как распределяются макронутриенты?",
+        faq_q6: "Каковы основные различия между мужчинами и женщинами в этом калькуляторе?",
         p_calories: "напр. 3343", p_weight: "напр. 72,5", p_height: "напр. 175,5",
         p_waist: "напр. 84,0", p_neck: "напр. 38,0", p_fat_pct: "напр. 14,5",
         p_hip: "напр. 95,0", p_bicep: "напр. 35,0", p_quad: "напр. 55,0",
@@ -1574,6 +1832,13 @@
         report_imc: "3. 体质指数（BMI）",
         report_ffmi: "4. 去脂体重指数（FFMI）",
         report_macros: "5. 宏量营养素分配",
+        faq_title: "FAQ — 公式是如何运作的？",
+        faq_q1: "什么是美国海军公式？它如何计算体脂率？",
+        faq_q2: "什么是瘦体重？它是如何计算的？",
+        faq_q3: "什么是BMI（体质指数）？",
+        faq_q4: "什么是FFMI？为什么男女有所不同？",
+        faq_q5: "宏量营养素是如何分配的？",
+        faq_q6: "此计算器中男性和女性的主要差异是什么？",
         p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
         p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
         p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
@@ -1616,6 +1881,13 @@
         report_imc: "3. ボディマス指数（BMI）",
         report_ffmi: "4. 除脂肪体重指数（FFMI）",
         report_macros: "5. マクロ栄養素分配",
+        faq_title: "FAQ — 公式はどのように機能しますか？",
+        faq_q1: "米海軍式とは何ですか？体脂肪率をどのように計算しますか？",
+        faq_q2: "除脂肪体重とは何ですか？どのように計算されますか？",
+        faq_q3: "BMI（ボディマス指数）とは何ですか？",
+        faq_q4: "FFMIとは何ですか？なぜ男女で異なりますか？",
+        faq_q5: "マクロ栄養素はどのように配分されますか？",
+        faq_q6: "このカルキュレーターでの男性と女性の主な違いは何ですか？",
         p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
         p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
         p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
@@ -1671,6 +1943,21 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () { setLang(currentLang); });
+
+    /* ── FAQ accordion ── */
+    function toggleFaq(btn) {
+      var answer = btn.nextElementSibling;
+      var isOpen = answer.classList.contains('open');
+      // Close all open answers
+      document.querySelectorAll('.faq-answer.open').forEach(function (a) {
+        a.classList.remove('open');
+        a.previousElementSibling.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        answer.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
   </script>
 
   <script>
