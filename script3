@@ -1,7 +1,0 @@
-def carbos_flash(kcal):
-    # La constante 1102 sale de: (144.5g Prot * 4) + (57.8g Grasa * 9)
-    g_carbos = (kcal - 1102) / 4
-    return round(g_carbos, 1)
-
-# Uso rápido:
-print(f"Gramos de hidratos para hoy: {carbos_flash(2930)}g") # Gasto de tu 10K hoy
