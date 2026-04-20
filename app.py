@@ -286,15 +286,7 @@ def _translate_error(exc: Exception, lang: str) -> str:
 
 @app.route("/", methods=["GET"])
 def index():
-    lang = request.args.get("lang", DEFAULT_LANG)
-    if lang not in SUPPORTED_LANGS:
-        lang = DEFAULT_LANG
-    return render_template(
-        "index.html",
-        lang=lang,
-        supported_langs=SUPPORTED_LANGS,
-        default_lang=DEFAULT_LANG,
-    )
+    return render_template("index.html")
 
 
 def _compute_results(form, lang):
@@ -468,8 +460,11 @@ def api_calculate():
     try:
         resultados = _compute_results(request.form, lang)
         return jsonify({"resultados": resultados})
-    except Exception as exc:
+    except (AppError, ValueError) as exc:
         return jsonify({"error": _translate_error(exc, lang)}), 400
+    except Exception:
+        msgs = ERROR_MESSAGES.get(lang, ERROR_MESSAGES[DEFAULT_LANG])
+        return jsonify({"error": msgs.get("unknown_error", "Error inesperado.").format(msg="")}), 500
 
 
 def _parse_float(value: str | None, campo: str) -> float:

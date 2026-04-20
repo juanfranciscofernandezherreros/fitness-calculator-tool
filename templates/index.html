@@ -1564,11 +1564,16 @@
 
     /* ── Core i18n functions (global) ── */
     var currentLang = (function () {
-      var hidden = document.getElementById('lang-hidden');
-      var serverLang = hidden ? hidden.value : '';
+      /* 1. URL query param (?lang=en) — highest priority */
+      try {
+        var urlLang = new URL(window.location.href).searchParams.get('lang');
+        if (urlLang && TRANSLATIONS[urlLang]) return urlLang;
+      } catch (e) {}
+      /* 2. localStorage */
       var stored = localStorage.getItem('fitness-lang');
-      return (serverLang && TRANSLATIONS[serverLang]) ? serverLang :
-             (stored && TRANSLATIONS[stored]) ? stored : 'es';
+      if (stored && TRANSLATIONS[stored]) return stored;
+      /* 3. Default */
+      return 'es';
     })();
 
     function t(key) {
@@ -2116,7 +2121,9 @@
     buildResultsHTML = function (r) {
       var html = _origBuild(r);
       /* Append hidden JSON data element used by PDF onclone handler */
-      html += '<script id="spa-result-data" type="application/json">' + JSON.stringify(r) + '<\/script>';
+      /* Escape </script> sequences to prevent early tag closure */
+      var safeJson = JSON.stringify(r).replace(/<\//g, '<\\/');
+      html += '<script id="spa-result-data" type="application/json">' + safeJson + '<\/script>';
       return html;
     };
   })();
