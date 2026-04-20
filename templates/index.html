@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang }}" id="html-root">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -486,21 +486,106 @@
       .chart-container  { height: 160px; }
       .chart-container-donut { height: 240px; }
     }
+
+    /* ── Language selector ── */
+    .lang-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1.5px solid #ede9fe;
+    }
+    .lang-btn {
+      background: none;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: .2rem .4rem;
+      font-size: 1.25rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: border-color .15s, background .15s, transform .1s;
+      title: attr(title);
+    }
+    .lang-btn:hover { border-color: #a78bfa; background: #f5f3ff; transform: scale(1.1); }
+    .lang-btn.active { border-color: #7c3aed; background: #ede9fe; }
+    @media print { .lang-selector { display: none; } }
+
+    /* ── Improved error alert ── */
+    .alert-error {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+      border: 2px solid #fc8181;
+      border-left: 5px solid #e53e3e;
+      color: #742a2a;
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .alert-error-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+    .alert-error-body {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+    }
+    .alert-error-title {
+      font-size: .8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #e53e3e;
+    }
+    .alert-error-message {
+      font-size: .92rem;
+      color: #742a2a;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1>Fitness Tools 💪</h1>
-    <p>Composición corporal y distribución de macronutrientes</p>
+    <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
   </div>
 
   <div class="card">
+
+    <!-- ── Language selector ── -->
+    <div class="lang-selector no-print" role="group" aria-label="Language / Idioma">
+      <button type="button" class="lang-btn" data-lang="es" title="Español"       onclick="setLang('es')">🇪🇸</button>
+      <button type="button" class="lang-btn" data-lang="en" title="English"       onclick="setLang('en')">🇬🇧</button>
+      <button type="button" class="lang-btn" data-lang="it" title="Italiano"      onclick="setLang('it')">🇮🇹</button>
+      <button type="button" class="lang-btn" data-lang="fr" title="Français"      onclick="setLang('fr')">🇫🇷</button>
+      <button type="button" class="lang-btn" data-lang="de" title="Deutsch"       onclick="setLang('de')">🇩🇪</button>
+      <button type="button" class="lang-btn" data-lang="pt" title="Português"     onclick="setLang('pt')">🇵🇹</button>
+      <button type="button" class="lang-btn" data-lang="nl" title="Nederlands"    onclick="setLang('nl')">🇳🇱</button>
+      <button type="button" class="lang-btn" data-lang="pl" title="Polski"        onclick="setLang('pl')">🇵🇱</button>
+      <button type="button" class="lang-btn" data-lang="ru" title="Русский"       onclick="setLang('ru')">🇷🇺</button>
+      <button type="button" class="lang-btn" data-lang="zh" title="中文"           onclick="setLang('zh')">🇨🇳</button>
+      <button type="button" class="lang-btn" data-lang="ja" title="日本語"         onclick="setLang('ja')">🇯🇵</button>
+    </div>
+
     {% if error %}
-    <div class="alert-error">⚠️ <span>{{ error }}</span></div>
+    <div class="alert-error" role="alert">
+      <span class="alert-error-icon">⚠️</span>
+      <div class="alert-error-body">
+        <span class="alert-error-title" data-i18n="err_title">Error</span>
+        <span class="alert-error-message">{{ error }}</span>
+      </div>
+    </div>
     {% endif %}
 
     <form method="post" novalidate>
+      <!-- Hidden field: current language sent to server for translated errors -->
+      <input type="hidden" name="lang" id="lang-hidden" value="{{ lang }}" />
 
       <!-- ── Sex selector ── -->
       <div class="sex-toggle-group" role="group" aria-label="Sexo">
@@ -509,7 +594,7 @@
                  {% if request.form.get('sexo','hombre') == 'hombre' %}checked{% endif %} />
           <div class="sex-card">
             <span class="sex-emoji">♂️</span>
-            <span class="sex-name">Hombre</span>
+            <span class="sex-name" data-i18n="male">Hombre</span>
           </div>
         </label>
         <label class="sex-toggle-label">
@@ -517,7 +602,7 @@
                  {% if request.form.get('sexo') == 'mujer' %}checked{% endif %} />
           <div class="sex-card">
             <span class="sex-emoji">♀️</span>
-            <span class="sex-name">Mujer</span>
+            <span class="sex-name" data-i18n="female">Mujer</span>
           </div>
         </label>
       </div>
@@ -526,66 +611,76 @@
       <div class="form-section required-section">
         <div class="form-section-header">
           <span class="form-section-badge">📋</span>
-          <span class="form-section-title">Datos obligatorios</span>
+          <span class="form-section-title" data-i18n="required_section">Datos obligatorios</span>
         </div>
         <div class="form-cols">
 
           <div class="field">
-            <label for="calorias"><span class="field-icon">🔥</span> Calorías totales <span class="required-star">*</span></label>
+            <label for="calorias"><span class="field-icon">🔥</span> <span data-i18n="f_calories">Calorías totales</span> <span class="required-star">*</span></label>
+            <span class="hint" data-i18n="h_calories">Total kcal consumidas en el día</span>
             <div class="input-wrap">
               <input type="number" id="calorias" name="calorias"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
                      value="{{ request.form.get('calorias', '') }}"
-                     placeholder="ej. 3343" />
+                     placeholder="ej. 3343"
+                     data-i18n-placeholder="p_calories" />
               <span class="unit">kcal</span>
             </div>
           </div>
 
           <div class="field">
-            <label for="peso"><span class="field-icon">⚖️</span> Peso <span class="required-star">*</span></label>
+            <label for="peso"><span class="field-icon">⚖️</span> <span data-i18n="f_weight">Peso</span> <span class="required-star">*</span></label>
+            <span class="hint" data-i18n="h_weight">Tu peso corporal en kg</span>
             <div class="input-wrap">
               <input type="number" id="peso" name="peso"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
                      value="{{ request.form.get('peso', '') }}"
-                     placeholder="ej. 72.5" />
+                     placeholder="ej. 72.5"
+                     data-i18n-placeholder="p_weight" />
               <span class="unit">kg</span>
             </div>
           </div>
 
           <div class="field">
-            <label for="altura"><span class="field-icon">📏</span> Altura <span class="required-star">*</span></label>
+            <label for="altura"><span class="field-icon">📏</span> <span data-i18n="f_height">Altura</span> <span class="required-star">*</span></label>
+            <span class="hint" data-i18n="h_height">Tu altura en centímetros</span>
             <div class="input-wrap">
               <input type="number" id="altura" name="altura"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
                      value="{{ request.form.get('altura', '') }}"
-                     placeholder="ej. 175.5" />
+                     placeholder="ej. 175.5"
+                     data-i18n-placeholder="p_height" />
               <span class="unit">cm</span>
             </div>
           </div>
 
           <div class="field">
-            <label for="cintura"><span class="field-icon">🫃</span> Cintura <span class="required-star">*</span></label>
+            <label for="cintura"><span class="field-icon">🫃</span> <span data-i18n="f_waist">Cintura</span> <span class="required-star">*</span></label>
+            <span class="hint" data-i18n="h_waist">Punto más estrecho del abdomen</span>
             <div class="input-wrap">
               <input type="number" id="cintura" name="cintura"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
                      value="{{ request.form.get('cintura', '') }}"
-                     placeholder="ej. 84.0" />
+                     placeholder="ej. 84.0"
+                     data-i18n-placeholder="p_waist" />
               <span class="unit">cm</span>
             </div>
           </div>
 
           <div class="field full-width">
-            <label for="cuello"><span class="field-icon">🦒</span> Cuello <span class="required-star">*</span></label>
+            <label for="cuello"><span class="field-icon">🦒</span> <span data-i18n="f_neck">Cuello</span> <span class="required-star">*</span></label>
+            <span class="hint" data-i18n="h_neck">Parte inferior del cuello, sobre las clavículas</span>
             <div class="input-wrap">
               <input type="number" id="cuello" name="cuello"
                      step="any" min="1" inputmode="decimal" required
                      class="has-unit"
                      value="{{ request.form.get('cuello', '') }}"
-                     placeholder="ej. 38.0" />
+                     placeholder="ej. 38.0"
+                     data-i18n-placeholder="p_neck" />
               <span class="unit">cm</span>
             </div>
           </div>
@@ -597,9 +692,9 @@
       <div class="form-section optional-section">
         <div class="form-section-header">
           <span class="form-section-badge">➕</span>
-          <span class="form-section-title">Datos opcionales</span>
+          <span class="form-section-title" data-i18n="optional_section">Datos opcionales</span>
           <button type="button" class="optional-toggle-btn" id="optional-toggle-btn" aria-expanded="false" aria-controls="optional-fields">
-            <span id="optional-toggle-text">Mostrar</span>
+            <span id="optional-toggle-text" data-i18n="show_fields">Mostrar</span>
             <span class="chevron" id="optional-chevron">▼</span>
           </button>
         </div>
@@ -607,111 +702,120 @@
           <div class="form-cols">
 
             <div class="field">
-              <label for="grasa"><span class="field-icon">💧</span> Grasa directa</label>
-              <span class="hint">Báscula de bioimpedancia</span>
+              <label for="grasa"><span class="field-icon">💧</span> <span data-i18n="f_fat_pct">Grasa directa</span></label>
+              <span class="hint" data-i18n="h_bioimpedance">Báscula de bioimpedancia</span>
               <div class="input-wrap">
                 <input type="number" id="grasa" name="grasa"
                        step="any" min="0" max="100" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('grasa', '') }}"
-                       placeholder="ej. 14.5" />
+                       placeholder="ej. 14.5"
+                       data-i18n-placeholder="p_fat_pct" />
                 <span class="unit">%</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="cadera"><span class="field-icon">🍑</span> Cadera <span id="cadera-star" class="required-star" style="display:none">*</span></label>
-              <span class="hint" id="cadera-hint">Obligatorio para mujeres (fórmula US Navy)</span>
+              <label for="cadera"><span class="field-icon">🍑</span> <span data-i18n="f_hip">Cadera</span> <span id="cadera-star" class="required-star" style="display:none">*</span></label>
+              <span class="hint" id="cadera-hint" data-i18n="h_hip_women">Obligatorio para mujeres (fórmula US Navy)</span>
               <div class="input-wrap">
                 <input type="number" id="cadera" name="cadera"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('cadera', '') }}"
-                       placeholder="ej. 95.0" />
+                       placeholder="ej. 95.0"
+                       data-i18n-placeholder="p_hip" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="biceps_der"><span class="field-icon">💪</span> Bíceps derecho</label>
+              <label for="biceps_der"><span class="field-icon">💪</span> <span data-i18n="f_bicep_r">Bíceps derecho</span></label>
               <div class="input-wrap">
                 <input type="number" id="biceps_der" name="biceps_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('biceps_der', '') }}"
-                       placeholder="ej. 35.0" />
+                       placeholder="ej. 35.0"
+                       data-i18n-placeholder="p_bicep" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="biceps_izq"><span class="field-icon">💪</span> Bíceps izquierdo</label>
+              <label for="biceps_izq"><span class="field-icon">💪</span> <span data-i18n="f_bicep_l">Bíceps izquierdo</span></label>
               <div class="input-wrap">
                 <input type="number" id="biceps_izq" name="biceps_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('biceps_izq', '') }}"
-                       placeholder="ej. 34.5" />
+                       placeholder="ej. 34.5"
+                       data-i18n-placeholder="p_bicep" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="cuadriceps_der"><span class="field-icon">🦵</span> Cuádriceps derecho</label>
+              <label for="cuadriceps_der"><span class="field-icon">🦵</span> <span data-i18n="f_quad_r">Cuádriceps derecho</span></label>
               <div class="input-wrap">
                 <input type="number" id="cuadriceps_der" name="cuadriceps_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('cuadriceps_der', '') }}"
-                       placeholder="ej. 55.0" />
+                       placeholder="ej. 55.0"
+                       data-i18n-placeholder="p_quad" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="cuadriceps_izq"><span class="field-icon">🦵</span> Cuádriceps izquierdo</label>
+              <label for="cuadriceps_izq"><span class="field-icon">🦵</span> <span data-i18n="f_quad_l">Cuádriceps izquierdo</span></label>
               <div class="input-wrap">
                 <input type="number" id="cuadriceps_izq" name="cuadriceps_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('cuadriceps_izq', '') }}"
-                       placeholder="ej. 54.5" />
+                       placeholder="ej. 54.5"
+                       data-i18n-placeholder="p_quad" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="gemelos_der"><span class="field-icon">🦿</span> Gemelos derechos</label>
+              <label for="gemelos_der"><span class="field-icon">🦿</span> <span data-i18n="f_calf_r">Gemelos derechos</span></label>
               <div class="input-wrap">
                 <input type="number" id="gemelos_der" name="gemelos_der"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('gemelos_der', '') }}"
-                       placeholder="ej. 37.0" />
+                       placeholder="ej. 37.0"
+                       data-i18n-placeholder="p_calf" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="gemelos_izq"><span class="field-icon">🦿</span> Gemelos izquierdos</label>
+              <label for="gemelos_izq"><span class="field-icon">🦿</span> <span data-i18n="f_calf_l">Gemelos izquierdos</span></label>
               <div class="input-wrap">
                 <input type="number" id="gemelos_izq" name="gemelos_izq"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('gemelos_izq', '') }}"
-                       placeholder="ej. 36.5" />
+                       placeholder="ej. 36.5"
+                       data-i18n-placeholder="p_calf" />
                 <span class="unit">cm</span>
               </div>
             </div>
 
             <div class="field full-width">
-              <label for="pectoral"><span class="field-icon">🫁</span> Pectoral</label>
+              <label for="pectoral"><span class="field-icon">🫁</span> <span data-i18n="f_chest">Pectoral</span></label>
               <div class="input-wrap">
                 <input type="number" id="pectoral" name="pectoral"
                        step="any" min="0" inputmode="decimal"
                        class="has-unit"
                        value="{{ request.form.get('pectoral', '') }}"
-                       placeholder="ej. 100.0" />
+                       placeholder="ej. 100.0"
+                       data-i18n-placeholder="p_chest" />
                 <span class="unit">cm</span>
               </div>
             </div>
@@ -720,7 +824,7 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">🚀 Calcular mi análisis</button>
+      <button type="submit" class="btn-submit"><span data-i18n="btn_calculate">🚀 Calcular mi análisis</span></button>
     </form>
 
     {% if resultados %}
@@ -728,7 +832,7 @@
     <div class="results">
 
       <div class="result-card">
-        <div class="result-card-header"><span>📏</span> Medidas corporales</div>
+        <div class="result-card-header"><span>📏</span> <span data-i18n="r_measurements">Medidas corporales</span></div>
         <table>
           <tbody>
             {% for nombre, valor in resultados.medidas.items() %}
@@ -742,11 +846,11 @@
       </div>
 
       <div class="result-card">
-        <div class="result-card-header"><span>⚖️</span> Composición corporal (US Navy)</div>
+        <div class="result-card-header"><span>⚖️</span> <span data-i18n="r_body_comp">Composición corporal (US Navy)</span></div>
         <table>
           <tbody>
             <tr>
-              <td>Grasa corporal</td>
+              <td data-i18n="r_body_fat">Grasa corporal</td>
               <td>
                 {{ resultados.grasa_navy }}&thinsp;%
                 {% if resultados.diferencia_grasa is not none %}
@@ -758,7 +862,7 @@
               </td>
             </tr>
             <tr>
-              <td>Masa magra</td>
+              <td data-i18n="r_lean_mass">Masa magra</td>
               <td>{{ resultados.masa_magra }}&thinsp;kg</td>
             </tr>
           </tbody>
@@ -766,19 +870,19 @@
       </div>
 
       <div class="result-card">
-        <div class="result-card-header"><span>📐</span> IMC y FFMI</div>
+        <div class="result-card-header"><span>📐</span> <span data-i18n="r_imc_ffmi">IMC y FFMI</span></div>
         <table>
           <tbody>
             <tr>
-              <td>IMC (kg/m²)</td>
+              <td data-i18n="r_imc">IMC (kg/m²)</td>
               <td>{{ resultados.bmi }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[{{ resultados.bmi_categoria }}]</span></td>
             </tr>
             <tr>
-              <td>FFMI (kg/m²)</td>
+              <td data-i18n="r_ffmi">FFMI (kg/m²)</td>
               <td>{{ resultados.ffmi }}&thinsp;kg/m²</td>
             </tr>
             <tr>
-              <td>FFMI normalizado (1.80 m)</td>
+              <td data-i18n="r_ffmi_norm">FFMI normalizado (1.80 m)</td>
               <td>{{ resultados.ffmi_norm }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[ref. ♂&lt;25 / ♀&lt;22]</span></td>
             </tr>
           </tbody>
@@ -786,7 +890,7 @@
       </div>
 
       <div class="result-card">
-        <div class="result-card-header"><span>🍽️</span> Macros del día</div>
+        <div class="result-card-header"><span>🍽️</span> <span data-i18n="r_macros">Macros del día</span></div>
         <table>
           <tbody>
             {% for nombre, valor in resultados.macros.items() %}
@@ -805,12 +909,12 @@
     <div id="seccion-graficos" class="formula-report" style="margin-top:1.6rem;">
 
       <div class="section-heading" style="margin-top:.4rem;">
-        <span class="icon">📊</span> Gráficos — Análisis de resultados
+        <span class="icon">📊</span> <span data-i18n="charts_title">Gráficos — Análisis de resultados</span>
       </div>
 
       <!-- Grasa corporal -->
       <div class="formula-block">
-        <div class="formula-block-header"><span>📉</span> Porcentaje de grasa corporal</div>
+        <div class="formula-block-header"><span>📉</span> <span data-i18n="chart_fat">Porcentaje de grasa corporal</span></div>
         <div class="formula-body">
           <div class="chart-container">
             <canvas id="chart-grasa"></canvas>
@@ -820,7 +924,7 @@
 
       <!-- IMC -->
       <div class="formula-block">
-        <div class="formula-block-header"><span>📐</span> Índice de Masa Corporal (IMC)</div>
+        <div class="formula-block-header"><span>📐</span> <span data-i18n="chart_imc_title">Índice de Masa Corporal (IMC)</span></div>
         <div class="formula-body">
           <div class="chart-container">
             <canvas id="chart-imc"></canvas>
@@ -830,7 +934,7 @@
 
       <!-- FFMI -->
       <div class="formula-block">
-        <div class="formula-block-header"><span>💪</span> FFMI normalizado (1.80 m)</div>
+        <div class="formula-block-header"><span>💪</span> <span data-i18n="chart_ffmi_title">FFMI normalizado (1.80 m)</span></div>
         <div class="formula-body">
           <div class="chart-container">
             <canvas id="chart-ffmi"></canvas>
@@ -840,7 +944,7 @@
 
       <!-- Macros -->
       <div class="formula-block">
-        <div class="formula-block-header"><span>🍽️</span> Distribución de macronutrientes (kcal)</div>
+        <div class="formula-block-header"><span>🍽️</span> <span data-i18n="chart_macros_title">Distribución de macronutrientes (kcal)</span></div>
         <div class="formula-body">
           <div class="chart-container-donut">
             <canvas id="chart-macros"></canvas>
@@ -855,13 +959,13 @@
     <div id="informe-detallado" class="formula-report">
 
       <div class="section-heading" style="margin-top:1.2rem;">
-        <span class="icon">📑</span> Informe detallado — Fórmulas paso a paso
+        <span class="icon">📑</span> <span data-i18n="report_title">Informe detallado — Fórmulas paso a paso</span>
       </div>
 
       <!-- 1. Grasa corporal US Navy -->
       <div class="formula-block">
         <div class="formula-block-header">
-          <span>🧮</span> 1. Porcentaje de grasa corporal — Método US Navy
+          <span>🧮</span> <span data-i18n="report_navy">1. Porcentaje de grasa corporal — Método US Navy</span>
         </div>
         <div class="formula-body">
           <div class="formula-line">
@@ -922,7 +1026,7 @@
       <!-- 2. Masa magra -->
       <div class="formula-block">
         <div class="formula-block-header">
-          <span>💪</span> 2. Masa magra (Lean Body Mass)
+          <span>💪</span> <span data-i18n="report_lean">2. Masa magra (Lean Body Mass)</span>
         </div>
         <div class="formula-body">
           <div class="formula-line">
@@ -949,7 +1053,7 @@
       <!-- 3. IMC -->
       <div class="formula-block">
         <div class="formula-block-header">
-          <span>📐</span> 3. Índice de Masa Corporal (IMC / BMI)
+          <span>📐</span> <span data-i18n="report_imc">3. Índice de Masa Corporal (IMC / BMI)</span>
         </div>
         <div class="formula-body">
           <div class="formula-line">
@@ -976,7 +1080,7 @@
       <!-- 4. FFMI -->
       <div class="formula-block">
         <div class="formula-block-header">
-          <span>🏋️</span> 4. Índice de Masa Libre de Grasa (FFMI)
+          <span>🏋️</span> <span data-i18n="report_ffmi">4. Índice de Masa Libre de Grasa (FFMI)</span>
         </div>
         <div class="formula-body">
           <div class="formula-line">
@@ -1004,7 +1108,7 @@
       <!-- 5. Macros -->
       <div class="formula-block">
         <div class="formula-block-header">
-          <span>🍽️</span> 5. Distribución de macronutrientes
+          <span>🍽️</span> <span data-i18n="report_macros">5. Distribución de macronutrientes</span>
         </div>
         <div class="formula-body">
           <div class="formula-line">
@@ -1043,10 +1147,519 @@
     </div><!-- /#contenido-informe -->
     <!-- ── Botón descarga PDF ── -->
     <button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">
-      📄 Descargar informe en PDF
+      <span data-i18n="btn_pdf">📄 Descargar informe en PDF</span>
     </button>
     {% endif %}
   </div>
+
+
+    <!-- ── i18n engine (must come before UI scripts that call t()) ── -->
+  <script>
+    /* ── Translation data ── */
+    var TRANSLATIONS = {
+      es: {
+        subtitle: "Composición corporal y distribución de macronutrientes",
+        err_title: "Error",
+        male: "Hombre", female: "Mujer",
+        required_section: "Datos obligatorios", optional_section: "Datos opcionales",
+        show_fields: "Mostrar", hide_fields: "Ocultar",
+        f_calories: "Calorías totales", f_weight: "Peso", f_height: "Altura",
+        f_waist: "Cintura", f_neck: "Cuello",
+        f_fat_pct: "Grasa directa", f_hip: "Cadera",
+        f_bicep_r: "Bíceps derecho", f_bicep_l: "Bíceps izquierdo",
+        f_quad_r: "Cuádriceps derecho", f_quad_l: "Cuádriceps izquierdo",
+        f_calf_r: "Gemelos derechos", f_calf_l: "Gemelos izquierdos",
+        f_chest: "Pectoral",
+        h_calories: "Total kcal consumidas en el día",
+        h_weight: "Tu peso corporal en kg",
+        h_height: "Tu altura en centímetros",
+        h_waist: "Punto más estrecho del abdomen",
+        h_neck: "Parte inferior del cuello, sobre las clavículas",
+        h_bioimpedance: "Báscula de bioimpedancia",
+        h_hip_women: "Obligatorio para mujeres (fórmula US Navy)",
+        btn_calculate: "🚀 Calcular mi análisis",
+        btn_pdf: "📄 Descargar informe en PDF",
+        r_measurements: "Medidas corporales", r_body_comp: "Composición corporal (US Navy)",
+        r_imc_ffmi: "IMC y FFMI", r_macros: "Macros del día",
+        r_body_fat: "Grasa corporal", r_lean_mass: "Masa magra",
+        r_imc: "IMC (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "FFMI normalizado (1.80 m)",
+        charts_title: "Gráficos — Análisis de resultados",
+        chart_fat: "Porcentaje de grasa corporal",
+        chart_imc_title: "Índice de Masa Corporal (IMC)",
+        chart_ffmi_title: "FFMI normalizado (1.80 m)",
+        chart_macros_title: "Distribución de macronutrientes (kcal)",
+        report_title: "Informe detallado — Fórmulas paso a paso",
+        report_navy: "1. Porcentaje de grasa corporal — Método US Navy",
+        report_lean: "2. Masa magra (Lean Body Mass)",
+        report_imc: "3. Índice de Masa Corporal (IMC / BMI)",
+        report_ffmi: "4. Índice de Masa Libre de Grasa (FFMI)",
+        report_macros: "5. Distribución de macronutrientes",
+        p_calories: "ej. 3343", p_weight: "ej. 72.5", p_height: "ej. 175.5",
+        p_waist: "ej. 84.0", p_neck: "ej. 38.0", p_fat_pct: "ej. 14.5",
+        p_hip: "ej. 95.0", p_bicep: "ej. 35.0", p_quad: "ej. 55.0",
+        p_calf: "ej. 37.0", p_chest: "ej. 100.0"
+      },
+      en: {
+        subtitle: "Body composition and macronutrient distribution",
+        err_title: "Error",
+        male: "Male", female: "Female",
+        required_section: "Required fields", optional_section: "Optional fields",
+        show_fields: "Show", hide_fields: "Hide",
+        f_calories: "Total calories", f_weight: "Weight", f_height: "Height",
+        f_waist: "Waist", f_neck: "Neck",
+        f_fat_pct: "Direct body fat", f_hip: "Hip",
+        f_bicep_r: "Right bicep", f_bicep_l: "Left bicep",
+        f_quad_r: "Right quad", f_quad_l: "Left quad",
+        f_calf_r: "Right calf", f_calf_l: "Left calf",
+        f_chest: "Chest",
+        h_calories: "Total kcal consumed during the day",
+        h_weight: "Your body weight in kg",
+        h_height: "Your height in centimetres",
+        h_waist: "Narrowest point of the abdomen",
+        h_neck: "Lower part of the neck, above the collarbones",
+        h_bioimpedance: "From a body fat scale",
+        h_hip_women: "Required for women (US Navy formula)",
+        btn_calculate: "🚀 Calculate my analysis",
+        btn_pdf: "📄 Download report as PDF",
+        r_measurements: "Body measurements", r_body_comp: "Body composition (US Navy)",
+        r_imc_ffmi: "BMI and FFMI", r_macros: "Daily macros",
+        r_body_fat: "Body fat", r_lean_mass: "Lean mass",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "Normalized FFMI (1.80 m)",
+        charts_title: "Charts — Results analysis",
+        chart_fat: "Body fat percentage",
+        chart_imc_title: "Body Mass Index (BMI)",
+        chart_ffmi_title: "Normalized FFMI (1.80 m)",
+        chart_macros_title: "Macronutrient distribution (kcal)",
+        report_title: "Detailed report — Step-by-step formulas",
+        report_navy: "1. Body fat percentage — US Navy method",
+        report_lean: "2. Lean body mass",
+        report_imc: "3. Body Mass Index (BMI)",
+        report_ffmi: "4. Fat-Free Mass Index (FFMI)",
+        report_macros: "5. Macronutrient distribution",
+        p_calories: "e.g. 3343", p_weight: "e.g. 72.5", p_height: "e.g. 175.5",
+        p_waist: "e.g. 84.0", p_neck: "e.g. 38.0", p_fat_pct: "e.g. 14.5",
+        p_hip: "e.g. 95.0", p_bicep: "e.g. 35.0", p_quad: "e.g. 55.0",
+        p_calf: "e.g. 37.0", p_chest: "e.g. 100.0"
+      },
+      it: {
+        subtitle: "Composizione corporea e distribuzione dei macronutrienti",
+        err_title: "Errore",
+        male: "Uomo", female: "Donna",
+        required_section: "Dati obbligatori", optional_section: "Dati facoltativi",
+        show_fields: "Mostra", hide_fields: "Nascondi",
+        f_calories: "Calorie totali", f_weight: "Peso", f_height: "Altezza",
+        f_waist: "Vita", f_neck: "Collo",
+        f_fat_pct: "Grasso diretto", f_hip: "Fianchi",
+        f_bicep_r: "Bicipite destro", f_bicep_l: "Bicipite sinistro",
+        f_quad_r: "Quadricipite destro", f_quad_l: "Quadricipite sinistro",
+        f_calf_r: "Polpaccio destro", f_calf_l: "Polpaccio sinistro",
+        f_chest: "Petto",
+        h_calories: "Totale kcal consumate nella giornata",
+        h_weight: "Il tuo peso corporeo in kg",
+        h_height: "La tua altezza in centimetri",
+        h_waist: "Punto più stretto dell'addome",
+        h_neck: "Parte inferiore del collo, sopra le clavicole",
+        h_bioimpedance: "Bilancia a bioimpedenza",
+        h_hip_women: "Obbligatorio per le donne (formula US Navy)",
+        btn_calculate: "🚀 Calcola la mia analisi",
+        btn_pdf: "📄 Scarica il report in PDF",
+        r_measurements: "Misure corporee", r_body_comp: "Composizione corporea (US Navy)",
+        r_imc_ffmi: "IMC e FFMI", r_macros: "Macro del giorno",
+        r_body_fat: "Grasso corporeo", r_lean_mass: "Massa magra",
+        r_imc: "IMC (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "FFMI normalizzato (1.80 m)",
+        charts_title: "Grafici — Analisi dei risultati",
+        chart_fat: "Percentuale di grasso corporeo",
+        chart_imc_title: "Indice di Massa Corporea (IMC)",
+        chart_ffmi_title: "FFMI normalizzato (1.80 m)",
+        chart_macros_title: "Distribuzione dei macronutrienti (kcal)",
+        report_title: "Report dettagliato — Formule passo a passo",
+        report_navy: "1. Percentuale di grasso — Metodo US Navy",
+        report_lean: "2. Massa magra (Lean Body Mass)",
+        report_imc: "3. Indice di Massa Corporea (IMC / BMI)",
+        report_ffmi: "4. Indice di Massa Libera da Grassi (FFMI)",
+        report_macros: "5. Distribuzione dei macronutrienti",
+        p_calories: "es. 3343", p_weight: "es. 72.5", p_height: "es. 175.5",
+        p_waist: "es. 84.0", p_neck: "es. 38.0", p_fat_pct: "es. 14.5",
+        p_hip: "es. 95.0", p_bicep: "es. 35.0", p_quad: "es. 55.0",
+        p_calf: "es. 37.0", p_chest: "es. 100.0"
+      },
+      fr: {
+        subtitle: "Composition corporelle et distribution des macronutriments",
+        err_title: "Erreur",
+        male: "Homme", female: "Femme",
+        required_section: "Données obligatoires", optional_section: "Données facultatives",
+        show_fields: "Afficher", hide_fields: "Masquer",
+        f_calories: "Calories totales", f_weight: "Poids", f_height: "Taille",
+        f_waist: "Tour de taille", f_neck: "Tour de cou",
+        f_fat_pct: "Graisse directe", f_hip: "Tour de hanches",
+        f_bicep_r: "Biceps droit", f_bicep_l: "Biceps gauche",
+        f_quad_r: "Quadriceps droit", f_quad_l: "Quadriceps gauche",
+        f_calf_r: "Mollet droit", f_calf_l: "Mollet gauche",
+        f_chest: "Poitrine",
+        h_calories: "Total kcal consommées dans la journée",
+        h_weight: "Votre poids corporel en kg",
+        h_height: "Votre taille en centimètres",
+        h_waist: "Point le plus étroit de l'abdomen",
+        h_neck: "Partie inférieure du cou, au-dessus des clavicules",
+        h_bioimpedance: "Balance à impédancemétrie",
+        h_hip_women: "Obligatoire pour les femmes (formule US Navy)",
+        btn_calculate: "🚀 Calculer mon analyse",
+        btn_pdf: "📄 Télécharger le rapport en PDF",
+        r_measurements: "Mesures corporelles", r_body_comp: "Composition corporelle (US Navy)",
+        r_imc_ffmi: "IMC et FFMI", r_macros: "Macros du jour",
+        r_body_fat: "Graisse corporelle", r_lean_mass: "Masse maigre",
+        r_imc: "IMC (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "FFMI normalisé (1.80 m)",
+        charts_title: "Graphiques — Analyse des résultats",
+        chart_fat: "Pourcentage de graisse corporelle",
+        chart_imc_title: "Indice de Masse Corporelle (IMC)",
+        chart_ffmi_title: "FFMI normalisé (1.80 m)",
+        chart_macros_title: "Répartition des macronutriments (kcal)",
+        report_title: "Rapport détaillé — Formules étape par étape",
+        report_navy: "1. Pourcentage de graisse — Méthode US Navy",
+        report_lean: "2. Masse maigre (Lean Body Mass)",
+        report_imc: "3. Indice de Masse Corporelle (IMC / BMI)",
+        report_ffmi: "4. Indice de Masse Maigre (FFMI)",
+        report_macros: "5. Répartition des macronutriments",
+        p_calories: "ex. 3343", p_weight: "ex. 72.5", p_height: "ex. 175.5",
+        p_waist: "ex. 84.0", p_neck: "ex. 38.0", p_fat_pct: "ex. 14.5",
+        p_hip: "ex. 95.0", p_bicep: "ex. 35.0", p_quad: "ex. 55.0",
+        p_calf: "ex. 37.0", p_chest: "ex. 100.0"
+      },
+      de: {
+        subtitle: "Körperzusammensetzung und Makronährstoffverteilung",
+        err_title: "Fehler",
+        male: "Mann", female: "Frau",
+        required_section: "Pflichtfelder", optional_section: "Optionale Felder",
+        show_fields: "Anzeigen", hide_fields: "Ausblenden",
+        f_calories: "Gesamtkalorien", f_weight: "Gewicht", f_height: "Größe",
+        f_waist: "Taillenumfang", f_neck: "Halsumfang",
+        f_fat_pct: "Direkter Körperfettanteil", f_hip: "Hüftumfang",
+        f_bicep_r: "Rechter Bizeps", f_bicep_l: "Linker Bizeps",
+        f_quad_r: "Rechter Oberschenkel", f_quad_l: "Linker Oberschenkel",
+        f_calf_r: "Rechte Wade", f_calf_l: "Linke Wade",
+        f_chest: "Brust",
+        h_calories: "Gesamte kcal des Tages",
+        h_weight: "Dein Körpergewicht in kg",
+        h_height: "Deine Größe in Zentimetern",
+        h_waist: "Engste Stelle des Bauches",
+        h_neck: "Unterer Teil des Halses, über den Schlüsselbeinen",
+        h_bioimpedance: "Von der Körperfettwaage",
+        h_hip_women: "Für Frauen erforderlich (US-Navy-Formel)",
+        btn_calculate: "🚀 Meine Analyse berechnen",
+        btn_pdf: "📄 Bericht als PDF herunterladen",
+        r_measurements: "Körpermaße", r_body_comp: "Körperzusammensetzung (US Navy)",
+        r_imc_ffmi: "BMI und FFMI", r_macros: "Tages-Makros",
+        r_body_fat: "Körperfett", r_lean_mass: "Magermasse",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "Normalisierter FFMI (1,80 m)",
+        charts_title: "Diagramme — Ergebnisanalyse",
+        chart_fat: "Körperfettanteil",
+        chart_imc_title: "Body-Mass-Index (BMI)",
+        chart_ffmi_title: "Normalisierter FFMI (1,80 m)",
+        chart_macros_title: "Makronährstoffverteilung (kcal)",
+        report_title: "Detaillierter Bericht — Schritt-für-Schritt-Formeln",
+        report_navy: "1. Körperfettanteil — US-Navy-Methode",
+        report_lean: "2. Magermasse (Lean Body Mass)",
+        report_imc: "3. Body-Mass-Index (BMI)",
+        report_ffmi: "4. Fettfreier Massenindex (FFMI)",
+        report_macros: "5. Makronährstoffverteilung",
+        p_calories: "z.B. 3343", p_weight: "z.B. 72,5", p_height: "z.B. 175,5",
+        p_waist: "z.B. 84,0", p_neck: "z.B. 38,0", p_fat_pct: "z.B. 14,5",
+        p_hip: "z.B. 95,0", p_bicep: "z.B. 35,0", p_quad: "z.B. 55,0",
+        p_calf: "z.B. 37,0", p_chest: "z.B. 100,0"
+      },
+      pt: {
+        subtitle: "Composição corporal e distribuição de macronutrientes",
+        err_title: "Erro",
+        male: "Homem", female: "Mulher",
+        required_section: "Dados obrigatórios", optional_section: "Dados opcionais",
+        show_fields: "Mostrar", hide_fields: "Ocultar",
+        f_calories: "Calorias totais", f_weight: "Peso", f_height: "Altura",
+        f_waist: "Cintura", f_neck: "Pescoço",
+        f_fat_pct: "Gordura direta", f_hip: "Quadril",
+        f_bicep_r: "Bíceps direito", f_bicep_l: "Bíceps esquerdo",
+        f_quad_r: "Quadríceps direito", f_quad_l: "Quadríceps esquerdo",
+        f_calf_r: "Panturrilha direita", f_calf_l: "Panturrilha esquerda",
+        f_chest: "Peitoral",
+        h_calories: "Total de kcal consumidas no dia",
+        h_weight: "Seu peso corporal em kg",
+        h_height: "Sua altura em centímetros",
+        h_waist: "Ponto mais estreito do abdômen",
+        h_neck: "Parte inferior do pescoço, acima das clavículas",
+        h_bioimpedance: "Balança de bioimpedância",
+        h_hip_women: "Obrigatório para mulheres (fórmula US Navy)",
+        btn_calculate: "🚀 Calcular minha análise",
+        btn_pdf: "📄 Baixar relatório em PDF",
+        r_measurements: "Medidas corporais", r_body_comp: "Composição corporal (US Navy)",
+        r_imc_ffmi: "IMC e FFMI", r_macros: "Macros do dia",
+        r_body_fat: "Gordura corporal", r_lean_mass: "Massa magra",
+        r_imc: "IMC (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "FFMI normalizado (1,80 m)",
+        charts_title: "Gráficos — Análise de resultados",
+        chart_fat: "Percentual de gordura corporal",
+        chart_imc_title: "Índice de Massa Corporal (IMC)",
+        chart_ffmi_title: "FFMI normalizado (1,80 m)",
+        chart_macros_title: "Distribuição de macronutrientes (kcal)",
+        report_title: "Relatório detalhado — Fórmulas passo a passo",
+        report_navy: "1. Percentual de gordura — Método US Navy",
+        report_lean: "2. Massa magra (Lean Body Mass)",
+        report_imc: "3. Índice de Massa Corporal (IMC / BMI)",
+        report_ffmi: "4. Índice de Massa Livre de Gordura (FFMI)",
+        report_macros: "5. Distribuição de macronutrientes",
+        p_calories: "ex. 3343", p_weight: "ex. 72,5", p_height: "ex. 175,5",
+        p_waist: "ex. 84,0", p_neck: "ex. 38,0", p_fat_pct: "ex. 14,5",
+        p_hip: "ex. 95,0", p_bicep: "ex. 35,0", p_quad: "ex. 55,0",
+        p_calf: "ex. 37,0", p_chest: "ex. 100,0"
+      },
+      nl: {
+        subtitle: "Lichaamssamenstelling en verdeling van macronutriënten",
+        err_title: "Fout",
+        male: "Man", female: "Vrouw",
+        required_section: "Verplichte velden", optional_section: "Optionele velden",
+        show_fields: "Tonen", hide_fields: "Verbergen",
+        f_calories: "Totale calorieën", f_weight: "Gewicht", f_height: "Lengte",
+        f_waist: "Tailleomvang", f_neck: "Nekomvang",
+        f_fat_pct: "Direct lichaamsvet", f_hip: "Heupomvang",
+        f_bicep_r: "Rechter biceps", f_bicep_l: "Linker biceps",
+        f_quad_r: "Rechter quadriceps", f_quad_l: "Linker quadriceps",
+        f_calf_r: "Rechter kuit", f_calf_l: "Linker kuit",
+        f_chest: "Borst",
+        h_calories: "Totale kcal verbruikt op de dag",
+        h_weight: "Jouw lichaamsgewicht in kg",
+        h_height: "Jouw lengte in centimeter",
+        h_waist: "Smalste punt van de buik",
+        h_neck: "Onderste deel van de nek, boven de sleutelbeenderen",
+        h_bioimpedance: "Lichaamsvetweegschaal",
+        h_hip_women: "Verplicht voor vrouwen (US Navy formule)",
+        btn_calculate: "🚀 Bereken mijn analyse",
+        btn_pdf: "📄 Rapport downloaden als PDF",
+        r_measurements: "Lichaamsmetingen", r_body_comp: "Lichaamssamenstelling (US Navy)",
+        r_imc_ffmi: "BMI en FFMI", r_macros: "Dagelijkse macro's",
+        r_body_fat: "Lichaamsvet", r_lean_mass: "Magere massa",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "Genormaliseerde FFMI (1,80 m)",
+        charts_title: "Grafieken — Resultatenanalyse",
+        chart_fat: "Lichaamsvetpercentage",
+        chart_imc_title: "Body Mass Index (BMI)",
+        chart_ffmi_title: "Genormaliseerde FFMI (1,80 m)",
+        chart_macros_title: "Macronutriëntenverdeling (kcal)",
+        report_title: "Gedetailleerd rapport — Stap-voor-stap formules",
+        report_navy: "1. Lichaamsvetpercentage — US Navy methode",
+        report_lean: "2. Magere massa (Lean Body Mass)",
+        report_imc: "3. Body Mass Index (BMI)",
+        report_ffmi: "4. Vetvrije massa index (FFMI)",
+        report_macros: "5. Macronutriëntenverdeling",
+        p_calories: "bijv. 3343", p_weight: "bijv. 72,5", p_height: "bijv. 175,5",
+        p_waist: "bijv. 84,0", p_neck: "bijv. 38,0", p_fat_pct: "bijv. 14,5",
+        p_hip: "bijv. 95,0", p_bicep: "bijv. 35,0", p_quad: "bijv. 55,0",
+        p_calf: "bijv. 37,0", p_chest: "bijv. 100,0"
+      },
+      pl: {
+        subtitle: "Skład ciała i rozkład makroskładników",
+        err_title: "Błąd",
+        male: "Mężczyzna", female: "Kobieta",
+        required_section: "Wymagane pola", optional_section: "Pola opcjonalne",
+        show_fields: "Pokaż", hide_fields: "Ukryj",
+        f_calories: "Łączna liczba kalorii", f_weight: "Waga", f_height: "Wzrost",
+        f_waist: "Obwód talii", f_neck: "Obwód szyi",
+        f_fat_pct: "Bezpośredni % tłuszczu", f_hip: "Obwód bioder",
+        f_bicep_r: "Prawy biceps", f_bicep_l: "Lewy biceps",
+        f_quad_r: "Prawy czworogłowy", f_quad_l: "Lewy czworogłowy",
+        f_calf_r: "Prawa łydka", f_calf_l: "Lewa łydka",
+        f_chest: "Klatka piersiowa",
+        h_calories: "Całkowita liczba kcal w ciągu dnia",
+        h_weight: "Twoja masa ciała w kg",
+        h_height: "Twój wzrost w centymetrach",
+        h_waist: "Najwęższe miejsce brzucha",
+        h_neck: "Dolna część szyi, powyżej obojczyków",
+        h_bioimpedance: "Waga z analizą składu ciała",
+        h_hip_women: "Wymagane dla kobiet (wzór US Navy)",
+        btn_calculate: "🚀 Oblicz moją analizę",
+        btn_pdf: "📄 Pobierz raport jako PDF",
+        r_measurements: "Wymiary ciała", r_body_comp: "Skład ciała (US Navy)",
+        r_imc_ffmi: "BMI i FFMI", r_macros: "Dzienne makroskładniki",
+        r_body_fat: "Tkanka tłuszczowa", r_lean_mass: "Masa beztłuszczowa",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "Znormalizowane FFMI (1,80 m)",
+        charts_title: "Wykresy — Analiza wyników",
+        chart_fat: "Procent tkanki tłuszczowej",
+        chart_imc_title: "Wskaźnik Masy Ciała (BMI)",
+        chart_ffmi_title: "Znormalizowane FFMI (1,80 m)",
+        chart_macros_title: "Rozkład makroskładników (kcal)",
+        report_title: "Szczegółowy raport — Formuły krok po kroku",
+        report_navy: "1. Procent tłuszczu — metoda US Navy",
+        report_lean: "2. Masa beztłuszczowa (Lean Body Mass)",
+        report_imc: "3. Wskaźnik Masy Ciała (BMI)",
+        report_ffmi: "4. Wskaźnik Beztłuszczowej Masy (FFMI)",
+        report_macros: "5. Rozkład makroskładników",
+        p_calories: "np. 3343", p_weight: "np. 72,5", p_height: "np. 175,5",
+        p_waist: "np. 84,0", p_neck: "np. 38,0", p_fat_pct: "np. 14,5",
+        p_hip: "np. 95,0", p_bicep: "np. 35,0", p_quad: "np. 55,0",
+        p_calf: "np. 37,0", p_chest: "np. 100,0"
+      },
+      ru: {
+        subtitle: "Состав тела и распределение макронутриентов",
+        err_title: "Ошибка",
+        male: "Мужчина", female: "Женщина",
+        required_section: "Обязательные поля", optional_section: "Дополнительные поля",
+        show_fields: "Показать", hide_fields: "Скрыть",
+        f_calories: "Общие калории", f_weight: "Вес", f_height: "Рост",
+        f_waist: "Талия", f_neck: "Шея",
+        f_fat_pct: "Прямой % жира", f_hip: "Бёдра",
+        f_bicep_r: "Правый бицепс", f_bicep_l: "Левый бицепс",
+        f_quad_r: "Правое бедро", f_quad_l: "Левое бедро",
+        f_calf_r: "Правая икра", f_calf_l: "Левая икра",
+        f_chest: "Грудь",
+        h_calories: "Всего ккал за день",
+        h_weight: "Ваш вес в кг",
+        h_height: "Ваш рост в сантиметрах",
+        h_waist: "Самое узкое место живота",
+        h_neck: "Нижняя часть шеи, над ключицами",
+        h_bioimpedance: "Весы с биоимпедансом",
+        h_hip_women: "Обязательно для женщин (формула US Navy)",
+        btn_calculate: "🚀 Рассчитать мой анализ",
+        btn_pdf: "📄 Скачать отчёт в PDF",
+        r_measurements: "Антропометрия", r_body_comp: "Состав тела (US Navy)",
+        r_imc_ffmi: "ИМТ и FFMI", r_macros: "Макросы дня",
+        r_body_fat: "Жировая масса", r_lean_mass: "Безжировая масса",
+        r_imc: "ИМТ (кг/м²)", r_ffmi: "FFMI (кг/м²)", r_ffmi_norm: "Нормализованный FFMI (1,80 м)",
+        charts_title: "Графики — Анализ результатов",
+        chart_fat: "Процент жира в теле",
+        chart_imc_title: "Индекс массы тела (ИМТ)",
+        chart_ffmi_title: "Нормализованный FFMI (1,80 м)",
+        chart_macros_title: "Распределение макронутриентов (ккал)",
+        report_title: "Подробный отчёт — Формулы шаг за шагом",
+        report_navy: "1. Процент жира — Метод US Navy",
+        report_lean: "2. Безжировая масса тела",
+        report_imc: "3. Индекс массы тела (ИМТ)",
+        report_ffmi: "4. Индекс безжировой массы (FFMI)",
+        report_macros: "5. Распределение макронутриентов",
+        p_calories: "напр. 3343", p_weight: "напр. 72,5", p_height: "напр. 175,5",
+        p_waist: "напр. 84,0", p_neck: "напр. 38,0", p_fat_pct: "напр. 14,5",
+        p_hip: "напр. 95,0", p_bicep: "напр. 35,0", p_quad: "напр. 55,0",
+        p_calf: "напр. 37,0", p_chest: "напр. 100,0"
+      },
+      zh: {
+        subtitle: "身体成分与宏量营养素分配",
+        err_title: "错误",
+        male: "男性", female: "女性",
+        required_section: "必填项", optional_section: "可选项",
+        show_fields: "显示", hide_fields: "隐藏",
+        f_calories: "总热量", f_weight: "体重", f_height: "身高",
+        f_waist: "腰围", f_neck: "颈围",
+        f_fat_pct: "直接体脂率", f_hip: "臀围",
+        f_bicep_r: "右侧二头肌", f_bicep_l: "左侧二头肌",
+        f_quad_r: "右侧大腿", f_quad_l: "左侧大腿",
+        f_calf_r: "右侧小腿", f_calf_l: "左侧小腿",
+        f_chest: "胸围",
+        h_calories: "当天消耗的总千卡数",
+        h_weight: "您的体重（千克）",
+        h_height: "您的身高（厘米）",
+        h_waist: "腹部最窄处",
+        h_neck: "颈部下方，锁骨上方",
+        h_bioimpedance: "体脂秤测量值",
+        h_hip_women: "女性必填（美国海军公式）",
+        btn_calculate: "🚀 计算我的分析",
+        btn_pdf: "📄 下载PDF报告",
+        r_measurements: "身体测量", r_body_comp: "身体成分（美国海军法）",
+        r_imc_ffmi: "BMI 和 FFMI", r_macros: "每日宏量营养素",
+        r_body_fat: "体脂", r_lean_mass: "瘦体重",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "标准化FFMI (1.80m)",
+        charts_title: "图表 — 结果分析",
+        chart_fat: "体脂百分比",
+        chart_imc_title: "体质指数（BMI）",
+        chart_ffmi_title: "标准化FFMI (1.80m)",
+        chart_macros_title: "宏量营养素分配（千卡）",
+        report_title: "详细报告 — 逐步公式",
+        report_navy: "1. 体脂百分比 — 美国海军法",
+        report_lean: "2. 瘦体重（Lean Body Mass）",
+        report_imc: "3. 体质指数（BMI）",
+        report_ffmi: "4. 去脂体重指数（FFMI）",
+        report_macros: "5. 宏量营养素分配",
+        p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
+        p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
+        p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
+        p_calf: "例: 37.0", p_chest: "例: 100.0"
+      },
+      ja: {
+        subtitle: "体組成とマクロ栄養素の分配",
+        err_title: "エラー",
+        male: "男性", female: "女性",
+        required_section: "必須項目", optional_section: "任意項目",
+        show_fields: "表示", hide_fields: "非表示",
+        f_calories: "総カロリー", f_weight: "体重", f_height: "身長",
+        f_waist: "ウエスト", f_neck: "首周り",
+        f_fat_pct: "直接体脂肪率", f_hip: "ヒップ",
+        f_bicep_r: "右上腕二頭筋", f_bicep_l: "左上腕二頭筋",
+        f_quad_r: "右大腿四頭筋", f_quad_l: "左大腿四頭筋",
+        f_calf_r: "右ふくらはぎ", f_calf_l: "左ふくらはぎ",
+        f_chest: "胸囲",
+        h_calories: "1日の総カロリー摂取量",
+        h_weight: "体重（kg）",
+        h_height: "身長（cm）",
+        h_waist: "腹部の最も細い部分",
+        h_neck: "首の下部、鎖骨の上",
+        h_bioimpedance: "体重計（体脂肪計）の値",
+        h_hip_women: "女性には必須（米海軍式）",
+        btn_calculate: "🚀 分析を計算する",
+        btn_pdf: "📄 PDFレポートをダウンロード",
+        r_measurements: "身体測定値", r_body_comp: "体組成（米海軍法）",
+        r_imc_ffmi: "BMI と FFMI", r_macros: "1日のマクロ",
+        r_body_fat: "体脂肪", r_lean_mass: "除脂肪体重",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "正規化FFMI (1.80m)",
+        charts_title: "グラフ — 結果分析",
+        chart_fat: "体脂肪率",
+        chart_imc_title: "ボディマス指数（BMI）",
+        chart_ffmi_title: "正規化FFMI (1.80m)",
+        chart_macros_title: "マクロ栄養素分配（kcal）",
+        report_title: "詳細レポート — ステップ別公式",
+        report_navy: "1. 体脂肪率 — 米海軍法",
+        report_lean: "2. 除脂肪体重（Lean Body Mass）",
+        report_imc: "3. ボディマス指数（BMI）",
+        report_ffmi: "4. 除脂肪体重指数（FFMI）",
+        report_macros: "5. マクロ栄養素分配",
+        p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
+        p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
+        p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
+        p_calf: "例: 37.0", p_chest: "例: 100.0"
+      }
+    };
+
+    /* ── Core i18n functions (global) ── */
+    var currentLang = (function () {
+      var hidden = document.getElementById('lang-hidden');
+      var serverLang = hidden ? hidden.value : '';
+      var stored = localStorage.getItem('fitness-lang');
+      return (serverLang && TRANSLATIONS[serverLang]) ? serverLang :
+             (stored && TRANSLATIONS[stored]) ? stored : 'es';
+    })();
+
+    function t(key) {
+      var dict = TRANSLATIONS[currentLang] || TRANSLATIONS['es'];
+      return (dict[key] !== undefined) ? dict[key] : (TRANSLATIONS['es'][key] || key);
+    }
+
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        el.textContent = t(el.getAttribute('data-i18n'));
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      });
+      var root = document.getElementById('html-root');
+      if (root) root.lang = currentLang;
+    }
+
+    function setLang(lang) {
+      if (!TRANSLATIONS[lang]) return;
+      currentLang = lang;
+      localStorage.setItem('fitness-lang', lang);
+      var hidden = document.getElementById('lang-hidden');
+      if (hidden) hidden.value = lang;
+      document.querySelectorAll('.lang-btn').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      applyTranslations();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () { setLang(currentLang); });
+  </script>
 
   <script>
     (function () {
@@ -1081,7 +1694,8 @@
         if (!fieldsWrap) return;
         fieldsWrap.classList.remove('collapsed');
         fieldsWrap.classList.add('expanded');
-        toggleText.textContent = 'Ocultar';
+        if (toggleText) toggleText.setAttribute('data-i18n', 'hide_fields');
+        if (toggleText) toggleText.textContent = t('hide_fields');
         chevron.style.transform = 'rotate(180deg)';
         toggleBtn.setAttribute('aria-expanded', 'true');
       }
@@ -1089,7 +1703,8 @@
         if (!fieldsWrap) return;
         fieldsWrap.classList.remove('expanded');
         fieldsWrap.classList.add('collapsed');
-        toggleText.textContent = 'Mostrar';
+        if (toggleText) toggleText.setAttribute('data-i18n', 'show_fields');
+        if (toggleText) toggleText.textContent = t('show_fields');
         chevron.style.transform = '';
         toggleBtn.setAttribute('aria-expanded', 'false');
       }
