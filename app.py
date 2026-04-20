@@ -8,7 +8,7 @@ import math
 import os
 import re
 
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 
 from fitness_tools import (
     MedidasCorporales,
@@ -284,185 +284,187 @@ def _translate_error(exc: Exception, lang: str) -> str:
     return msgs.get("unknown_error", "Error: {msg}").format(msg=msg)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
-    resultados = None
-    error = None
+    return render_template("index.html")
 
-    # Detect language: GET param > form POST > default
-    lang = request.args.get("lang") or request.form.get("lang", DEFAULT_LANG)
+
+def _compute_results(form, lang):
+    """Parse form data, run calculations and return a results dict.
+
+    Raises AppError (or any ValueError from fitness_tools) on invalid input.
+    """
+    campos = CAMPO_NAMES.get(lang, CAMPO_NAMES[DEFAULT_LANG])
+    calorias = _parse_float(form.get("calorias", ""), campos["calorias"])
+    peso = _parse_float(form.get("peso", ""), campos["peso"])
+    altura = _parse_float(form.get("altura", ""), campos["altura"])
+    cintura = _parse_float(form.get("cintura", ""), campos["cintura"])
+    cuello = _parse_float(form.get("cuello", ""), campos["cuello"])
+    sexo = form.get("sexo", "hombre")
+    if sexo not in ("hombre", "mujer"):
+        sexo = "hombre"
+
+    grasa = _optional_float(form.get("grasa"), campos["grasa"])
+    biceps_der = _optional_float(form.get("biceps_der"), campos["biceps_der"])
+    biceps_izq = _optional_float(form.get("biceps_izq"), campos["biceps_izq"])
+    cuadriceps_der = _optional_float(form.get("cuadriceps_der"), campos["cuadriceps_der"])
+    cuadriceps_izq = _optional_float(form.get("cuadriceps_izq"), campos["cuadriceps_izq"])
+    cadera = _optional_float(form.get("cadera"), campos["cadera"])
+    gemelos_der = _optional_float(form.get("gemelos_der"), campos["gemelos_der"])
+    gemelos_izq = _optional_float(form.get("gemelos_izq"), campos["gemelos_izq"])
+    pectoral = _optional_float(form.get("pectoral"), campos["pectoral"])
+
+    medidas = MedidasCorporales(
+        peso=peso,
+        altura=altura,
+        cintura=cintura,
+        cuello=cuello,
+        sexo=sexo,
+        grasa_directa=grasa,
+        biceps_der=biceps_der,
+        biceps_izq=biceps_izq,
+        cuadriceps_der=cuadriceps_der,
+        cuadriceps_izq=cuadriceps_izq,
+        cadera=cadera,
+        gemelos_der=gemelos_der,
+        gemelos_izq=gemelos_izq,
+        pectoral=pectoral,
+    )
+
+    grasa_navy, masa_magra = calcular_grasa_navy(
+        medidas.peso,
+        medidas.altura,
+        medidas.cintura,
+        medidas.cuello,
+        sexo=medidas.sexo,
+        cadera=medidas.cadera,
+    )
+
+    bmi = calcular_bmi(medidas.peso, medidas.altura)
+    bmi_categoria = clasificar_bmi(bmi)
+    ffmi, ffmi_norm = calcular_ffmi(masa_magra, medidas.altura)
+
+    macros = calcular_macros_diarios(calorias, medidas.peso)
+
+    diferencia_grasa = None
+    if medidas.grasa_directa is not None:
+        diferencia_grasa = round(medidas.grasa_directa - grasa_navy, 2)
+
+    # ── Pasos intermedios para el informe detallado ──────────────────
+    altura_m = round(medidas.altura / 100, 4)
+
+    # US Navy – hombre
+    if medidas.sexo == "hombre":
+        navy_dif = round(medidas.cintura - medidas.cuello, 2)
+        navy_log_dif = round(math.log10(navy_dif), 6)
+        navy_log_alt = round(math.log10(medidas.altura), 6)
+        navy_denominador = round(
+            1.0324 - 0.19077 * navy_log_dif + 0.15456 * navy_log_alt, 6
+        )
+        navy_formula = (
+            "495 / (1.0324 \u2212 0.19077 \u00d7 log\u2081\u2080(cintura \u2212 cuello)"
+            " + 0.15456 \u00d7 log\u2081\u2080(altura)) \u2212 450"
+        )
+        navy_extra_label = None
+        navy_extra_val = None
+    else:
+        # cadera is guaranteed non-None here: calcular_grasa_navy already
+        # raised ValueError if it were missing for a female subject.
+        navy_dif = round(medidas.cintura + medidas.cadera - medidas.cuello, 2)
+        navy_log_dif = round(math.log10(navy_dif), 6)
+        navy_log_alt = round(math.log10(medidas.altura), 6)
+        navy_denominador = round(
+            1.29579 - 0.35004 * navy_log_dif + 0.22100 * navy_log_alt, 6
+        )
+        navy_formula = (
+            "495 / (1.29579 \u2212 0.35004 \u00d7 log\u2081\u2080(cintura + cadera \u2212 cuello)"
+            " + 0.22100 \u00d7 log\u2081\u2080(altura)) \u2212 450"
+        )
+        navy_extra_label = "cintura + cadera \u2212 cuello"
+        navy_extra_val = navy_dif
+
+    masa_grasa_kg = round(medidas.peso * (grasa_navy / 100), 2)
+
+    # Macros intermedios
+    proteina_g = round(medidas.peso * 2.0, 1)
+    grasa_g = round(medidas.peso * 0.8, 1)
+    cal_proteina = round(proteina_g * 4, 1)
+    cal_grasa_macro = round(grasa_g * 9, 1)
+    cal_carbos = round(calorias - cal_proteina - cal_grasa_macro, 1)
+    carbos_g = round(cal_carbos / 4, 1)
+
+    pasos = {
+        # --- US Navy ---
+        "navy_sexo": medidas.sexo,
+        "navy_formula": navy_formula,
+        "navy_cintura": medidas.cintura,
+        "navy_cuello": medidas.cuello,
+        "navy_cadera": medidas.cadera,
+        "navy_extra_label": navy_extra_label,
+        "navy_extra_val": navy_extra_val,
+        "navy_dif": navy_dif,
+        "navy_log_dif": navy_log_dif,
+        "navy_log_alt": navy_log_alt,
+        "navy_altura": medidas.altura,
+        "navy_denominador": navy_denominador,
+        "navy_grasa": grasa_navy,
+        # --- Masa magra ---
+        "mm_peso": medidas.peso,
+        "mm_masa_grasa": masa_grasa_kg,
+        "mm_masa_magra": masa_magra,
+        # --- IMC ---
+        "imc_peso": medidas.peso,
+        "imc_altura_cm": medidas.altura,
+        "imc_altura_m": altura_m,
+        "imc_altura_m_cuadrado": round(altura_m ** 2, 4),
+        "imc_valor": bmi,
+        "imc_categoria": bmi_categoria,
+        # --- FFMI ---
+        "ffmi_masa_magra": masa_magra,
+        "ffmi_altura_m": altura_m,
+        "ffmi_altura_m_cuadrado": round(altura_m ** 2, 4),
+        "ffmi_valor": ffmi,
+        "ffmi_norm_valor": ffmi_norm,
+        # --- Macros ---
+        "macro_kcal": calorias,
+        "macro_peso": medidas.peso,
+        "macro_proteina_g": proteina_g,
+        "macro_grasa_g": grasa_g,
+        "macro_cal_proteina": cal_proteina,
+        "macro_cal_grasa": cal_grasa_macro,
+        "macro_cal_carbos": cal_carbos,
+        "macro_carbos_g": carbos_g,
+    }
+
+    return {
+        "medidas": medidas.resumen(),
+        "grasa_navy": grasa_navy,
+        "masa_magra": masa_magra,
+        "grasa_directa": medidas.grasa_directa,
+        "diferencia_grasa": diferencia_grasa,
+        "bmi": bmi,
+        "bmi_categoria": bmi_categoria,
+        "ffmi": ffmi,
+        "ffmi_norm": ffmi_norm,
+        "macros": macros,
+        "pasos": pasos,
+    }
+
+
+@app.route("/api/calculate", methods=["POST"])
+def api_calculate():
+    """JSON endpoint used by the SPA front-end."""
+    lang = request.form.get("lang", DEFAULT_LANG)
     if lang not in SUPPORTED_LANGS:
         lang = DEFAULT_LANG
-
-    if request.method == "POST":
-        try:
-            campos = CAMPO_NAMES.get(lang, CAMPO_NAMES[DEFAULT_LANG])
-            calorias = _parse_float(request.form.get("calorias", ""), campos["calorias"])
-            peso = _parse_float(request.form.get("peso", ""), campos["peso"])
-            altura = _parse_float(request.form.get("altura", ""), campos["altura"])
-            cintura = _parse_float(request.form.get("cintura", ""), campos["cintura"])
-            cuello = _parse_float(request.form.get("cuello", ""), campos["cuello"])
-            sexo = request.form.get("sexo", "hombre")
-            if sexo not in ("hombre", "mujer"):
-                sexo = "hombre"
-
-            grasa = _optional_float(request.form.get("grasa"), campos["grasa"])
-            biceps_der = _optional_float(request.form.get("biceps_der"), campos["biceps_der"])
-            biceps_izq = _optional_float(request.form.get("biceps_izq"), campos["biceps_izq"])
-            cuadriceps_der = _optional_float(request.form.get("cuadriceps_der"), campos["cuadriceps_der"])
-            cuadriceps_izq = _optional_float(request.form.get("cuadriceps_izq"), campos["cuadriceps_izq"])
-            cadera = _optional_float(request.form.get("cadera"), campos["cadera"])
-            gemelos_der = _optional_float(request.form.get("gemelos_der"), campos["gemelos_der"])
-            gemelos_izq = _optional_float(request.form.get("gemelos_izq"), campos["gemelos_izq"])
-            pectoral = _optional_float(request.form.get("pectoral"), campos["pectoral"])
-
-            medidas = MedidasCorporales(
-                peso=peso,
-                altura=altura,
-                cintura=cintura,
-                cuello=cuello,
-                sexo=sexo,
-                grasa_directa=grasa,
-                biceps_der=biceps_der,
-                biceps_izq=biceps_izq,
-                cuadriceps_der=cuadriceps_der,
-                cuadriceps_izq=cuadriceps_izq,
-                cadera=cadera,
-                gemelos_der=gemelos_der,
-                gemelos_izq=gemelos_izq,
-                pectoral=pectoral,
-            )
-
-            grasa_navy, masa_magra = calcular_grasa_navy(
-                medidas.peso,
-                medidas.altura,
-                medidas.cintura,
-                medidas.cuello,
-                sexo=medidas.sexo,
-                cadera=medidas.cadera,
-            )
-
-            bmi = calcular_bmi(medidas.peso, medidas.altura)
-            bmi_categoria = clasificar_bmi(bmi)
-            ffmi, ffmi_norm = calcular_ffmi(masa_magra, medidas.altura)
-
-            macros = calcular_macros_diarios(calorias, medidas.peso)
-
-            diferencia_grasa = None
-            if medidas.grasa_directa is not None:
-                diferencia_grasa = round(medidas.grasa_directa - grasa_navy, 2)
-
-            # ── Pasos intermedios para el informe detallado ──────────────────
-            altura_m = round(medidas.altura / 100, 4)
-
-            # US Navy – hombre
-            if medidas.sexo == "hombre":
-                navy_dif = round(medidas.cintura - medidas.cuello, 2)
-                navy_log_dif = round(math.log10(navy_dif), 6)
-                navy_log_alt = round(math.log10(medidas.altura), 6)
-                navy_denominador = round(
-                    1.0324 - 0.19077 * navy_log_dif + 0.15456 * navy_log_alt, 6
-                )
-                navy_formula = (
-                    "495 / (1.0324 − 0.19077 × log₁₀(cintura − cuello)"
-                    " + 0.15456 × log₁₀(altura)) − 450"
-                )
-                navy_extra_label = None
-                navy_extra_val = None
-            else:
-                # cadera is guaranteed non-None here: calcular_grasa_navy already
-                # raised ValueError if it were missing for a female subject.
-                navy_dif = round(medidas.cintura + medidas.cadera - medidas.cuello, 2)
-                navy_log_dif = round(math.log10(navy_dif), 6)
-                navy_log_alt = round(math.log10(medidas.altura), 6)
-                navy_denominador = round(
-                    1.29579 - 0.35004 * navy_log_dif + 0.22100 * navy_log_alt, 6
-                )
-                navy_formula = (
-                    "495 / (1.29579 − 0.35004 × log₁₀(cintura + cadera − cuello)"
-                    " + 0.22100 × log₁₀(altura)) − 450"
-                )
-                navy_extra_label = "cintura + cadera − cuello"
-                navy_extra_val = navy_dif
-
-            masa_grasa_kg = round(medidas.peso * (grasa_navy / 100), 2)
-
-            # Macros intermedios
-            proteina_g = round(medidas.peso * 2.0, 1)
-            grasa_g = round(medidas.peso * 0.8, 1)
-            cal_proteina = round(proteina_g * 4, 1)
-            cal_grasa_macro = round(grasa_g * 9, 1)
-            cal_carbos = round(calorias - cal_proteina - cal_grasa_macro, 1)
-            carbos_g = round(cal_carbos / 4, 1)
-
-            pasos = {
-                # --- US Navy ---
-                "navy_sexo": medidas.sexo,
-                "navy_formula": navy_formula,
-                "navy_cintura": medidas.cintura,
-                "navy_cuello": medidas.cuello,
-                "navy_cadera": medidas.cadera,
-                "navy_extra_label": navy_extra_label,
-                "navy_extra_val": navy_extra_val,
-                "navy_dif": navy_dif,
-                "navy_log_dif": navy_log_dif,
-                "navy_log_alt": navy_log_alt,
-                "navy_altura": medidas.altura,
-                "navy_denominador": navy_denominador,
-                "navy_grasa": grasa_navy,
-                # --- Masa magra ---
-                "mm_peso": medidas.peso,
-                "mm_masa_grasa": masa_grasa_kg,
-                "mm_masa_magra": masa_magra,
-                # --- IMC ---
-                "imc_peso": medidas.peso,
-                "imc_altura_cm": medidas.altura,
-                "imc_altura_m": altura_m,
-                "imc_altura_m_cuadrado": round(altura_m ** 2, 4),
-                "imc_valor": bmi,
-                "imc_categoria": bmi_categoria,
-                # --- FFMI ---
-                "ffmi_masa_magra": masa_magra,
-                "ffmi_altura_m": altura_m,
-                "ffmi_altura_m_cuadrado": round(altura_m ** 2, 4),
-                "ffmi_valor": ffmi,
-                "ffmi_norm_valor": ffmi_norm,
-                # --- Macros ---
-                "macro_kcal": calorias,
-                "macro_peso": medidas.peso,
-                "macro_proteina_g": proteina_g,
-                "macro_grasa_g": grasa_g,
-                "macro_cal_proteina": cal_proteina,
-                "macro_cal_grasa": cal_grasa_macro,
-                "macro_cal_carbos": cal_carbos,
-                "macro_carbos_g": carbos_g,
-            }
-
-            resultados = {
-                "medidas": medidas.resumen(),
-                "grasa_navy": grasa_navy,
-                "masa_magra": masa_magra,
-                "grasa_directa": medidas.grasa_directa,
-                "diferencia_grasa": diferencia_grasa,
-                "bmi": bmi,
-                "bmi_categoria": bmi_categoria,
-                "ffmi": ffmi,
-                "ffmi_norm": ffmi_norm,
-                "macros": macros,
-                "pasos": pasos,
-            }
-
-        except Exception as exc:
-            error = _translate_error(exc, lang)
-
-    return render_template(
-        "index.html",
-        resultados=resultados,
-        error=error,
-        lang=lang,
-        supported_langs=SUPPORTED_LANGS,
-        default_lang=DEFAULT_LANG,
-    )
+    try:
+        resultados = _compute_results(request.form, lang)
+        return jsonify({"resultados": resultados})
+    except (AppError, ValueError) as exc:
+        return jsonify({"error": _translate_error(exc, lang)}), 400
+    except Exception:
+        msgs = ERROR_MESSAGES.get(lang, ERROR_MESSAGES[DEFAULT_LANG])
+        return jsonify({"error": msgs.get("unknown_error", "Error inesperado.").format(msg="")}), 500
 
 
 def _parse_float(value: str | None, campo: str) -> float:
