@@ -1,0 +1,126 @@
+"""
+main.py — Herramienta CLI de composición corporal y nutrición deportiva.
+
+Calcula la distribución de macronutrientes del día y el porcentaje de grasa
+corporal (fórmula US Navy) a partir de los datos introducidos por argumento.
+
+Uso básico:
+    python main.py --calorias 3343 --peso 72.25 --altura 175 \
+                   --cintura 84 --cuello 38
+
+Uso completo:
+    python main.py --calorias 3343 --peso 72.25 --altura 175 \
+                   --grasa 14.5 \
+                   --cintura 84  --cuello 38   --cadera 95 \
+                   --biceps 35   --cuadriceps 55 \
+                   --gemelos 37  --pectoral 100
+"""
+
+import argparse
+import sys
+
+from fitness_tools import MedidasCorporales, calcular_grasa_navy, calcular_macros_diarios
+
+
+def _separador(titulo: str = "", ancho: int = 45) -> None:
+    if titulo:
+        print(f"\n{'─' * 3} {titulo} {'─' * (ancho - len(titulo) - 5)}")
+    else:
+        print("─" * ancho)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="main.py",
+        description="Composición corporal y distribución de macros diarios.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    # ── Obligatorios ──────────────────────────────────────────────────────────
+    parser.add_argument("--calorias", type=float, required=True,
+                        metavar="KCAL",
+                        help="Gasto calórico total del día (kcal).")
+    parser.add_argument("--peso", type=float, required=True,
+                        metavar="KG",
+                        help="Peso corporal en kg.")
+    parser.add_argument("--altura", type=float, required=True,
+                        metavar="CM",
+                        help="Altura en cm.")
+    parser.add_argument("--cintura", type=float, required=True,
+                        metavar="CM",
+                        help="Circunferencia de cintura en cm.")
+    parser.add_argument("--cuello", type=float, required=True,
+                        metavar="CM",
+                        help="Circunferencia de cuello en cm.")
+
+    # ── Opcionales ────────────────────────────────────────────────────────────
+    parser.add_argument("--grasa", type=float, default=None,
+                        metavar="%",
+                        help="Porcentaje de grasa medido directamente (ej. báscula).")
+    parser.add_argument("--biceps", type=float, default=None,
+                        metavar="CM", help="Circunferencia de bíceps en cm.")
+    parser.add_argument("--cuadriceps", type=float, default=None,
+                        metavar="CM", help="Circunferencia de cuádriceps en cm.")
+    parser.add_argument("--cadera", type=float, default=None,
+                        metavar="CM", help="Circunferencia de cadera en cm.")
+    parser.add_argument("--gemelos", type=float, default=None,
+                        metavar="CM", help="Circunferencia de gemelos en cm.")
+    parser.add_argument("--pectoral", type=float, default=None,
+                        metavar="CM", help="Circunferencia de pectoral en cm.")
+
+    args = parser.parse_args()
+
+    # ── Registrar medidas ─────────────────────────────────────────────────────
+    medidas = MedidasCorporales(
+        peso=args.peso,
+        altura=args.altura,
+        cintura=args.cintura,
+        cuello=args.cuello,
+        grasa_directa=args.grasa,
+        biceps=args.biceps,
+        cuadriceps=args.cuadriceps,
+        cadera=args.cadera,
+        gemelos=args.gemelos,
+        pectoral=args.pectoral,
+    )
+
+    # ── Calcular grasa Navy ───────────────────────────────────────────────────
+    try:
+        grasa_navy, masa_magra = calcular_grasa_navy(
+            medidas.peso, medidas.altura, medidas.cintura, medidas.cuello
+        )
+    except ValueError as exc:
+        print(f"[ERROR] Cálculo de grasa Navy: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    # ── Calcular macros ───────────────────────────────────────────────────────
+    try:
+        macros = calcular_macros_diarios(args.calorias, medidas.peso)
+    except ValueError as exc:
+        print(f"[ERROR] Cálculo de macros: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    # ── Mostrar resultados ────────────────────────────────────────────────────
+    _separador("MEDIDAS CORPORALES")
+    for nombre, valor in medidas.resumen().items():
+        print(f"  {nombre:<25} {valor}")
+
+    _separador("COMPOSICIÓN CORPORAL (US Navy)")
+    print(f"  {'Grasa corporal (%):':<25} {grasa_navy} %")
+    print(f"  {'Masa magra (kg):':<25} {masa_magra} kg")
+    if medidas.grasa_directa is not None:
+        diferencia = round(medidas.grasa_directa - grasa_navy, 2)
+        signo = "+" if diferencia >= 0 else ""
+        print(f"  {'Grasa directa (%):':<25} {medidas.grasa_directa} %  "
+              f"(Δ Navy {signo}{diferencia} %)")
+
+    _separador("MACROS DEL DÍA")
+    for nombre, valor in macros.items():
+        unidad = "kcal" if "Calorías" in nombre else "g"
+        print(f"  {nombre + ':':<25} {valor} {unidad}")
+
+    _separador()
+
+
+if __name__ == "__main__":
+    main()
