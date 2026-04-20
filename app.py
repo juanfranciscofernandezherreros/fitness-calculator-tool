@@ -5,7 +5,6 @@ Punto de entrada para Heroku (gunicorn app:app).
 """
 
 import os
-import sys
 
 from flask import Flask, render_template, request
 
