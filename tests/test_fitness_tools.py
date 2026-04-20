@@ -602,6 +602,8 @@ class TestCLI:
         )
         assert result.returncode != 0
         assert "ERROR" in result.stderr
+
+    def test_no_stderr_en_ejecucion_normal(self):
         """En una ejecución normal no debe haber salida en stderr."""
         result = _run_cli()
         assert result.stderr == ""
