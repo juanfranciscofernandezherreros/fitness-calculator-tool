@@ -860,12 +860,14 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
           integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+3To5f/5iuT5S/l3EMEIzQTMAtQGp/L3e0S7yXA=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   {% if resultados %}
   <script>
+  Chart.register(ChartDataLabels);
   (function () {
     var sexo       = {{ resultados.pasos.navy_sexo | tojson }};
     var grasaVal   = {{ resultados.grasa_navy }};
@@ -931,6 +933,15 @@
                   return ctx.dataset.label + ': ' + ctx.parsed.y + '\u2009' + unidad;
                 }
               }
+            },
+            datalabels: {
+              anchor: 'end',
+              align: 'end',
+              font: { size: 11, weight: 'bold' },
+              color: '#374151',
+              formatter: function (value) {
+                return value + '\u2009' + unidad;
+              }
             }
           },
           scales: {
@@ -990,6 +1001,15 @@
                   var pct = ((ctx.parsed / total) * 100).toFixed(1);
                   return ctx.label + ': ' + ctx.parsed + '\u2009kcal (' + pct + '%)';
                 }
+              }
+            },
+            datalabels: {
+              color: '#fff',
+              font: { size: 12, weight: 'bold' },
+              formatter: function (value, ctx) {
+                var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                var pct = ((value / total) * 100).toFixed(1);
+                return pct + '%\n' + value + '\u2009kcal';
               }
             }
           }
