@@ -8,261 +8,434 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f0f4f8;
-      color: #1a202c;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1rem 3rem;
     }
 
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-    .subtitle {
-      color: #718096;
+    /* ── Header ── */
+    .header {
+      text-align: center;
       margin-bottom: 2rem;
-      font-size: 0.95rem;
+      color: #fff;
+    }
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .header p {
+      margin-top: .4rem;
+      font-size: 1rem;
+      opacity: .85;
     }
 
+    /* ── Card ── */
     .card {
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,.08);
-      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.18);
+      padding: 2.2rem 2rem;
       width: 100%;
-      max-width: 620px;
+      max-width: 660px;
     }
 
-    h2 {
-      font-size: 1rem;
+    /* ── Section heading ── */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .78rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .06em;
-      color: #4a5568;
-      margin-bottom: 1rem;
-      padding-bottom: .4rem;
-      border-bottom: 2px solid #e2e8f0;
+      letter-spacing: .08em;
+      color: #6b46c1;
+      margin-bottom: 1.1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #ede9fe;
+    }
+    .section-heading .icon {
+      font-size: 1rem;
     }
 
+    /* ── Form grid ── */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      gap: 1rem 1.2rem;
+      margin-bottom: 1.8rem;
     }
-    .form-grid.single { grid-template-columns: 1fr; }
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
 
-    label {
+    /* ── Field ── */
+    .field {
       display: flex;
       flex-direction: column;
       gap: .3rem;
-      font-size: .875rem;
-      font-weight: 500;
     }
-    label span.hint {
+    .field label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: #374151;
+    }
+    .field .hint {
+      font-size: .73rem;
       font-weight: 400;
-      color: #718096;
+      color: #9ca3af;
+      margin-top: -.1rem;
+    }
+    .required-star { color: #e53e3e; }
+
+    /* ── Input wrapper (icon + input) ── */
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap .unit {
+      position: absolute;
+      right: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: .78rem;
+      font-weight: 600;
+      color: #9ca3af;
+      pointer-events: none;
+      user-select: none;
     }
 
     input[type="number"] {
-      border: 1px solid #cbd5e0;
-      border-radius: 6px;
-      padding: .45rem .7rem;
-      font-size: .95rem;
-      transition: border-color .2s;
       width: 100%;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: .55rem .7rem;
+      font-size: .95rem;
+      color: #111827;
+      background: #f9fafb;
+      transition: border-color .18s, box-shadow .18s, background .18s;
+      /* Allows decimal input on all browsers */
+      -moz-appearance: textfield;
+    }
+    /* Show unit badge padding */
+    input[type="number"].has-unit {
+      padding-right: 2.8rem;
     }
     input[type="number"]:focus {
       outline: none;
-      border-color: #4299e1;
-      box-shadow: 0 0 0 3px rgba(66,153,225,.2);
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,.15);
+      background: #fff;
     }
+    /* Remove spin buttons */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
-    .required-star { color: #e53e3e; }
-
-    button[type="submit"] {
+    /* ── Submit button ── */
+    .btn-submit {
       width: 100%;
-      padding: .7rem;
-      background: #3182ce;
+      padding: .8rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background .2s;
-      margin-top: .5rem;
+      letter-spacing: .02em;
+      transition: opacity .2s, transform .1s;
+      margin-top: .25rem;
     }
-    button[type="submit"]:hover { background: #2b6cb0; }
+    .btn-submit:hover  { opacity: .92; }
+    .btn-submit:active { transform: scale(.99); }
 
+    /* ── Alert ── */
     .alert-error {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
       background: #fff5f5;
-      border: 1px solid #feb2b2;
+      border: 1.5px solid #fc8181;
       color: #c53030;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: .9rem 1rem;
       margin-bottom: 1.5rem;
-      font-size: .9rem;
+      font-size: .88rem;
+      line-height: 1.45;
     }
 
     /* ── Results ── */
-    .results { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .results {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
 
-    .result-section { margin-top: 0; }
-    .result-section h2 { color: #2d3748; }
+    .result-card {
+      border: 1.5px solid #ede9fe;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .result-card-header {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      background: #f5f3ff;
+      padding: .65rem 1rem;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #6b46c1;
+      border-bottom: 1.5px solid #ede9fe;
+    }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: .9rem;
     }
-    tr:nth-child(even) td { background: #f7fafc; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) td { background: #faf9ff; }
     td {
-      padding: .45rem .6rem;
-      border-bottom: 1px solid #e2e8f0;
+      padding: .6rem 1rem;
+      border-bottom: 1px solid #ede9fe;
+      color: #374151;
     }
-    td:last-child { text-align: right; font-weight: 600; color: #2b6cb0; }
+    td:last-child {
+      text-align: right;
+      font-weight: 700;
+      color: #6b46c1;
+      white-space: nowrap;
+    }
 
     .badge-delta {
-      font-size: .78rem;
-      font-weight: 400;
-      color: #718096;
-      margin-left: .4rem;
+      font-size: .76rem;
+      font-weight: 500;
+      color: #9ca3af;
+      margin-left: .35rem;
     }
     .badge-delta.pos { color: #e53e3e; }
-    .badge-delta.neg { color: #38a169; }
+    .badge-delta.neg { color: #16a34a; }
   </style>
 </head>
 <body>
 
-  <h1>Fitness Tools 💪</h1>
-  <p class="subtitle">Composición corporal y distribución de macronutrientes</p>
+  <div class="header">
+    <h1>Fitness Tools 💪</h1>
+    <p>Composición corporal y distribución de macronutrientes</p>
+  </div>
 
   <div class="card">
     {% if error %}
-    <div class="alert-error">⚠️ {{ error }}</div>
+    <div class="alert-error">⚠️ <span>{{ error }}</span></div>
     {% endif %}
 
     <form method="post" novalidate>
 
-      <h2>Datos obligatorios</h2>
+      <div class="section-heading"><span class="icon">📋</span> Datos obligatorios</div>
       <div class="form-grid">
-        <label>
-          Calorías totales (kcal) <span class="required-star">*</span>
-          <input type="number" name="calorias" step="any" min="1" required
-                 value="{{ request.form.get('calorias', '') }}" placeholder="ej. 3343" />
-        </label>
-        <label>
-          Peso (kg) <span class="required-star">*</span>
-          <input type="number" name="peso" step="any" min="1" required
-                 value="{{ request.form.get('peso', '') }}" placeholder="ej. 72.25" />
-        </label>
-        <label>
-          Altura (cm) <span class="required-star">*</span>
-          <input type="number" name="altura" step="any" min="1" required
-                 value="{{ request.form.get('altura', '') }}" placeholder="ej. 175" />
-        </label>
-        <label>
-          Cintura (cm) <span class="required-star">*</span>
-          <input type="number" name="cintura" step="any" min="1" required
-                 value="{{ request.form.get('cintura', '') }}" placeholder="ej. 84" />
-        </label>
-        <label>
-          Cuello (cm) <span class="required-star">*</span>
-          <input type="number" name="cuello" step="any" min="1" required
-                 value="{{ request.form.get('cuello', '') }}" placeholder="ej. 38" />
-        </label>
+
+        <div class="field">
+          <label for="calorias">Calorías totales <span class="required-star">*</span></label>
+          <div class="input-wrap">
+            <input type="number" id="calorias" name="calorias"
+                   step="any" min="1" inputmode="decimal" required
+                   class="has-unit"
+                   value="{{ request.form.get('calorias', '') }}"
+                   placeholder="ej. 3343" />
+            <span class="unit">kcal</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="peso">Peso <span class="required-star">*</span></label>
+          <div class="input-wrap">
+            <input type="number" id="peso" name="peso"
+                   step="any" min="1" inputmode="decimal" required
+                   class="has-unit"
+                   value="{{ request.form.get('peso', '') }}"
+                   placeholder="ej. 72.5" />
+            <span class="unit">kg</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="altura">Altura <span class="required-star">*</span></label>
+          <div class="input-wrap">
+            <input type="number" id="altura" name="altura"
+                   step="any" min="1" inputmode="decimal" required
+                   class="has-unit"
+                   value="{{ request.form.get('altura', '') }}"
+                   placeholder="ej. 175.5" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cintura">Cintura <span class="required-star">*</span></label>
+          <div class="input-wrap">
+            <input type="number" id="cintura" name="cintura"
+                   step="any" min="1" inputmode="decimal" required
+                   class="has-unit"
+                   value="{{ request.form.get('cintura', '') }}"
+                   placeholder="ej. 84.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cuello">Cuello <span class="required-star">*</span></label>
+          <div class="input-wrap">
+            <input type="number" id="cuello" name="cuello"
+                   step="any" min="1" inputmode="decimal" required
+                   class="has-unit"
+                   value="{{ request.form.get('cuello', '') }}"
+                   placeholder="ej. 38.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
       </div>
 
-      <h2>Datos opcionales</h2>
+      <div class="section-heading"><span class="icon">➕</span> Datos opcionales</div>
       <div class="form-grid">
-        <label>
-          Grasa directa (%)
-          <span class="hint">p.ej. báscula de bioimpedancia</span>
-          <input type="number" name="grasa" step="any" min="0" max="100"
-                 value="{{ request.form.get('grasa', '') }}" placeholder="ej. 14.5" />
-        </label>
-        <label>
-          Bíceps (cm)
-          <input type="number" name="biceps" step="any" min="0"
-                 value="{{ request.form.get('biceps', '') }}" placeholder="ej. 35" />
-        </label>
-        <label>
-          Cuádriceps (cm)
-          <input type="number" name="cuadriceps" step="any" min="0"
-                 value="{{ request.form.get('cuadriceps', '') }}" placeholder="ej. 55" />
-        </label>
-        <label>
-          Cadera (cm)
-          <input type="number" name="cadera" step="any" min="0"
-                 value="{{ request.form.get('cadera', '') }}" placeholder="ej. 95" />
-        </label>
-        <label>
-          Gemelos (cm)
-          <input type="number" name="gemelos" step="any" min="0"
-                 value="{{ request.form.get('gemelos', '') }}" placeholder="ej. 37" />
-        </label>
-        <label>
-          Pectoral (cm)
-          <input type="number" name="pectoral" step="any" min="0"
-                 value="{{ request.form.get('pectoral', '') }}" placeholder="ej. 100" />
-        </label>
+
+        <div class="field">
+          <label for="grasa">Grasa directa</label>
+          <span class="hint">Báscula de bioimpedancia</span>
+          <div class="input-wrap">
+            <input type="number" id="grasa" name="grasa"
+                   step="any" min="0" max="100" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('grasa', '') }}"
+                   placeholder="ej. 14.5" />
+            <span class="unit">%</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="biceps">Bíceps</label>
+          <div class="input-wrap">
+            <input type="number" id="biceps" name="biceps"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('biceps', '') }}"
+                   placeholder="ej. 35.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cuadriceps">Cuádriceps</label>
+          <div class="input-wrap">
+            <input type="number" id="cuadriceps" name="cuadriceps"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('cuadriceps', '') }}"
+                   placeholder="ej. 55.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cadera">Cadera</label>
+          <div class="input-wrap">
+            <input type="number" id="cadera" name="cadera"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('cadera', '') }}"
+                   placeholder="ej. 95.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="gemelos">Gemelos</label>
+          <div class="input-wrap">
+            <input type="number" id="gemelos" name="gemelos"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('gemelos', '') }}"
+                   placeholder="ej. 37.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pectoral">Pectoral</label>
+          <div class="input-wrap">
+            <input type="number" id="pectoral" name="pectoral"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('pectoral', '') }}"
+                   placeholder="ej. 100.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
       </div>
 
-      <button type="submit">Calcular →</button>
+      <button type="submit" class="btn-submit">Calcular →</button>
     </form>
 
     {% if resultados %}
     <div class="results">
 
-      <div class="result-section">
-        <h2>📏 Medidas corporales</h2>
+      <div class="result-card">
+        <div class="result-card-header"><span>📏</span> Medidas corporales</div>
         <table>
-          {% for nombre, valor in resultados.medidas.items() %}
-          <tr>
-            <td>{{ nombre }}</td>
-            <td>{{ valor }}</td>
-          </tr>
-          {% endfor %}
+          <tbody>
+            {% for nombre, valor in resultados.medidas.items() %}
+            <tr>
+              <td>{{ nombre }}</td>
+              <td>{{ valor }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
 
-      <div class="result-section">
-        <h2>⚖️ Composición corporal (US Navy)</h2>
+      <div class="result-card">
+        <div class="result-card-header"><span>⚖️</span> Composición corporal (US Navy)</div>
         <table>
-          <tr>
-            <td>Grasa corporal (%)</td>
-            <td>
-              {{ resultados.grasa_navy }} %
-              {% if resultados.diferencia_grasa is not none %}
-                {% set delta = resultados.diferencia_grasa %}
-                <span class="badge-delta {{ 'pos' if delta > 0 else 'neg' if delta < 0 else '' }}">
-                  (directa {{ resultados.grasa_directa }} % &nbsp;Δ {{ "+" if delta >= 0 else "" }}{{ delta }} %)
-                </span>
-              {% endif %}
-            </td>
-          </tr>
-          <tr>
-            <td>Masa magra (kg)</td>
-            <td>{{ resultados.masa_magra }} kg</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>Grasa corporal</td>
+              <td>
+                {{ resultados.grasa_navy }}&thinsp;%
+                {% if resultados.diferencia_grasa is not none %}
+                  {% set delta = resultados.diferencia_grasa %}
+                  <span class="badge-delta {{ 'pos' if delta > 0 else 'neg' if delta < 0 else '' }}">
+                    (directa {{ resultados.grasa_directa }}&thinsp;% · Δ {{ "+" if delta >= 0 else "" }}{{ delta }}&thinsp;%)
+                  </span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Masa magra</td>
+              <td>{{ resultados.masa_magra }}&thinsp;kg</td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
-      <div class="result-section">
-        <h2>🍽️ Macros del día</h2>
+      <div class="result-card">
+        <div class="result-card-header"><span>🍽️</span> Macros del día</div>
         <table>
-          {% for nombre, valor in resultados.macros.items() %}
-          <tr>
-            <td>{{ nombre }}</td>
-            <td>{{ valor }} {{ "kcal" if "Calorías" in nombre else "g" }}</td>
-          </tr>
-          {% endfor %}
+          <tbody>
+            {% for nombre, valor in resultados.macros.items() %}
+            <tr>
+              <td>{{ nombre }}</td>
+              <td>{{ valor }}&thinsp;{{ "kcal" if "Calorías" in nombre else "g" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
 
