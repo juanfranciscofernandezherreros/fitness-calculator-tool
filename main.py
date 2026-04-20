@@ -88,9 +88,9 @@ def main() -> None:
                         help="Circunferencia de cadera en cm. "
                              "Obligatorio si --sexo mujer.")
     parser.add_argument("--gemelos-der", type=float, default=None,
-                        metavar="CM", help="Circunferencia de gemelos derecho en cm.")
+                        metavar="CM", help="Circunferencia de gemelos derechos en cm.")
     parser.add_argument("--gemelos-izq", type=float, default=None,
-                        metavar="CM", help="Circunferencia de gemelos izquierdo en cm.")
+                        metavar="CM", help="Circunferencia de gemelos izquierdos en cm.")
     parser.add_argument("--pectoral", type=float, default=None,
                         metavar="CM", help="Circunferencia de pectoral en cm.")
 

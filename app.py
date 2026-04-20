@@ -43,8 +43,8 @@ def index():
             cuadriceps_der = _optional_float(request.form.get("cuadriceps_der"), "Cuádriceps derecho")
             cuadriceps_izq = _optional_float(request.form.get("cuadriceps_izq"), "Cuádriceps izquierdo")
             cadera = _optional_float(request.form.get("cadera"), "Cadera")
-            gemelos_der = _optional_float(request.form.get("gemelos_der"), "Gemelos derecho")
-            gemelos_izq = _optional_float(request.form.get("gemelos_izq"), "Gemelos izquierdo")
+            gemelos_der = _optional_float(request.form.get("gemelos_der"), "Gemelos derechos")
+            gemelos_izq = _optional_float(request.form.get("gemelos_izq"), "Gemelos izquierdos")
             pectoral = _optional_float(request.form.get("pectoral"), "Pectoral")
 
             medidas = MedidasCorporales(
