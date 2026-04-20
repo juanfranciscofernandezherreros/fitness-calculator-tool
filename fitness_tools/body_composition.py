@@ -2,6 +2,45 @@
 Cálculos de composición corporal.
 """
 import math
+from dataclasses import dataclass
+from typing import Optional
+
+
+@dataclass
+class MedidasCorporales:
+    """Registro de medidas antropométricas en centímetros."""
+
+    peso: float
+    altura: float
+    cintura: float
+    cuello: float
+    grasa_directa: Optional[float] = None   # % grasa medida externamente
+    biceps: Optional[float] = None
+    cuadriceps: Optional[float] = None
+    cadera: Optional[float] = None
+    gemelos: Optional[float] = None
+    pectoral: Optional[float] = None
+
+    def resumen(self) -> dict:
+        """Devuelve un diccionario con todas las medidas registradas."""
+        datos = {
+            "Peso (kg)": self.peso,
+            "Altura (cm)": self.altura,
+            "Cintura (cm)": self.cintura,
+            "Cuello (cm)": self.cuello,
+        }
+        opcionales = {
+            "Grasa directa (%)": self.grasa_directa,
+            "Bíceps (cm)": self.biceps,
+            "Cuádriceps (cm)": self.cuadriceps,
+            "Cadera (cm)": self.cadera,
+            "Gemelos (cm)": self.gemelos,
+            "Pectoral (cm)": self.pectoral,
+        }
+        for clave, valor in opcionales.items():
+            if valor is not None:
+                datos[clave] = valor
+        return datos
 
 
 def calcular_grasa_navy(peso: float, altura: float, cintura: float, cuello: float) -> tuple[float, float]:
