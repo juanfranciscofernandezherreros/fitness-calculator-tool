@@ -2121,7 +2121,7 @@
     buildResultsHTML = function (r) {
       var html = _origBuild(r);
       /* Append hidden JSON data element used by PDF onclone handler */
-      /* Escape </script> sequences to prevent early tag closure */
+      /* Escape <\/script> sequences to prevent early tag closure */
       var safeJson = JSON.stringify(r).replace(/<\//g, '<\\/');
       html += '<script id="spa-result-data" type="application/json">' + safeJson + '<\/script>';
       return html;
