@@ -3,3 +3,5 @@ Name: fitness_tools
 Version: 0.1.0
 Summary: Herramientas de composición corporal y nutrición deportiva
 Requires-Python: >=3.9
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
