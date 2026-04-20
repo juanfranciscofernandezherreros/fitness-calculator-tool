@@ -1,0 +1,31 @@
+def calcular_macros_diarios(kcal_quemadas, peso):
+    """
+    Calcula los macros basándose en el gasto calórico total (reloj)
+    manteniendo proteína y grasa fijas para rendimiento.
+    """
+    # Pilares fijos (2g Prot / 0.8g Grasa por kg)
+    proteina_g = peso * 2.0
+    grasa_g = peso * 0.8
+    
+    # Cálculo de calorías de los pilares
+    cal_proteina = proteina_g * 4
+    cal_grasa = grasa_g * 9
+    
+    # El resto del gasto se cubre con Carbohidratos
+    cal_restantes = kcal_quemadas - (cal_proteina + cal_grasa)
+    carbohidratos_g = cal_restantes / 4
+    
+    return {
+        "Proteína (g)": round(proteina_g, 1),
+        "Grasas (g)": round(grasa_g, 1),
+        "Carbohidratos (g)": round(carbohidratos_g, 1),
+        "Calorías Totales": kcal_quemadas
+    }
+
+# Ejemplo con tu gasto del Sábado de Trail
+gasto_sabado = 3343
+macros = calcular_macros_diarios(gasto_sabado, 72.25)
+
+print("--- DISTRIBUCIÓN PARA HOY ---")
+for nutriente, valor in macros.items():
+    print(f"{nutriente}: {valor}")
