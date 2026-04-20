@@ -3,7 +3,9 @@ test_fitness_tools.py — Tests de la funcionalidad completa de fitness_tools.
 
 Cubre:
     - MedidasCorporales.resumen()
-    - calcular_grasa_navy()
+    - calcular_grasa_navy() — hombres y mujeres
+    - calcular_bmi() y clasificar_bmi()
+    - calcular_ffmi()
     - calcular_macros_diarios()
     - carbos_flash()
     - CLI main.py (invocación mediante subprocess)
@@ -17,9 +19,12 @@ import pytest
 
 from fitness_tools import (
     MedidasCorporales,
+    calcular_bmi,
+    calcular_ffmi,
     calcular_grasa_navy,
     calcular_macros_diarios,
     carbos_flash,
+    clasificar_bmi,
 )
 
 
@@ -31,13 +36,14 @@ class TestMedidasCorporales:
     """Tests para el dataclass MedidasCorporales y su método resumen()."""
 
     def test_resumen_campos_obligatorios(self):
-        """resumen() incluye siempre los cuatro campos obligatorios."""
+        """resumen() incluye siempre los cinco campos obligatorios (incluyendo sexo)."""
         m = MedidasCorporales(peso=72.0, altura=175.0, cintura=84.0, cuello=38.0)
         r = m.resumen()
         assert r["Peso (kg)"] == 72.0
         assert r["Altura (cm)"] == 175.0
         assert r["Cintura (cm)"] == 84.0
         assert r["Cuello (cm)"] == 38.0
+        assert r["Sexo"] == "Hombre"
 
     def test_resumen_sin_opcionales(self):
         """resumen() no incluye claves opcionales cuando no se proporcionan."""
@@ -171,6 +177,151 @@ class TestCalcularGrasaNavy:
         bf, magra = calcular_grasa_navy(120.0, 200.0, 110.0, 40.0)
         assert isinstance(bf, float)
         assert isinstance(magra, float)
+
+    # ── Fórmula para mujeres ──────────────────────────────────────────────────
+
+    PESO_F, ALTURA_F, CINTURA_F, CUELLO_F, CADERA_F = 60.0, 165.0, 70.0, 32.0, 95.0
+
+    def _bf_esperado_mujer(self, altura, cintura, cuello, cadera):
+        return 495 / (
+            1.29579
+            - 0.35004 * math.log10(cintura + cadera - cuello)
+            + 0.22100 * math.log10(altura)
+        ) - 450
+
+    def test_mujer_retorna_tupla_dos_floats(self):
+        bf, magra = calcular_grasa_navy(
+            self.PESO_F, self.ALTURA_F, self.CINTURA_F, self.CUELLO_F,
+            sexo="mujer", cadera=self.CADERA_F,
+        )
+        assert isinstance(bf, float)
+        assert isinstance(magra, float)
+
+    def test_mujer_porcentaje_grasa_correcto(self):
+        bf, _ = calcular_grasa_navy(
+            self.PESO_F, self.ALTURA_F, self.CINTURA_F, self.CUELLO_F,
+            sexo="mujer", cadera=self.CADERA_F,
+        )
+        esperado = round(
+            self._bf_esperado_mujer(self.ALTURA_F, self.CINTURA_F, self.CUELLO_F, self.CADERA_F), 2
+        )
+        assert bf == esperado
+
+    def test_mujer_porcentaje_en_rango_fisiologico(self):
+        bf, _ = calcular_grasa_navy(
+            self.PESO_F, self.ALTURA_F, self.CINTURA_F, self.CUELLO_F,
+            sexo="mujer", cadera=self.CADERA_F,
+        )
+        assert 10.0 <= bf <= 50.0
+
+    def test_mujer_error_sin_cadera(self):
+        with pytest.raises(ValueError, match="cadera"):
+            calcular_grasa_navy(
+                self.PESO_F, self.ALTURA_F, self.CINTURA_F, self.CUELLO_F,
+                sexo="mujer",
+            )
+
+    def test_mujer_error_cadera_cero(self):
+        with pytest.raises(ValueError, match="cadera"):
+            calcular_grasa_navy(
+                self.PESO_F, self.ALTURA_F, self.CINTURA_F, self.CUELLO_F,
+                sexo="mujer", cadera=0.0,
+            )
+
+    def test_sexo_invalido_lanza_error(self):
+        with pytest.raises(ValueError, match="sexo"):
+            calcular_grasa_navy(72.0, 175.0, 84.0, 38.0, sexo="otro")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# calcular_bmi y clasificar_bmi
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestCalcularBmi:
+    """Tests para calcular_bmi() y clasificar_bmi()."""
+
+    PESO, ALTURA = 72.25, 175.0
+
+    def test_retorna_float(self):
+        assert isinstance(calcular_bmi(self.PESO, self.ALTURA), float)
+
+    def test_valor_correcto(self):
+        esperado = round(self.PESO / (self.ALTURA / 100) ** 2, 2)
+        assert calcular_bmi(self.PESO, self.ALTURA) == esperado
+
+    def test_redondeado_a_dos_decimales(self):
+        bmi = calcular_bmi(self.PESO, self.ALTURA)
+        assert bmi == round(bmi, 2)
+
+    def test_rango_fisiologico(self):
+        bmi = calcular_bmi(self.PESO, self.ALTURA)
+        assert 10.0 <= bmi <= 60.0
+
+    def test_error_peso_cero(self):
+        with pytest.raises(ValueError, match="positivo"):
+            calcular_bmi(0, self.ALTURA)
+
+    def test_error_altura_cero(self):
+        with pytest.raises(ValueError, match="positivo"):
+            calcular_bmi(self.PESO, 0)
+
+    def test_clasificar_bajo_peso(self):
+        assert clasificar_bmi(17.0) == "Bajo peso"
+
+    def test_clasificar_normal(self):
+        assert clasificar_bmi(22.0) == "Peso normal"
+
+    def test_clasificar_sobrepeso(self):
+        assert clasificar_bmi(27.0) == "Sobrepeso"
+
+    def test_clasificar_obesidad_i(self):
+        assert clasificar_bmi(32.0) == "Obesidad grado I"
+
+    def test_clasificar_obesidad_ii(self):
+        assert clasificar_bmi(37.0) == "Obesidad grado II"
+
+    def test_clasificar_obesidad_iii(self):
+        assert clasificar_bmi(42.0) == "Obesidad grado III"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# calcular_ffmi
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestCalcularFfmi:
+    """Tests para calcular_ffmi()."""
+
+    MASA_MAGRA, ALTURA = 61.55, 175.0
+
+    def test_retorna_tupla_dos_floats(self):
+        ffmi, ffmi_n = calcular_ffmi(self.MASA_MAGRA, self.ALTURA)
+        assert isinstance(ffmi, float)
+        assert isinstance(ffmi_n, float)
+
+    def test_ffmi_correcto(self):
+        esperado = round(self.MASA_MAGRA / (self.ALTURA / 100) ** 2, 2)
+        ffmi, _ = calcular_ffmi(self.MASA_MAGRA, self.ALTURA)
+        assert ffmi == esperado
+
+    def test_ffmi_normalizado_correcto(self):
+        altura_m = self.ALTURA / 100
+        ffmi = self.MASA_MAGRA / altura_m ** 2
+        esperado = round(ffmi + 6.1 * (1.80 - altura_m), 2)
+        _, ffmi_n = calcular_ffmi(self.MASA_MAGRA, self.ALTURA)
+        assert ffmi_n == esperado
+
+    def test_redondeado_a_dos_decimales(self):
+        ffmi, ffmi_n = calcular_ffmi(self.MASA_MAGRA, self.ALTURA)
+        assert ffmi == round(ffmi, 2)
+        assert ffmi_n == round(ffmi_n, 2)
+
+    def test_error_masa_magra_cero(self):
+        with pytest.raises(ValueError, match="positivo"):
+            calcular_ffmi(0, self.ALTURA)
+
+    def test_error_altura_cero(self):
+        with pytest.raises(ValueError, match="positivo"):
+            calcular_ffmi(self.MASA_MAGRA, 0)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -335,6 +486,7 @@ class TestCLI:
         stdout = result.stdout
         assert "MEDIDAS CORPORALES" in stdout
         assert "COMPOSICIÓN CORPORAL" in stdout
+        assert "IMC / FFMI" in stdout
         assert "MACROS DEL DÍA" in stdout
 
     def test_salida_contiene_grasa_corporal(self):
@@ -405,7 +557,51 @@ class TestCLI:
         )
         assert result.returncode != 0
 
-    def test_no_stderr_en_ejecucion_normal(self):
+    def test_salida_contiene_imc_y_ffmi(self):
+        result = _run_cli()
+        assert "IMC" in result.stdout
+        assert "FFMI" in result.stdout
+
+    def test_ejecucion_mujer_con_cadera(self):
+        """Para mujeres, --cadera es obligatorio; con él el resultado debe ser 0."""
+        cmd = [
+            sys.executable, "main.py",
+            "--calorias", "2200",
+            "--peso", "60",
+            "--altura", "165",
+            "--cintura", "70",
+            "--cuello", "32",
+            "--cadera", "95",
+            "--sexo", "mujer",
+        ]
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd="/home/runner/work/repo/repo",
+        )
+        assert result.returncode == 0
+        assert "COMPOSICIÓN CORPORAL" in result.stdout
+
+    def test_ejecucion_mujer_sin_cadera_falla(self):
+        """Para mujeres sin --cadera el cálculo debe fallar."""
+        cmd = [
+            sys.executable, "main.py",
+            "--calorias", "2200",
+            "--peso", "60",
+            "--altura", "165",
+            "--cintura", "70",
+            "--cuello", "32",
+            "--sexo", "mujer",
+        ]
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd="/home/runner/work/repo/repo",
+        )
+        assert result.returncode != 0
+        assert "ERROR" in result.stderr
         """En una ejecución normal no debe haber salida en stderr."""
         result = _run_cli()
         assert result.stderr == ""

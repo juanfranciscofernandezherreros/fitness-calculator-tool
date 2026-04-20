@@ -8,7 +8,14 @@ import os
 
 from flask import Flask, render_template, request
 
-from fitness_tools import MedidasCorporales, calcular_grasa_navy, calcular_macros_diarios
+from fitness_tools import (
+    MedidasCorporales,
+    calcular_bmi,
+    calcular_ffmi,
+    calcular_grasa_navy,
+    calcular_macros_diarios,
+    clasificar_bmi,
+)
 
 app = Flask(__name__)
 
@@ -25,6 +32,9 @@ def index():
             altura = _parse_float(request.form.get("altura", ""), "Altura")
             cintura = _parse_float(request.form.get("cintura", ""), "Cintura")
             cuello = _parse_float(request.form.get("cuello", ""), "Cuello")
+            sexo = request.form.get("sexo", "hombre")
+            if sexo not in ("hombre", "mujer"):
+                sexo = "hombre"
 
             grasa = _optional_float(request.form.get("grasa"), "Grasa directa")
             biceps = _optional_float(request.form.get("biceps"), "Bíceps")
@@ -38,6 +48,7 @@ def index():
                 altura=altura,
                 cintura=cintura,
                 cuello=cuello,
+                sexo=sexo,
                 grasa_directa=grasa,
                 biceps=biceps,
                 cuadriceps=cuadriceps,
@@ -47,8 +58,17 @@ def index():
             )
 
             grasa_navy, masa_magra = calcular_grasa_navy(
-                medidas.peso, medidas.altura, medidas.cintura, medidas.cuello
+                medidas.peso,
+                medidas.altura,
+                medidas.cintura,
+                medidas.cuello,
+                sexo=medidas.sexo,
+                cadera=medidas.cadera,
             )
+
+            bmi = calcular_bmi(medidas.peso, medidas.altura)
+            bmi_categoria = clasificar_bmi(bmi)
+            ffmi, ffmi_norm = calcular_ffmi(masa_magra, medidas.altura)
 
             macros = calcular_macros_diarios(calorias, medidas.peso)
 
@@ -62,6 +82,10 @@ def index():
                 "masa_magra": masa_magra,
                 "grasa_directa": medidas.grasa_directa,
                 "diferencia_grasa": diferencia_grasa,
+                "bmi": bmi,
+                "bmi_categoria": bmi_categoria,
+                "ffmi": ffmi,
+                "ffmi_norm": ffmi_norm,
                 "macros": macros,
             }
 

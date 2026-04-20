@@ -68,10 +68,11 @@ python main.py [OPCIONES]
 
 | Argumento | Tipo | Descripción |
 |-----------|------|-------------|
+| `--sexo` | hombre\|mujer | Sexo biológico (por defecto: `hombre`) |
 | `--grasa %` | float | Porcentaje de grasa medido directamente (p.ej. báscula de bioimpedancia) |
+| `--cadera CM` | float | Circunferencia de cadera en cm. **Obligatorio si `--sexo mujer`** |
 | `--biceps CM` | float | Circunferencia de bíceps en cm |
 | `--cuadriceps CM` | float | Circunferencia de cuádriceps en cm |
-| `--cadera CM` | float | Circunferencia de cadera en cm |
 | `--gemelos CM` | float | Circunferencia de gemelos en cm |
 | `--pectoral CM` | float | Circunferencia de pectoral en cm |
 
@@ -79,7 +80,7 @@ python main.py [OPCIONES]
 
 ## Ejemplos
 
-### Uso mínimo (solo obligatorios)
+### Uso mínimo — hombre
 
 ```bash
 python main.py \
@@ -90,7 +91,20 @@ python main.py \
   --cuello 38
 ```
 
-### Uso completo (todos los argumentos)
+### Uso mínimo — mujer
+
+```bash
+python main.py \
+  --calorias 2200 \
+  --peso 60 \
+  --altura 165 \
+  --cintura 70 \
+  --cuello 32 \
+  --cadera 95 \
+  --sexo mujer
+```
+
+### Uso completo
 
 ```bash
 python main.py \
@@ -104,13 +118,15 @@ python main.py \
   --biceps 35 \
   --cuadriceps 55 \
   --gemelos 37 \
-  --pectoral 100
+  --pectoral 100 \
+  --sexo hombre
 ```
 
 ### Salida de ejemplo
 
 ```
 ─── MEDIDAS CORPORALES ──────────────────────
+  Sexo                      Hombre
   Peso (kg)                 72.25
   Altura (cm)               175.0
   Cintura (cm)              84.0
@@ -127,6 +143,11 @@ python main.py \
   Masa magra (kg):          61.55 kg
   Grasa directa (%):        14.5 %  (Δ Navy -0.32 %)
 
+─── IMC / FFMI ──────────────────────────────
+  IMC (kg/m²):              23.59  [Peso normal]
+  FFMI (kg/m²):             20.1
+  FFMI normalizado:         20.41  [referencia ♂ < 25 / ♀ < 22]
+
 ─── MACROS DEL DÍA ──────────────────────────
   Proteína (g):             144.5 g
   Grasas (g):               57.8 g
@@ -139,11 +160,43 @@ python main.py \
 
 ## Cómo funciona
 
-### Porcentaje de grasa corporal — Fórmula US Navy (hombres)
+### Porcentaje de grasa corporal — Fórmula US Navy
+
+#### Hombres
 
 ```
 %Grasa = 495 / (1.0324 − 0.19077·log₁₀(cintura − cuello) + 0.15456·log₁₀(altura)) − 450
 ```
+
+#### Mujeres (requiere circunferencia de cadera)
+
+```
+%Grasa = 495 / (1.29579 − 0.35004·log₁₀(cintura + cadera − cuello) + 0.22100·log₁₀(altura)) − 450
+```
+
+### Índice de Masa Corporal (IMC / BMI)
+
+```
+IMC = peso (kg) / altura (m)²
+```
+
+| IMC | Categoría OMS |
+|-----|---------------|
+| < 18.5 | Bajo peso |
+| 18.5 – 24.9 | Peso normal |
+| 25.0 – 29.9 | Sobrepeso |
+| 30.0 – 34.9 | Obesidad grado I |
+| 35.0 – 39.9 | Obesidad grado II |
+| ≥ 40.0 | Obesidad grado III |
+
+### Índice de Masa Libre de Grasa (FFMI)
+
+```
+FFMI           = masa_magra (kg) / altura (m)²
+FFMI_norm      = FFMI + 6.1 × (1.80 − altura_m)   [normalizado a 1.80 m]
+```
+
+Un FFMI normalizado > 25 (hombres) o > 22 (mujeres) suele indicar el límite natural sin fármacos.
 
 ### Distribución de macros
 
@@ -161,7 +214,7 @@ python main.py \
 repo/
 ├── fitness_tools/
 │   ├── __init__.py          # Exportaciones públicas de la librería
-│   ├── body_composition.py  # Fórmula US Navy + dataclass MedidasCorporales
+│   ├── body_composition.py  # Fórmulas US Navy (♂/♀), IMC, FFMI + dataclass MedidasCorporales
 │   └── nutrition.py         # Cálculo de macros y carbohidratos rápidos
 ├── templates/
 │   └── index.html           # Plantilla HTML de la web app
@@ -173,3 +226,4 @@ repo/
 ├── pyproject.toml
 └── README.md
 ```
+

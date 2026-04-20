@@ -241,6 +241,22 @@
       <div class="section-heading"><span class="icon">📋</span> Datos obligatorios</div>
       <div class="form-grid">
 
+        <div class="field" style="grid-column: 1 / -1;">
+          <label>Sexo <span class="required-star">*</span></label>
+          <div style="display:flex;gap:1.2rem;margin-top:.2rem;">
+            <label style="display:flex;align-items:center;gap:.4rem;font-weight:500;font-size:.9rem;cursor:pointer;">
+              <input type="radio" name="sexo" value="hombre"
+                     {% if request.form.get('sexo','hombre') == 'hombre' %}checked{% endif %} />
+              Hombre
+            </label>
+            <label style="display:flex;align-items:center;gap:.4rem;font-weight:500;font-size:.9rem;cursor:pointer;">
+              <input type="radio" name="sexo" value="mujer"
+                     {% if request.form.get('sexo') == 'mujer' %}checked{% endif %} />
+              Mujer
+            </label>
+          </div>
+        </div>
+
         <div class="field">
           <label for="calorias">Calorías totales <span class="required-star">*</span></label>
           <div class="input-wrap">
@@ -344,7 +360,8 @@
         </div>
 
         <div class="field">
-          <label for="cadera">Cadera</label>
+          <label for="cadera">Cadera <span id="cadera-star" class="required-star" style="display:none">*</span></label>
+          <span class="hint" id="cadera-hint">Obligatorio para mujeres (fórmula US Navy)</span>
           <div class="input-wrap">
             <input type="number" id="cadera" name="cadera"
                    step="any" min="0" inputmode="decimal"
@@ -426,6 +443,26 @@
       </div>
 
       <div class="result-card">
+        <div class="result-card-header"><span>📐</span> IMC y FFMI</div>
+        <table>
+          <tbody>
+            <tr>
+              <td>IMC (kg/m²)</td>
+              <td>{{ resultados.bmi }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[{{ resultados.bmi_categoria }}]</span></td>
+            </tr>
+            <tr>
+              <td>FFMI (kg/m²)</td>
+              <td>{{ resultados.ffmi }}&thinsp;kg/m²</td>
+            </tr>
+            <tr>
+              <td>FFMI normalizado (1.80 m)</td>
+              <td>{{ resultados.ffmi_norm }}&thinsp;kg/m² &nbsp;<span style="font-weight:400;font-size:.82rem;color:#6b7280;">[ref. ♂&lt;25 / ♀&lt;22]</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="result-card">
         <div class="result-card-header"><span>🍽️</span> Macros del día</div>
         <table>
           <tbody>
@@ -442,6 +479,23 @@
     </div>
     {% endif %}
   </div>
+
+  <script>
+    (function () {
+      var radios = document.querySelectorAll('input[name="sexo"]');
+      var caderaStar = document.getElementById('cadera-star');
+      var caderaInput = document.getElementById('cadera');
+
+      function actualizarCadera() {
+        var esMujer = document.querySelector('input[name="sexo"]:checked').value === 'mujer';
+        caderaStar.style.display = esMujer ? 'inline' : 'none';
+        caderaInput.required = esMujer;
+      }
+
+      radios.forEach(function (r) { r.addEventListener('change', actualizarCadera); });
+      actualizarCadera();
+    })();
+  </script>
 
 </body>
 </html>
