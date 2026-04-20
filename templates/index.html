@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fitness Tools 💪</title>
+  <!-- hreflang alternate links for SEO -->
+  {% for l in supported_langs %}
+  <link rel="alternate" hreflang="{{ l }}" href="{{ request.host_url.rstrip('/') }}/?lang={{ l }}" />
+  {% endfor %}
+  <link rel="alternate" hreflang="x-default" href="{{ request.host_url }}" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -493,9 +498,7 @@
       flex-wrap: wrap;
       gap: .35rem;
       justify-content: center;
-      margin-bottom: 1.2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1.5px solid #ede9fe;
+      margin-top: .9rem;
     }
     .lang-btn {
       background: none;
@@ -505,10 +508,11 @@
       font-size: 1.25rem;
       cursor: pointer;
       line-height: 1;
+      text-decoration: none;
       transition: border-color .15s, background .15s, transform .1s;
     }
-    .lang-btn:hover { border-color: #a78bfa; background: #f5f3ff; transform: scale(1.1); }
-    .lang-btn.active { border-color: #7c3aed; background: #ede9fe; }
+    .header .lang-btn:hover  { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.15); transform: scale(1.1); }
+    .header .lang-btn.active { border-color: #fff; background: rgba(255,255,255,.25); }
     @media print { .lang-selector { display: none; } }
 
     /* ── Improved error alert ── */
@@ -553,24 +557,23 @@
   <div class="header">
     <h1>Fitness Tools 💪</h1>
     <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
+    <!-- ── Language selector ── -->
+    <nav class="lang-selector no-print" aria-label="Language / Idioma">
+      <a href="/?lang=es" class="lang-btn {% if lang == 'es' %}active{% endif %}" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
+      <a href="/?lang=en" class="lang-btn {% if lang == 'en' %}active{% endif %}" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
+      <a href="/?lang=it" class="lang-btn {% if lang == 'it' %}active{% endif %}" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')">🇮🇹</a>
+      <a href="/?lang=fr" class="lang-btn {% if lang == 'fr' %}active{% endif %}" data-lang="fr" title="Français"   onclick="event.preventDefault(); setLang('fr')">🇫🇷</a>
+      <a href="/?lang=de" class="lang-btn {% if lang == 'de' %}active{% endif %}" data-lang="de" title="Deutsch"    onclick="event.preventDefault(); setLang('de')">🇩🇪</a>
+      <a href="/?lang=pt" class="lang-btn {% if lang == 'pt' %}active{% endif %}" data-lang="pt" title="Português"  onclick="event.preventDefault(); setLang('pt')">🇵🇹</a>
+      <a href="/?lang=nl" class="lang-btn {% if lang == 'nl' %}active{% endif %}" data-lang="nl" title="Nederlands" onclick="event.preventDefault(); setLang('nl')">🇳🇱</a>
+      <a href="/?lang=pl" class="lang-btn {% if lang == 'pl' %}active{% endif %}" data-lang="pl" title="Polski"     onclick="event.preventDefault(); setLang('pl')">🇵🇱</a>
+      <a href="/?lang=ru" class="lang-btn {% if lang == 'ru' %}active{% endif %}" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')">🇷🇺</a>
+      <a href="/?lang=zh" class="lang-btn {% if lang == 'zh' %}active{% endif %}" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
+      <a href="/?lang=ja" class="lang-btn {% if lang == 'ja' %}active{% endif %}" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
+    </nav>
   </div>
 
   <div class="card">
-
-    <!-- ── Language selector ── -->
-    <div class="lang-selector no-print" role="group" aria-label="Language / Idioma">
-      <button type="button" class="lang-btn" data-lang="es" title="Español"       onclick="setLang('es')">🇪🇸</button>
-      <button type="button" class="lang-btn" data-lang="en" title="English"       onclick="setLang('en')">🇬🇧</button>
-      <button type="button" class="lang-btn" data-lang="it" title="Italiano"      onclick="setLang('it')">🇮🇹</button>
-      <button type="button" class="lang-btn" data-lang="fr" title="Français"      onclick="setLang('fr')">🇫🇷</button>
-      <button type="button" class="lang-btn" data-lang="de" title="Deutsch"       onclick="setLang('de')">🇩🇪</button>
-      <button type="button" class="lang-btn" data-lang="pt" title="Português"     onclick="setLang('pt')">🇵🇹</button>
-      <button type="button" class="lang-btn" data-lang="nl" title="Nederlands"    onclick="setLang('nl')">🇳🇱</button>
-      <button type="button" class="lang-btn" data-lang="pl" title="Polski"        onclick="setLang('pl')">🇵🇱</button>
-      <button type="button" class="lang-btn" data-lang="ru" title="Русский"       onclick="setLang('ru')">🇷🇺</button>
-      <button type="button" class="lang-btn" data-lang="zh" title="中文"           onclick="setLang('zh')">🇨🇳</button>
-      <button type="button" class="lang-btn" data-lang="ja" title="日本語"         onclick="setLang('ja')">🇯🇵</button>
-    </div>
 
     {% if error %}
     <div class="alert-error" role="alert">
@@ -1655,6 +1658,16 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       applyTranslations();
+      // Update URL so each language has its own shareable/crawlable address
+      try {
+        var url = new URL(window.location.href);
+        if (lang === {{ default_lang | tojson }}) {
+          url.searchParams.delete('lang');
+        } else {
+          url.searchParams.set('lang', lang);
+        }
+        history.replaceState(null, '', url.toString());
+      } catch (e) { /* ignore in environments without History API */ }
     }
 
     document.addEventListener('DOMContentLoaded', function () { setLang(currentLang); });
