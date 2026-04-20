@@ -1,25 +1,38 @@
 """
 main.py — Herramienta CLI de composición corporal y nutrición deportiva.
 
-Calcula la distribución de macronutrientes del día y el porcentaje de grasa
-corporal (fórmula US Navy) a partir de los datos introducidos por argumento.
+Calcula la distribución de macronutrientes del día, el porcentaje de grasa
+corporal (fórmula US Navy hombres/mujeres), el IMC y el FFMI a partir de los
+datos introducidos por argumento.
 
-Uso básico:
-    python main.py --calorias 3343 --peso 72.25 --altura 175 \
+Uso básico (hombre):
+    python main.py --calorias 3343 --peso 72.25 --altura 175 \\
                    --cintura 84 --cuello 38
 
+Uso básico (mujer):
+    python main.py --calorias 2200 --peso 60 --altura 165 \\
+                   --cintura 70 --cuello 32 --cadera 95 --sexo mujer
+
 Uso completo:
-    python main.py --calorias 3343 --peso 72.25 --altura 175 \
-                   --grasa 14.5 \
-                   --cintura 84  --cuello 38   --cadera 95 \
-                   --biceps 35   --cuadriceps 55 \
-                   --gemelos 37  --pectoral 100
+    python main.py --calorias 3343 --peso 72.25 --altura 175 \\
+                   --grasa 14.5 \\
+                   --cintura 84  --cuello 38   --cadera 95 \\
+                   --biceps 35   --cuadriceps 55 \\
+                   --gemelos 37  --pectoral 100 \\
+                   --sexo hombre
 """
 
 import argparse
 import sys
 
-from fitness_tools import MedidasCorporales, calcular_grasa_navy, calcular_macros_diarios
+from fitness_tools import (
+    MedidasCorporales,
+    calcular_bmi,
+    calcular_ffmi,
+    calcular_grasa_navy,
+    calcular_macros_diarios,
+    clasificar_bmi,
+)
 
 
 def _separador(titulo: str = "", ancho: int = 45) -> None:
@@ -54,6 +67,9 @@ def main() -> None:
                         help="Circunferencia de cuello en cm.")
 
     # ── Opcionales ────────────────────────────────────────────────────────────
+    parser.add_argument("--sexo", choices=["hombre", "mujer"], default="hombre",
+                        help="Sexo biológico (hombre o mujer). "
+                             "La fórmula US Navy para mujeres requiere --cadera.")
     parser.add_argument("--grasa", type=float, default=None,
                         metavar="%",
                         help="Porcentaje de grasa medido directamente (ej. báscula).")
@@ -62,7 +78,9 @@ def main() -> None:
     parser.add_argument("--cuadriceps", type=float, default=None,
                         metavar="CM", help="Circunferencia de cuádriceps en cm.")
     parser.add_argument("--cadera", type=float, default=None,
-                        metavar="CM", help="Circunferencia de cadera en cm.")
+                        metavar="CM",
+                        help="Circunferencia de cadera en cm. "
+                             "Obligatorio si --sexo mujer.")
     parser.add_argument("--gemelos", type=float, default=None,
                         metavar="CM", help="Circunferencia de gemelos en cm.")
     parser.add_argument("--pectoral", type=float, default=None,
@@ -76,6 +94,7 @@ def main() -> None:
         altura=args.altura,
         cintura=args.cintura,
         cuello=args.cuello,
+        sexo=args.sexo,
         grasa_directa=args.grasa,
         biceps=args.biceps,
         cuadriceps=args.cuadriceps,
@@ -87,10 +106,20 @@ def main() -> None:
     # ── Calcular grasa Navy ───────────────────────────────────────────────────
     try:
         grasa_navy, masa_magra = calcular_grasa_navy(
-            medidas.peso, medidas.altura, medidas.cintura, medidas.cuello
+            medidas.peso, medidas.altura, medidas.cintura, medidas.cuello,
+            sexo=medidas.sexo, cadera=medidas.cadera,
         )
     except ValueError as exc:
         print(f"[ERROR] Cálculo de grasa Navy: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    # ── Calcular IMC y FFMI ───────────────────────────────────────────────────
+    try:
+        bmi = calcular_bmi(medidas.peso, medidas.altura)
+        bmi_categoria = clasificar_bmi(bmi)
+        ffmi, ffmi_norm = calcular_ffmi(masa_magra, medidas.altura)
+    except ValueError as exc:
+        print(f"[ERROR] Cálculo de IMC/FFMI: {exc}", file=sys.stderr)
         sys.exit(1)
 
     # ── Calcular macros ───────────────────────────────────────────────────────
@@ -113,6 +142,11 @@ def main() -> None:
         signo = "+" if diferencia >= 0 else ""
         print(f"  {'Grasa directa (%):':<25} {medidas.grasa_directa} %  "
               f"(Δ Navy {signo}{diferencia} %)")
+
+    _separador("IMC / FFMI")
+    print(f"  {'IMC (kg/m²):':<25} {bmi}  [{bmi_categoria}]")
+    print(f"  {'FFMI (kg/m²):':<25} {ffmi}")
+    print(f"  {'FFMI normalizado:':<25} {ffmi_norm}  [referencia ♂ < 25 / ♀ < 22]")
 
     _separador("MACROS DEL DÍA")
     for nombre, valor in macros.items():
