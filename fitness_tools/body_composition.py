@@ -25,10 +25,13 @@ class MedidasCorporales:
     cuello: float
     sexo: Sexo = "hombre"
     grasa_directa: Optional[float] = None   # % grasa medida externamente
-    biceps: Optional[float] = None
-    cuadriceps: Optional[float] = None
+    biceps_der: Optional[float] = None
+    biceps_izq: Optional[float] = None
+    cuadriceps_der: Optional[float] = None
+    cuadriceps_izq: Optional[float] = None
     cadera: Optional[float] = None
-    gemelos: Optional[float] = None
+    gemelos_der: Optional[float] = None
+    gemelos_izq: Optional[float] = None
     pectoral: Optional[float] = None
 
     def resumen(self) -> dict:
@@ -42,10 +45,13 @@ class MedidasCorporales:
         }
         opcionales = {
             "Grasa directa (%)": self.grasa_directa,
-            "Bíceps (cm)": self.biceps,
-            "Cuádriceps (cm)": self.cuadriceps,
+            "Bíceps der. (cm)": self.biceps_der,
+            "Bíceps izq. (cm)": self.biceps_izq,
+            "Cuádriceps der. (cm)": self.cuadriceps_der,
+            "Cuádriceps izq. (cm)": self.cuadriceps_izq,
             "Cadera (cm)": self.cadera,
-            "Gemelos (cm)": self.gemelos,
+            "Gemelos der. (cm)": self.gemelos_der,
+            "Gemelos izq. (cm)": self.gemelos_izq,
             "Pectoral (cm)": self.pectoral,
         }
         for clave, valor in opcionales.items():

@@ -17,7 +17,8 @@ Ejemplo rápido::
     )
 
     medidas = MedidasCorporales(peso=72.25, altura=175.0, cintura=84.0, cuello=38.0,
-                                sexo="hombre", biceps=35.0, cuadriceps=55.0)
+                                sexo="hombre", biceps_der=35.0, biceps_izq=34.5,
+                                cuadriceps_der=55.0, cuadriceps_izq=54.5)
     grasa, magra = calcular_grasa_navy(medidas.peso, medidas.altura,
                                        medidas.cintura, medidas.cuello,
                                        sexo=medidas.sexo)

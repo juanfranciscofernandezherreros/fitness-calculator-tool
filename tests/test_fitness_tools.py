@@ -50,8 +50,9 @@ class TestMedidasCorporales:
         m = MedidasCorporales(peso=70.0, altura=180.0, cintura=80.0, cuello=36.0)
         r = m.resumen()
         claves_opcionales = {
-            "Grasa directa (%)", "Bíceps (cm)", "Cuádriceps (cm)",
-            "Cadera (cm)", "Gemelos (cm)", "Pectoral (cm)",
+            "Grasa directa (%)", "Bíceps der. (cm)", "Bíceps izq. (cm)",
+            "Cuádriceps der. (cm)", "Cuádriceps izq. (cm)",
+            "Cadera (cm)", "Gemelos der. (cm)", "Gemelos izq. (cm)", "Pectoral (cm)",
         }
         assert claves_opcionales.isdisjoint(r.keys())
 
@@ -59,26 +60,30 @@ class TestMedidasCorporales:
         """resumen() incluye todos los opcionales cuando se suministran."""
         m = MedidasCorporales(
             peso=72.25, altura=175.0, cintura=84.0, cuello=38.0,
-            grasa_directa=14.5, biceps=35.0, cuadriceps=55.0,
-            cadera=95.0, gemelos=37.0, pectoral=100.0,
+            grasa_directa=14.5, biceps_der=35.0, biceps_izq=34.5,
+            cuadriceps_der=55.0, cuadriceps_izq=54.5,
+            cadera=95.0, gemelos_der=37.0, gemelos_izq=36.5, pectoral=100.0,
         )
         r = m.resumen()
         assert r["Grasa directa (%)"] == 14.5
-        assert r["Bíceps (cm)"] == 35.0
-        assert r["Cuádriceps (cm)"] == 55.0
+        assert r["Bíceps der. (cm)"] == 35.0
+        assert r["Bíceps izq. (cm)"] == 34.5
+        assert r["Cuádriceps der. (cm)"] == 55.0
+        assert r["Cuádriceps izq. (cm)"] == 54.5
         assert r["Cadera (cm)"] == 95.0
-        assert r["Gemelos (cm)"] == 37.0
+        assert r["Gemelos der. (cm)"] == 37.0
+        assert r["Gemelos izq. (cm)"] == 36.5
         assert r["Pectoral (cm)"] == 100.0
 
     def test_resumen_con_algunos_opcionales(self):
         """resumen() incluye sólo los opcionales que tienen valor."""
         m = MedidasCorporales(
             peso=80.0, altura=178.0, cintura=90.0, cuello=40.0,
-            biceps=38.0,
+            biceps_der=38.0,
         )
         r = m.resumen()
-        assert "Bíceps (cm)" in r
-        assert "Cuádriceps (cm)" not in r
+        assert "Bíceps der. (cm)" in r
+        assert "Cuádriceps der. (cm)" not in r
 
     def test_grasa_directa_atributo(self):
         """El atributo grasa_directa es accesible directamente."""
@@ -508,10 +513,13 @@ class TestCLI:
         """Con todos los parámetros opcionales el código de retorno es 0."""
         result = _run_cli(
             "--grasa", "14.5",
-            "--biceps", "35",
-            "--cuadriceps", "55",
+            "--biceps-der", "35",
+            "--biceps-izq", "34.5",
+            "--cuadriceps-der", "55",
+            "--cuadriceps-izq", "54.5",
             "--cadera", "95",
-            "--gemelos", "37",
+            "--gemelos-der", "37",
+            "--gemelos-izq", "36.5",
             "--pectoral", "100",
         )
         assert result.returncode == 0

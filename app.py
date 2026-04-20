@@ -38,10 +38,13 @@ def index():
                 sexo = "hombre"
 
             grasa = _optional_float(request.form.get("grasa"), "Grasa directa")
-            biceps = _optional_float(request.form.get("biceps"), "Bíceps")
-            cuadriceps = _optional_float(request.form.get("cuadriceps"), "Cuádriceps")
+            biceps_der = _optional_float(request.form.get("biceps_der"), "Bíceps derecho")
+            biceps_izq = _optional_float(request.form.get("biceps_izq"), "Bíceps izquierdo")
+            cuadriceps_der = _optional_float(request.form.get("cuadriceps_der"), "Cuádriceps derecho")
+            cuadriceps_izq = _optional_float(request.form.get("cuadriceps_izq"), "Cuádriceps izquierdo")
             cadera = _optional_float(request.form.get("cadera"), "Cadera")
-            gemelos = _optional_float(request.form.get("gemelos"), "Gemelos")
+            gemelos_der = _optional_float(request.form.get("gemelos_der"), "Gemelos derechos")
+            gemelos_izq = _optional_float(request.form.get("gemelos_izq"), "Gemelos izquierdos")
             pectoral = _optional_float(request.form.get("pectoral"), "Pectoral")
 
             medidas = MedidasCorporales(
@@ -51,10 +54,13 @@ def index():
                 cuello=cuello,
                 sexo=sexo,
                 grasa_directa=grasa,
-                biceps=biceps,
-                cuadriceps=cuadriceps,
+                biceps_der=biceps_der,
+                biceps_izq=biceps_izq,
+                cuadriceps_der=cuadriceps_der,
+                cuadriceps_izq=cuadriceps_izq,
                 cadera=cadera,
-                gemelos=gemelos,
+                gemelos_der=gemelos_der,
+                gemelos_izq=gemelos_izq,
                 pectoral=pectoral,
             )
 

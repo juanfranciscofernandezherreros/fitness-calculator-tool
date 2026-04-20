@@ -452,30 +452,6 @@
         </div>
 
         <div class="field">
-          <label for="biceps">Bíceps</label>
-          <div class="input-wrap">
-            <input type="number" id="biceps" name="biceps"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('biceps', '') }}"
-                   placeholder="ej. 35.0" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="cuadriceps">Cuádriceps</label>
-          <div class="input-wrap">
-            <input type="number" id="cuadriceps" name="cuadriceps"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('cuadriceps', '') }}"
-                   placeholder="ej. 55.0" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
-        <div class="field">
           <label for="cadera">Cadera <span id="cadera-star" class="required-star" style="display:none">*</span></label>
           <span class="hint" id="cadera-hint">Obligatorio para mujeres (fórmula US Navy)</span>
           <div class="input-wrap">
@@ -489,13 +465,73 @@
         </div>
 
         <div class="field">
-          <label for="gemelos">Gemelos</label>
+          <label for="biceps_der">Bíceps derecho</label>
           <div class="input-wrap">
-            <input type="number" id="gemelos" name="gemelos"
+            <input type="number" id="biceps_der" name="biceps_der"
                    step="any" min="0" inputmode="decimal"
                    class="has-unit"
-                   value="{{ request.form.get('gemelos', '') }}"
+                   value="{{ request.form.get('biceps_der', '') }}"
+                   placeholder="ej. 35.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="biceps_izq">Bíceps izquierdo</label>
+          <div class="input-wrap">
+            <input type="number" id="biceps_izq" name="biceps_izq"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('biceps_izq', '') }}"
+                   placeholder="ej. 34.5" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cuadriceps_der">Cuádriceps derecho</label>
+          <div class="input-wrap">
+            <input type="number" id="cuadriceps_der" name="cuadriceps_der"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('cuadriceps_der', '') }}"
+                   placeholder="ej. 55.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cuadriceps_izq">Cuádriceps izquierdo</label>
+          <div class="input-wrap">
+            <input type="number" id="cuadriceps_izq" name="cuadriceps_izq"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('cuadriceps_izq', '') }}"
+                   placeholder="ej. 54.5" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="gemelos_der">Gemelos derechos</label>
+          <div class="input-wrap">
+            <input type="number" id="gemelos_der" name="gemelos_der"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('gemelos_der', '') }}"
                    placeholder="ej. 37.0" />
+            <span class="unit">cm</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="gemelos_izq">Gemelos izquierdos</label>
+          <div class="input-wrap">
+            <input type="number" id="gemelos_izq" name="gemelos_izq"
+                   step="any" min="0" inputmode="decimal"
+                   class="has-unit"
+                   value="{{ request.form.get('gemelos_izq', '') }}"
+                   placeholder="ej. 36.5" />
             <span class="unit">cm</span>
           </div>
         </div>
