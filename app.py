@@ -20,18 +20,18 @@ def index():
 
     if request.method == "POST":
         try:
-            calorias = float(request.form["calorias"])
-            peso = float(request.form["peso"])
-            altura = float(request.form["altura"])
-            cintura = float(request.form["cintura"])
-            cuello = float(request.form["cuello"])
+            calorias = _parse_float(request.form.get("calorias", ""), "Calorías")
+            peso = _parse_float(request.form.get("peso", ""), "Peso")
+            altura = _parse_float(request.form.get("altura", ""), "Altura")
+            cintura = _parse_float(request.form.get("cintura", ""), "Cintura")
+            cuello = _parse_float(request.form.get("cuello", ""), "Cuello")
 
-            grasa = _optional_float(request.form.get("grasa"))
-            biceps = _optional_float(request.form.get("biceps"))
-            cuadriceps = _optional_float(request.form.get("cuadriceps"))
-            cadera = _optional_float(request.form.get("cadera"))
-            gemelos = _optional_float(request.form.get("gemelos"))
-            pectoral = _optional_float(request.form.get("pectoral"))
+            grasa = _optional_float(request.form.get("grasa"), "Grasa directa")
+            biceps = _optional_float(request.form.get("biceps"), "Bíceps")
+            cuadriceps = _optional_float(request.form.get("cuadriceps"), "Cuádriceps")
+            cadera = _optional_float(request.form.get("cadera"), "Cadera")
+            gemelos = _optional_float(request.form.get("gemelos"), "Gemelos")
+            pectoral = _optional_float(request.form.get("pectoral"), "Pectoral")
 
             medidas = MedidasCorporales(
                 peso=peso,
@@ -65,17 +65,31 @@ def index():
                 "macros": macros,
             }
 
-        except ValueError as exc:
+        except Exception as exc:
             error = str(exc)
 
     return render_template("index.html", resultados=resultados, error=error)
 
 
-def _optional_float(value: str | None) -> float | None:
+def _parse_float(value: str | None, campo: str) -> float:
+    """Convierte un valor de formulario a float con mensaje de error legible."""
+    if value is None or value.strip() == "":
+        raise ValueError(f"El campo '{campo}' es obligatorio y no puede estar vacío.")
+    try:
+        return float(value)
+    except ValueError:
+        raise ValueError(f"El valor '{value}' introducido en '{campo}' no es un número válido.")
+
+
+def _optional_float(value: str | None, campo: str = "") -> float | None:
     """Devuelve float si el valor tiene contenido, None en caso contrario."""
     if value is None or value.strip() == "":
         return None
-    return float(value)
+    try:
+        return float(value)
+    except ValueError:
+        campo_txt = f" en '{campo}'" if campo else ""
+        raise ValueError(f"El valor '{value}'{campo_txt} no es un número válido.")
 
 
 if __name__ == "__main__":
