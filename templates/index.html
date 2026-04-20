@@ -321,6 +321,23 @@
       line-height: 1.45;
       padding-top: .1rem;
     }
+
+    /* ── Charts ── */
+    .chart-container {
+      position: relative;
+      height: 180px;
+      width: 100%;
+    }
+    .chart-container-donut {
+      position: relative;
+      height: 260px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    @media print {
+      .chart-container  { height: 160px; }
+      .chart-container-donut { height: 240px; }
+    }
   </style>
 </head>
 <body>
@@ -578,6 +595,55 @@
 
     </div>
 
+    <!-- ── Gráficos ── -->
+    <div id="seccion-graficos" class="formula-report" style="margin-top:1.6rem;">
+
+      <div class="section-heading" style="margin-top:.4rem;">
+        <span class="icon">📊</span> Gráficos — Análisis de resultados
+      </div>
+
+      <!-- Grasa corporal -->
+      <div class="formula-block">
+        <div class="formula-block-header"><span>📉</span> Porcentaje de grasa corporal</div>
+        <div class="formula-body">
+          <div class="chart-container">
+            <canvas id="chart-grasa"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMC -->
+      <div class="formula-block">
+        <div class="formula-block-header"><span>📐</span> Índice de Masa Corporal (IMC)</div>
+        <div class="formula-body">
+          <div class="chart-container">
+            <canvas id="chart-imc"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- FFMI -->
+      <div class="formula-block">
+        <div class="formula-block-header"><span>💪</span> FFMI normalizado (1.80 m)</div>
+        <div class="formula-body">
+          <div class="chart-container">
+            <canvas id="chart-ffmi"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Macros -->
+      <div class="formula-block">
+        <div class="formula-block-header"><span>🍽️</span> Distribución de macronutrientes (kcal)</div>
+        <div class="formula-body">
+          <div class="chart-container-donut">
+            <canvas id="chart-macros"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- ── Informe detallado con fórmulas ── -->
     {% set p = resultados.pasos %}
     <div id="informe-detallado" class="formula-report">
@@ -793,9 +859,146 @@
     })();
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
           integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+3To5f/5iuT5S/l3EMEIzQTMAtQGp/L3e0S7yXA=="
           crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  {% if resultados %}
+  <script>
+  (function () {
+    var sexo       = {{ resultados.pasos.navy_sexo | tojson }};
+    var grasaVal   = {{ resultados.grasa_navy }};
+    var imcVal     = {{ resultados.bmi }};
+    var ffmiVal    = {{ resultados.ffmi_norm }};
+    var protKcal   = Math.max(0, {{ resultados.pasos.macro_cal_proteina }});
+    var grasaKcal  = Math.max(0, {{ resultados.pasos.macro_cal_grasa }});
+    var carbosKcal = Math.max(0, {{ resultados.pasos.macro_cal_carbos }});
+
+    /* Reference ranges */
+    var grasaRef = sexo === 'hombre' ? { min: 6,  max: 17 } : { min: 14, max: 24 };
+    var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
+
+    var PURPLE = 'rgba(118,75,162,0.85)';
+    var GREEN  = 'rgba(22,163,74,0.7)';
+    var AMBER  = 'rgba(234,179,8,0.7)';
+
+    function crearGraficoRango(id, metricLabel, valor, refMin, refMax, unidad) {
+      var el = document.getElementById(id);
+      if (!el) { return; }
+      new Chart(el, {
+        type: 'bar',
+        data: {
+          labels: [metricLabel],
+          datasets: [
+            {
+              label: 'Tu valor',
+              data: [valor],
+              backgroundColor: PURPLE,
+              borderColor: 'rgba(118,75,162,1)',
+              borderWidth: 1.5,
+              borderRadius: 6
+            },
+            {
+              label: 'Mín. saludable',
+              data: [refMin],
+              backgroundColor: GREEN,
+              borderColor: 'rgba(22,163,74,1)',
+              borderWidth: 1.5,
+              borderRadius: 6
+            },
+            {
+              label: 'Máx. saludable',
+              data: [refMax],
+              backgroundColor: AMBER,
+              borderColor: 'rgba(202,138,4,1)',
+              borderWidth: 1.5,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { font: { size: 11 }, padding: 12 }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  return ctx.dataset.label + ': ' + ctx.parsed.y + '\u2009' + unidad;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(0,0,0,0.06)' },
+              ticks: { font: { size: 11 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    crearGraficoRango('chart-grasa', '% Grasa corporal', grasaVal, grasaRef.min, grasaRef.max, '%');
+    crearGraficoRango('chart-imc',   'IMC (kg/m²)',       imcVal,   18.5,          24.9,          'kg/m²');
+    crearGraficoRango('chart-ffmi',  'FFMI norm. (kg/m²)', ffmiVal, ffmiRef.min,   ffmiRef.max,   'kg/m²');
+
+    /* Macros donut */
+    var elMacros = document.getElementById('chart-macros');
+    if (elMacros && (protKcal + grasaKcal + carbosKcal) > 0) {
+      new Chart(elMacros, {
+        type: 'doughnut',
+        data: {
+          labels: ['Proteína', 'Grasa', 'Carbohidratos'],
+          datasets: [{
+            data: [protKcal, grasaKcal, carbosKcal],
+            backgroundColor: [
+              'rgba(99,102,241,0.85)',
+              'rgba(234,179,8,0.85)',
+              'rgba(249,115,22,0.85)'
+            ],
+            borderColor: [
+              'rgba(79,70,229,1)',
+              'rgba(202,138,4,1)',
+              'rgba(234,88,12,1)'
+            ],
+            borderWidth: 2,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { font: { size: 11 }, padding: 12 }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  var total = ctx.dataset.data.reduce(function (a, b) { return a + b; }, 0);
+                  var pct = ((ctx.parsed / total) * 100).toFixed(1);
+                  return ctx.label + ': ' + ctx.parsed + '\u2009kcal (' + pct + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  })();
+  </script>
+  {% endif %}
   <script>
     function descargarPDF() {
       var btn = document.getElementById('btn-descargar-pdf');
@@ -807,9 +1010,28 @@
         margin:      [10, 10, 10, 10],
         filename:    'informe-fitness.pdf',
         image:       { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          logging: false,
+          onclone: function (clonedDoc) {
+            /* Copy rendered chart canvases into the cloned document so they
+               appear in the PDF instead of being blank. */
+            var origCanvases   = document.querySelectorAll('canvas');
+            var clonedCanvases = clonedDoc.querySelectorAll('canvas');
+            origCanvases.forEach(function (orig, i) {
+              var clone = clonedCanvases[i];
+              if (!clone) { return; }
+              clone.width  = orig.width;
+              clone.height = orig.height;
+              var ctx = clone.getContext('2d');
+              if (ctx) { ctx.drawImage(orig, 0, 0); }
+            });
+          }
+        },
         jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak:   { mode: ['avoid-all', 'css', 'legacy'] }
+        pagebreak:   { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
       };
 
       html2pdf().set(opciones).from(elemento).save().then(function () {
