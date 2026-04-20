@@ -289,8 +289,8 @@ def index():
     resultados = None
     error = None
 
-    # Detect language (form POST → localStorage → default)
-    lang = request.form.get("lang", DEFAULT_LANG)
+    # Detect language: GET param > form POST > default
+    lang = request.args.get("lang") or request.form.get("lang", DEFAULT_LANG)
     if lang not in SUPPORTED_LANGS:
         lang = DEFAULT_LANG
 
@@ -455,7 +455,14 @@ def index():
         except Exception as exc:
             error = _translate_error(exc, lang)
 
-    return render_template("index.html", resultados=resultados, error=error, lang=lang)
+    return render_template(
+        "index.html",
+        resultados=resultados,
+        error=error,
+        lang=lang,
+        supported_langs=SUPPORTED_LANGS,
+        default_lang=DEFAULT_LANG,
+    )
 
 
 def _parse_float(value: str | None, campo: str) -> float:
