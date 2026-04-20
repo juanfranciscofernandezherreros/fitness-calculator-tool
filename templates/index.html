@@ -1055,7 +1055,7 @@
               /* Copy rendered chart canvases into the cloned document so they
                  appear in the PDF instead of being blank. */
               var origCanvases   = document.querySelectorAll('#contenido-informe canvas');
-              var clonedCanvases = clonedDoc.querySelectorAll('canvas');
+              var clonedCanvases = clonedDoc.querySelectorAll('#contenido-informe canvas');
               origCanvases.forEach(function (orig, i) {
                 var clone = clonedCanvases[i];
                 if (!clone) { return; }
