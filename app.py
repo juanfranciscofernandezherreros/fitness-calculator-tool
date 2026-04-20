@@ -4,6 +4,7 @@ app.py — Web app de composición corporal y nutrición deportiva.
 Punto de entrada para Heroku (gunicorn app:app).
 """
 
+import math
 import os
 
 from flask import Flask, render_template, request
@@ -76,6 +77,92 @@ def index():
             if medidas.grasa_directa is not None:
                 diferencia_grasa = round(medidas.grasa_directa - grasa_navy, 2)
 
+            # ── Pasos intermedios para el informe detallado ──────────────────
+            altura_m = round(medidas.altura / 100, 4)
+
+            # US Navy – hombre
+            if medidas.sexo == "hombre":
+                navy_dif = round(medidas.cintura - medidas.cuello, 2)
+                navy_log_dif = round(math.log10(navy_dif), 6)
+                navy_log_alt = round(math.log10(medidas.altura), 6)
+                navy_denominador = round(
+                    1.0324 - 0.19077 * navy_log_dif + 0.15456 * navy_log_alt, 6
+                )
+                navy_formula = (
+                    "495 / (1.0324 − 0.19077 × log₁₀(cintura − cuello)"
+                    " + 0.15456 × log₁₀(altura)) − 450"
+                )
+                navy_extra_label = None
+                navy_extra_val = None
+            else:
+                # cadera is guaranteed non-None here: calcular_grasa_navy already
+                # raised ValueError if it were missing for a female subject.
+                navy_dif = round(medidas.cintura + medidas.cadera - medidas.cuello, 2)
+                navy_log_dif = round(math.log10(navy_dif), 6)
+                navy_log_alt = round(math.log10(medidas.altura), 6)
+                navy_denominador = round(
+                    1.29579 - 0.35004 * navy_log_dif + 0.22100 * navy_log_alt, 6
+                )
+                navy_formula = (
+                    "495 / (1.29579 − 0.35004 × log₁₀(cintura + cadera − cuello)"
+                    " + 0.22100 × log₁₀(altura)) − 450"
+                )
+                navy_extra_label = "cintura + cadera − cuello"
+                navy_extra_val = navy_dif
+
+            masa_grasa_kg = round(medidas.peso * (grasa_navy / 100), 2)
+
+            # Macros intermedios
+            proteina_g = round(medidas.peso * 2.0, 1)
+            grasa_g = round(medidas.peso * 0.8, 1)
+            cal_proteina = round(proteina_g * 4, 1)
+            cal_grasa_macro = round(grasa_g * 9, 1)
+            cal_carbos = round(calorias - cal_proteina - cal_grasa_macro, 1)
+            carbos_g = round(cal_carbos / 4, 1)
+
+            pasos = {
+                # --- US Navy ---
+                "navy_sexo": medidas.sexo,
+                "navy_formula": navy_formula,
+                "navy_cintura": medidas.cintura,
+                "navy_cuello": medidas.cuello,
+                "navy_cadera": medidas.cadera,
+                "navy_extra_label": navy_extra_label,
+                "navy_extra_val": navy_extra_val,
+                "navy_dif": navy_dif,
+                "navy_log_dif": navy_log_dif,
+                "navy_log_alt": navy_log_alt,
+                "navy_altura": medidas.altura,
+                "navy_denominador": navy_denominador,
+                "navy_grasa": grasa_navy,
+                # --- Masa magra ---
+                "mm_peso": medidas.peso,
+                "mm_masa_grasa": masa_grasa_kg,
+                "mm_masa_magra": masa_magra,
+                # --- IMC ---
+                "imc_peso": medidas.peso,
+                "imc_altura_cm": medidas.altura,
+                "imc_altura_m": altura_m,
+                "imc_altura_m_cuadrado": round(altura_m ** 2, 4),
+                "imc_valor": bmi,
+                "imc_categoria": bmi_categoria,
+                # --- FFMI ---
+                "ffmi_masa_magra": masa_magra,
+                "ffmi_altura_m": altura_m,
+                "ffmi_altura_m_cuadrado": round(altura_m ** 2, 4),
+                "ffmi_valor": ffmi,
+                "ffmi_norm_valor": ffmi_norm,
+                # --- Macros ---
+                "macro_kcal": calorias,
+                "macro_peso": medidas.peso,
+                "macro_proteina_g": proteina_g,
+                "macro_grasa_g": grasa_g,
+                "macro_cal_proteina": cal_proteina,
+                "macro_cal_grasa": cal_grasa_macro,
+                "macro_cal_carbos": cal_carbos,
+                "macro_carbos_g": carbos_g,
+            }
+
             resultados = {
                 "medidas": medidas.resumen(),
                 "grasa_navy": grasa_navy,
@@ -87,6 +174,7 @@ def index():
                 "ffmi": ffmi,
                 "ffmi_norm": ffmi_norm,
                 "macros": macros,
+                "pasos": pasos,
             }
 
         except Exception as exc:

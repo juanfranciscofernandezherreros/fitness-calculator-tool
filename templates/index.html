@@ -17,6 +17,13 @@
       padding: 2.5rem 1rem 3rem;
     }
 
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none; max-width: 100%; }
+      .header { color: #333; }
+    }
+
     /* ── Header ── */
     .header {
       text-align: center;
@@ -222,6 +229,98 @@
     }
     .badge-delta.pos { color: #e53e3e; }
     .badge-delta.neg { color: #16a34a; }
+
+    /* ── PDF download button ── */
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .7rem 1.4rem;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .02em;
+      transition: opacity .2s, transform .1s;
+      margin-top: .5rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-pdf:hover  { opacity: .9; }
+    .btn-pdf:active { transform: scale(.99); }
+
+    /* ── Formula report ── */
+    .formula-report {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+    .formula-block {
+      border: 1.5px solid #d1fae5;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .formula-block-header {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      background: #ecfdf5;
+      padding: .65rem 1rem;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #065f46;
+      border-bottom: 1.5px solid #d1fae5;
+    }
+    .formula-body {
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+    }
+    .formula-line {
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+    }
+    .formula-label {
+      font-size: .73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+    }
+    .formula-expr {
+      font-family: 'Courier New', monospace;
+      font-size: .88rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: .35rem .65rem;
+      color: #1e293b;
+      word-break: break-word;
+    }
+    .formula-result {
+      font-family: 'Courier New', monospace;
+      font-size: .88rem;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: .35rem .65rem;
+      color: #065f46;
+      font-weight: 700;
+    }
+    .formula-note {
+      font-size: .8rem;
+      color: #6b7280;
+      line-height: 1.45;
+      padding-top: .1rem;
+    }
   </style>
 </head>
 <body>
@@ -402,6 +501,7 @@
     </form>
 
     {% if resultados %}
+    <div id="contenido-informe">
     <div class="results">
 
       <div class="result-card">
@@ -477,6 +577,202 @@
       </div>
 
     </div>
+
+    <!-- ── Informe detallado con fórmulas ── -->
+    {% set p = resultados.pasos %}
+    <div id="informe-detallado" class="formula-report">
+
+      <div class="section-heading" style="margin-top:1.2rem;">
+        <span class="icon">📑</span> Informe detallado — Fórmulas paso a paso
+      </div>
+
+      <!-- 1. Grasa corporal US Navy -->
+      <div class="formula-block">
+        <div class="formula-block-header">
+          <span>🧮</span> 1. Porcentaje de grasa corporal — Método US Navy
+        </div>
+        <div class="formula-body">
+          <div class="formula-line">
+            <span class="formula-label">Fórmula general ({{ p.navy_sexo }})</span>
+            <span class="formula-expr">%GC = {{ p.navy_formula }}</span>
+          </div>
+
+          {% if p.navy_sexo == "hombre" %}
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · Diferencia cintura − cuello</span>
+            <span class="formula-expr">{{ p.navy_cintura }} − {{ p.navy_cuello }} = <strong>{{ p.navy_dif }} cm</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · log₁₀(cintura − cuello)</span>
+            <span class="formula-expr">log₁₀({{ p.navy_dif }}) = <strong>{{ p.navy_log_dif }}</strong></span>
+          </div>
+          {% else %}
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · Suma cintura + cadera − cuello</span>
+            <span class="formula-expr">{{ p.navy_cintura }} + {{ p.navy_cadera }} − {{ p.navy_cuello }} = <strong>{{ p.navy_dif }} cm</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · log₁₀(cintura + cadera − cuello)</span>
+            <span class="formula-expr">log₁₀({{ p.navy_dif }}) = <strong>{{ p.navy_log_dif }}</strong></span>
+          </div>
+          {% endif %}
+
+          <div class="formula-line">
+            <span class="formula-label">Paso 3 · log₁₀(altura)</span>
+            <span class="formula-expr">log₁₀({{ p.navy_altura }}) = <strong>{{ p.navy_log_alt }}</strong></span>
+          </div>
+
+          {% if p.navy_sexo == "hombre" %}
+          <div class="formula-line">
+            <span class="formula-label">Paso 4 · Denominador</span>
+            <span class="formula-expr">1.0324 − 0.19077 × {{ p.navy_log_dif }} + 0.15456 × {{ p.navy_log_alt }} = <strong>{{ p.navy_denominador }}</strong></span>
+          </div>
+          {% else %}
+          <div class="formula-line">
+            <span class="formula-label">Paso 4 · Denominador</span>
+            <span class="formula-expr">1.29579 − 0.35004 × {{ p.navy_log_dif }} + 0.22100 × {{ p.navy_log_alt }} = <strong>{{ p.navy_denominador }}</strong></span>
+          </div>
+          {% endif %}
+
+          <div class="formula-line">
+            <span class="formula-label">Paso 5 · Resultado</span>
+            <span class="formula-expr">495 / {{ p.navy_denominador }} − 450 = <strong>{{ p.navy_grasa }} %</strong></span>
+            <span class="formula-result">%GC = {{ p.navy_grasa }} %</span>
+          </div>
+
+          <p class="formula-note">
+            La fórmula US Navy fue desarrollada por la marina de los EE.UU. y estima el porcentaje de
+            grasa corporal a partir de medidas de circunferencia, sin necesidad de equipamiento especial.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. Masa magra -->
+      <div class="formula-block">
+        <div class="formula-block-header">
+          <span>💪</span> 2. Masa magra (Lean Body Mass)
+        </div>
+        <div class="formula-body">
+          <div class="formula-line">
+            <span class="formula-label">Fórmula</span>
+            <span class="formula-expr">Masa grasa (kg) = Peso × (%GC / 100)</span>
+            <span class="formula-expr">Masa magra (kg) = Peso − Masa grasa</span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · Masa grasa</span>
+            <span class="formula-expr">{{ p.mm_peso }} × ({{ p.navy_grasa }} / 100) = <strong>{{ p.mm_masa_grasa }} kg</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · Masa magra</span>
+            <span class="formula-expr">{{ p.mm_peso }} − {{ p.mm_masa_grasa }} = <strong>{{ p.mm_masa_magra }} kg</strong></span>
+            <span class="formula-result">Masa magra = {{ p.mm_masa_magra }} kg</span>
+          </div>
+          <p class="formula-note">
+            La masa magra incluye músculos, huesos, agua corporal y órganos, excluyendo la grasa.
+            Es el indicador clave para seguimiento de rendimiento deportivo.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. IMC -->
+      <div class="formula-block">
+        <div class="formula-block-header">
+          <span>📐</span> 3. Índice de Masa Corporal (IMC / BMI)
+        </div>
+        <div class="formula-body">
+          <div class="formula-line">
+            <span class="formula-label">Fórmula</span>
+            <span class="formula-expr">IMC = Peso (kg) / Altura (m)²</span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · Convertir altura a metros</span>
+            <span class="formula-expr">{{ p.imc_altura_cm }} cm ÷ 100 = <strong>{{ p.imc_altura_m }} m</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · Calcular IMC</span>
+            <span class="formula-expr">{{ p.imc_peso }} / {{ p.imc_altura_m }}² = {{ p.imc_peso }} / {{ p.imc_altura_m_cuadrado }} = <strong>{{ p.imc_valor }} kg/m²</strong></span>
+            <span class="formula-result">IMC = {{ p.imc_valor }} kg/m² → Categoría OMS: {{ p.imc_categoria }}</span>
+          </div>
+          <p class="formula-note">
+            Clasificación OMS: &lt;18.5 Bajo peso · 18.5–24.9 Peso normal ·
+            25–29.9 Sobrepeso · 30–34.9 Obesidad I · 35–39.9 Obesidad II · ≥40 Obesidad III.
+            El IMC no distingue entre masa grasa y masa magra.
+          </p>
+        </div>
+      </div>
+
+      <!-- 4. FFMI -->
+      <div class="formula-block">
+        <div class="formula-block-header">
+          <span>🏋️</span> 4. Índice de Masa Libre de Grasa (FFMI)
+        </div>
+        <div class="formula-body">
+          <div class="formula-line">
+            <span class="formula-label">Fórmula</span>
+            <span class="formula-expr">FFMI = Masa magra (kg) / Altura (m)²</span>
+            <span class="formula-expr">FFMI normalizado = FFMI + 6.1 × (1.80 − Altura m)</span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · FFMI bruto</span>
+            <span class="formula-expr">{{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m }}² = {{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m_cuadrado }} = <strong>{{ p.ffmi_valor }} kg/m²</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · FFMI normalizado a 1.80 m</span>
+            <span class="formula-expr">{{ p.ffmi_valor }} + 6.1 × (1.80 − {{ p.ffmi_altura_m }}) = <strong>{{ p.ffmi_norm_valor }} kg/m²</strong></span>
+            <span class="formula-result">FFMI = {{ p.ffmi_valor }} kg/m² · FFMI norm. = {{ p.ffmi_norm_valor }} kg/m²</span>
+          </div>
+          <p class="formula-note">
+            El FFMI normalizado permite comparar individuos de distintas estaturas.
+            Referencia natural: ♂ &lt;25 kg/m² · ♀ &lt;22 kg/m².
+            Valores superiores pueden indicar uso de sustancias.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. Macros -->
+      <div class="formula-block">
+        <div class="formula-block-header">
+          <span>🍽️</span> 5. Distribución de macronutrientes
+        </div>
+        <div class="formula-body">
+          <div class="formula-line">
+            <span class="formula-label">Pilares fijos (rendimiento deportivo)</span>
+            <span class="formula-expr">Proteína = Peso × 2.0 g/kg · Grasa = Peso × 0.8 g/kg · Carbohidratos = Calorías restantes / 4</span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 1 · Proteína</span>
+            <span class="formula-expr">{{ p.macro_peso }} kg × 2.0 = <strong>{{ p.macro_proteina_g }} g</strong> → {{ p.macro_proteina_g }} × 4 kcal/g = <strong>{{ p.macro_cal_proteina }} kcal</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 2 · Grasa</span>
+            <span class="formula-expr">{{ p.macro_peso }} kg × 0.8 = <strong>{{ p.macro_grasa_g }} g</strong> → {{ p.macro_grasa_g }} × 9 kcal/g = <strong>{{ p.macro_cal_grasa }} kcal</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 3 · Calorías disponibles para carbohidratos</span>
+            <span class="formula-expr">{{ p.macro_kcal }} − {{ p.macro_cal_proteina }} − {{ p.macro_cal_grasa }} = <strong>{{ p.macro_cal_carbos }} kcal</strong></span>
+          </div>
+          <div class="formula-line">
+            <span class="formula-label">Paso 4 · Carbohidratos</span>
+            <span class="formula-expr">{{ p.macro_cal_carbos }} kcal ÷ 4 kcal/g = <strong>{{ p.macro_carbos_g }} g</strong></span>
+            <span class="formula-result">
+              Proteína: {{ p.macro_proteina_g }} g · Grasa: {{ p.macro_grasa_g }} g · Carbohidratos: {{ p.macro_carbos_g }} g · Total: {{ p.macro_kcal }} kcal
+            </span>
+          </div>
+          <p class="formula-note">
+            La proteína proporciona 4 kcal/g, los carbohidratos 4 kcal/g y las grasas 9 kcal/g.
+            Los pilares de proteína y grasa se fijan en función del peso corporal para garantizar
+            el mantenimiento muscular y el correcto funcionamiento hormonal.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Botón descarga PDF ── -->
+    <button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">
+      📄 Descargar informe en PDF
+    </button>
+    </div><!-- /#contenido-informe -->
     {% endif %}
   </div>
 
@@ -495,6 +791,36 @@
       radios.forEach(function (r) { r.addEventListener('change', actualizarCadera); });
       actualizarCadera();
     })();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+          integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+3To5f/5iuT5S/l3EMEIzQTMAtQGp/L3e0S7yXA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function descargarPDF() {
+      var btn = document.getElementById('btn-descargar-pdf');
+      btn.disabled = true;
+      btn.textContent = '⏳ Generando PDF…';
+
+      var elemento = document.getElementById('contenido-informe');
+      var opciones = {
+        margin:      [10, 10, 10, 10],
+        filename:    'informe-fitness.pdf',
+        image:       { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:   { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opciones).from(elemento).save().then(function () {
+        btn.disabled = false;
+        btn.textContent = '📄 Descargar informe en PDF';
+      }).catch(function (err) {
+        btn.disabled = false;
+        btn.textContent = '📄 Descargar informe en PDF';
+        alert('No se pudo generar el PDF. Por favor, inténtalo de nuevo.\n' + (err && err.message ? err.message : ''));
+      });
+    }
   </script>
 
 </body>
