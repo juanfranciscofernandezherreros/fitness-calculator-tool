@@ -70,15 +70,137 @@
       font-size: 1rem;
     }
 
-    /* ── Form grid ── */
-    .form-grid {
+    /* ══════════════════════════════════════════
+       FORM — Fun & Interactive redesign
+    ══════════════════════════════════════════ */
+
+    /* ── Sex toggle cards ── */
+    .sex-toggle-group {
+      display: flex;
+      gap: .9rem;
+      margin-bottom: 1.6rem;
+    }
+    .sex-toggle-label {
+      flex: 1;
+      cursor: pointer;
+    }
+    .sex-toggle-label input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .sex-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      border: 2.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1rem .8rem .85rem;
+      background: #f9fafb;
+      transition: border-color .2s, background .2s, box-shadow .2s, transform .15s;
+      user-select: none;
+    }
+    .sex-card .sex-emoji  { font-size: 2rem; line-height: 1; }
+    .sex-card .sex-name   { font-size: .9rem; font-weight: 700; color: #374151; }
+    .sex-toggle-label:hover .sex-card {
+      border-color: #a78bfa;
+      background: #faf5ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(124,58,237,.13);
+    }
+    .sex-toggle-label input:checked + .sex-card {
+      border-color: #7c3aed;
+      background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+      box-shadow: 0 4px 18px rgba(124,58,237,.22);
+    }
+    .sex-toggle-label input:checked + .sex-card .sex-name { color: #6d28d9; }
+
+    /* ── Form section blocks ── */
+    .form-section {
+      border-radius: 14px;
+      padding: 1.2rem 1.2rem 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .form-section.required-section {
+      background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+      border: 1.5px solid #e0d7ff;
+    }
+    .form-section.optional-section {
+      background: linear-gradient(135deg, #f0fdf4 0%, #fafafa 100%);
+      border: 1.5px solid #bbf7d0;
+    }
+    .form-section-header {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      margin-bottom: 1rem;
+    }
+    .form-section-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      font-size: 1rem;
+    }
+    .required-section .form-section-badge { background: #ede9fe; }
+    .optional-section  .form-section-badge { background: #dcfce7; }
+    .form-section-title {
+      font-size: .8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .required-section .form-section-title { color: #6d28d9; }
+    .optional-section  .form-section-title { color: #15803d; }
+
+    /* ── Collapsible optional section ── */
+    .optional-toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+      font-size: .8rem;
+      font-weight: 700;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .2rem .5rem;
+      border-radius: 6px;
+      transition: background .15s;
+    }
+    .optional-toggle-btn:hover { background: #dcfce7; }
+    .optional-toggle-btn .chevron {
+      display: inline-block;
+      transition: transform .25s;
+    }
+    .optional-fields-wrap {
+      overflow: hidden;
+      transition: max-height .35s ease, opacity .3s ease;
+    }
+    .optional-fields-wrap.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+    .optional-fields-wrap.expanded {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    /* ── Form column layout ── */
+    .form-cols {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem 1.2rem;
-      margin-bottom: 1.8rem;
+      gap: .9rem 1rem;
     }
-    @media (max-width: 480px) {
-      .form-grid { grid-template-columns: 1fr; }
+    @media (max-width: 500px) {
+      .form-cols { grid-template-columns: 1fr; }
+      .sex-toggle-group { flex-direction: row; }
     }
 
     /* ── Field ── */
@@ -87,10 +209,18 @@
       flex-direction: column;
       gap: .3rem;
     }
+    .field.full-width { grid-column: 1 / -1; }
     .field label {
       font-size: .82rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #374151;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .field-icon {
+      font-size: .95rem;
+      line-height: 1;
     }
     .field .hint {
       font-size: .73rem;
@@ -100,7 +230,7 @@
     }
     .required-star { color: #e53e3e; }
 
-    /* ── Input wrapper (icon + input) ── */
+    /* ── Input wrapper ── */
     .input-wrap {
       position: relative;
     }
@@ -114,51 +244,69 @@
       color: #9ca3af;
       pointer-events: none;
       user-select: none;
+      transition: color .2s;
     }
 
     input[type="number"] {
       width: 100%;
-      border: 1.5px solid #d1d5db;
-      border-radius: 8px;
-      padding: .55rem .7rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: .58rem .75rem;
       font-size: .95rem;
       color: #111827;
-      background: #f9fafb;
-      transition: border-color .18s, box-shadow .18s, background .18s;
-      /* Allows decimal input on all browsers */
+      background: #fff;
+      transition: border-color .2s, box-shadow .2s, background .2s;
       -moz-appearance: textfield;
     }
-    /* Show unit badge padding */
     input[type="number"].has-unit {
-      padding-right: 2.8rem;
+      padding-right: 2.9rem;
     }
     input[type="number"]:focus {
       outline: none;
       border-color: #7c3aed;
       box-shadow: 0 0 0 3px rgba(124,58,237,.15);
-      background: #fff;
+      background: #fdfbff;
     }
+    .optional-section input[type="number"]:focus {
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22,163,74,.13);
+    }
+    input[type="number"]:not(:placeholder-shown):not(:focus) {
+      border-color: #a78bfa;
+      background: #faf5ff;
+    }
+    .optional-section input[type="number"]:not(:placeholder-shown):not(:focus) {
+      border-color: #4ade80;
+      background: #f0fdf4;
+    }
+    input[type="number"]:focus ~ .unit { color: #7c3aed; }
     /* Remove spin buttons */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
     /* ── Submit button ── */
+    @keyframes btn-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(124,58,237,.45); }
+      70%  { box-shadow: 0 0 0 10px rgba(124,58,237,0); }
+      100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+    }
     .btn-submit {
       width: 100%;
-      padding: .8rem;
+      padding: .9rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #fff;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
       cursor: pointer;
-      letter-spacing: .02em;
-      transition: opacity .2s, transform .1s;
-      margin-top: .25rem;
+      letter-spacing: .03em;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      margin-top: .3rem;
+      animation: btn-pulse 2.4s infinite;
     }
-    .btn-submit:hover  { opacity: .92; }
-    .btn-submit:active { transform: scale(.99); }
+    .btn-submit:hover  { opacity: .93; transform: translateY(-1px); }
+    .btn-submit:active { transform: scale(.98); animation: none; }
 
     /* ── Alert ── */
     .alert-error {
@@ -354,203 +502,225 @@
 
     <form method="post" novalidate>
 
-      <div class="section-heading"><span class="icon">📋</span> Datos obligatorios</div>
-      <div class="form-grid">
-
-        <div class="field" style="grid-column: 1 / -1;">
-          <label>Sexo <span class="required-star">*</span></label>
-          <div style="display:flex;gap:1.2rem;margin-top:.2rem;">
-            <label style="display:flex;align-items:center;gap:.4rem;font-weight:500;font-size:.9rem;cursor:pointer;">
-              <input type="radio" name="sexo" value="hombre"
-                     {% if request.form.get('sexo','hombre') == 'hombre' %}checked{% endif %} />
-              Hombre
-            </label>
-            <label style="display:flex;align-items:center;gap:.4rem;font-weight:500;font-size:.9rem;cursor:pointer;">
-              <input type="radio" name="sexo" value="mujer"
-                     {% if request.form.get('sexo') == 'mujer' %}checked{% endif %} />
-              Mujer
-            </label>
+      <!-- ── Sex selector ── -->
+      <div class="sex-toggle-group" role="group" aria-label="Sexo">
+        <label class="sex-toggle-label">
+          <input type="radio" name="sexo" value="hombre"
+                 {% if request.form.get('sexo','hombre') == 'hombre' %}checked{% endif %} />
+          <div class="sex-card">
+            <span class="sex-emoji">♂️</span>
+            <span class="sex-name">Hombre</span>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="calorias">Calorías totales <span class="required-star">*</span></label>
-          <div class="input-wrap">
-            <input type="number" id="calorias" name="calorias"
-                   step="any" min="1" inputmode="decimal" required
-                   class="has-unit"
-                   value="{{ request.form.get('calorias', '') }}"
-                   placeholder="ej. 3343" />
-            <span class="unit">kcal</span>
+        </label>
+        <label class="sex-toggle-label">
+          <input type="radio" name="sexo" value="mujer"
+                 {% if request.form.get('sexo') == 'mujer' %}checked{% endif %} />
+          <div class="sex-card">
+            <span class="sex-emoji">♀️</span>
+            <span class="sex-name">Mujer</span>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="peso">Peso <span class="required-star">*</span></label>
-          <div class="input-wrap">
-            <input type="number" id="peso" name="peso"
-                   step="any" min="1" inputmode="decimal" required
-                   class="has-unit"
-                   value="{{ request.form.get('peso', '') }}"
-                   placeholder="ej. 72.5" />
-            <span class="unit">kg</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="altura">Altura <span class="required-star">*</span></label>
-          <div class="input-wrap">
-            <input type="number" id="altura" name="altura"
-                   step="any" min="1" inputmode="decimal" required
-                   class="has-unit"
-                   value="{{ request.form.get('altura', '') }}"
-                   placeholder="ej. 175.5" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="cintura">Cintura <span class="required-star">*</span></label>
-          <div class="input-wrap">
-            <input type="number" id="cintura" name="cintura"
-                   step="any" min="1" inputmode="decimal" required
-                   class="has-unit"
-                   value="{{ request.form.get('cintura', '') }}"
-                   placeholder="ej. 84.0" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="cuello">Cuello <span class="required-star">*</span></label>
-          <div class="input-wrap">
-            <input type="number" id="cuello" name="cuello"
-                   step="any" min="1" inputmode="decimal" required
-                   class="has-unit"
-                   value="{{ request.form.get('cuello', '') }}"
-                   placeholder="ej. 38.0" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
+        </label>
       </div>
 
-      <div class="section-heading"><span class="icon">➕</span> Datos opcionales</div>
-      <div class="form-grid">
-
-        <div class="field">
-          <label for="grasa">Grasa directa</label>
-          <span class="hint">Báscula de bioimpedancia</span>
-          <div class="input-wrap">
-            <input type="number" id="grasa" name="grasa"
-                   step="any" min="0" max="100" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('grasa', '') }}"
-                   placeholder="ej. 14.5" />
-            <span class="unit">%</span>
-          </div>
+      <!-- ── Required fields ── -->
+      <div class="form-section required-section">
+        <div class="form-section-header">
+          <span class="form-section-badge">📋</span>
+          <span class="form-section-title">Datos obligatorios</span>
         </div>
+        <div class="form-cols">
 
-        <div class="field">
-          <label for="cadera">Cadera <span id="cadera-star" class="required-star" style="display:none">*</span></label>
-          <span class="hint" id="cadera-hint">Obligatorio para mujeres (fórmula US Navy)</span>
-          <div class="input-wrap">
-            <input type="number" id="cadera" name="cadera"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('cadera', '') }}"
-                   placeholder="ej. 95.0" />
-            <span class="unit">cm</span>
+          <div class="field">
+            <label for="calorias"><span class="field-icon">🔥</span> Calorías totales <span class="required-star">*</span></label>
+            <div class="input-wrap">
+              <input type="number" id="calorias" name="calorias"
+                     step="any" min="1" inputmode="decimal" required
+                     class="has-unit"
+                     value="{{ request.form.get('calorias', '') }}"
+                     placeholder="ej. 3343" />
+              <span class="unit">kcal</span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="biceps_der">Bíceps derecho</label>
-          <div class="input-wrap">
-            <input type="number" id="biceps_der" name="biceps_der"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('biceps_der', '') }}"
-                   placeholder="ej. 35.0" />
-            <span class="unit">cm</span>
+          <div class="field">
+            <label for="peso"><span class="field-icon">⚖️</span> Peso <span class="required-star">*</span></label>
+            <div class="input-wrap">
+              <input type="number" id="peso" name="peso"
+                     step="any" min="1" inputmode="decimal" required
+                     class="has-unit"
+                     value="{{ request.form.get('peso', '') }}"
+                     placeholder="ej. 72.5" />
+              <span class="unit">kg</span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="biceps_izq">Bíceps izquierdo</label>
-          <div class="input-wrap">
-            <input type="number" id="biceps_izq" name="biceps_izq"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('biceps_izq', '') }}"
-                   placeholder="ej. 34.5" />
-            <span class="unit">cm</span>
+          <div class="field">
+            <label for="altura"><span class="field-icon">📏</span> Altura <span class="required-star">*</span></label>
+            <div class="input-wrap">
+              <input type="number" id="altura" name="altura"
+                     step="any" min="1" inputmode="decimal" required
+                     class="has-unit"
+                     value="{{ request.form.get('altura', '') }}"
+                     placeholder="ej. 175.5" />
+              <span class="unit">cm</span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="cuadriceps_der">Cuádriceps derecho</label>
-          <div class="input-wrap">
-            <input type="number" id="cuadriceps_der" name="cuadriceps_der"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('cuadriceps_der', '') }}"
-                   placeholder="ej. 55.0" />
-            <span class="unit">cm</span>
+          <div class="field">
+            <label for="cintura"><span class="field-icon">🫃</span> Cintura <span class="required-star">*</span></label>
+            <div class="input-wrap">
+              <input type="number" id="cintura" name="cintura"
+                     step="any" min="1" inputmode="decimal" required
+                     class="has-unit"
+                     value="{{ request.form.get('cintura', '') }}"
+                     placeholder="ej. 84.0" />
+              <span class="unit">cm</span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="cuadriceps_izq">Cuádriceps izquierdo</label>
-          <div class="input-wrap">
-            <input type="number" id="cuadriceps_izq" name="cuadriceps_izq"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('cuadriceps_izq', '') }}"
-                   placeholder="ej. 54.5" />
-            <span class="unit">cm</span>
+          <div class="field full-width">
+            <label for="cuello"><span class="field-icon">🦒</span> Cuello <span class="required-star">*</span></label>
+            <div class="input-wrap">
+              <input type="number" id="cuello" name="cuello"
+                     step="any" min="1" inputmode="decimal" required
+                     class="has-unit"
+                     value="{{ request.form.get('cuello', '') }}"
+                     placeholder="ej. 38.0" />
+              <span class="unit">cm</span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label for="gemelos_der">Gemelos derechos</label>
-          <div class="input-wrap">
-            <input type="number" id="gemelos_der" name="gemelos_der"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('gemelos_der', '') }}"
-                   placeholder="ej. 37.0" />
-            <span class="unit">cm</span>
-          </div>
         </div>
-
-        <div class="field">
-          <label for="gemelos_izq">Gemelos izquierdos</label>
-          <div class="input-wrap">
-            <input type="number" id="gemelos_izq" name="gemelos_izq"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('gemelos_izq', '') }}"
-                   placeholder="ej. 36.5" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="pectoral">Pectoral</label>
-          <div class="input-wrap">
-            <input type="number" id="pectoral" name="pectoral"
-                   step="any" min="0" inputmode="decimal"
-                   class="has-unit"
-                   value="{{ request.form.get('pectoral', '') }}"
-                   placeholder="ej. 100.0" />
-            <span class="unit">cm</span>
-          </div>
-        </div>
-
       </div>
 
-      <button type="submit" class="btn-submit">Calcular →</button>
+      <!-- ── Optional fields ── -->
+      <div class="form-section optional-section">
+        <div class="form-section-header">
+          <span class="form-section-badge">➕</span>
+          <span class="form-section-title">Datos opcionales</span>
+          <button type="button" class="optional-toggle-btn" id="optional-toggle-btn" aria-expanded="false" aria-controls="optional-fields">
+            <span id="optional-toggle-text">Mostrar</span>
+            <span class="chevron" id="optional-chevron">▼</span>
+          </button>
+        </div>
+        <div class="optional-fields-wrap collapsed" id="optional-fields">
+          <div class="form-cols">
+
+            <div class="field">
+              <label for="grasa"><span class="field-icon">💧</span> Grasa directa</label>
+              <span class="hint">Báscula de bioimpedancia</span>
+              <div class="input-wrap">
+                <input type="number" id="grasa" name="grasa"
+                       step="any" min="0" max="100" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('grasa', '') }}"
+                       placeholder="ej. 14.5" />
+                <span class="unit">%</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cadera"><span class="field-icon">🍑</span> Cadera <span id="cadera-star" class="required-star" style="display:none">*</span></label>
+              <span class="hint" id="cadera-hint">Obligatorio para mujeres (fórmula US Navy)</span>
+              <div class="input-wrap">
+                <input type="number" id="cadera" name="cadera"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('cadera', '') }}"
+                       placeholder="ej. 95.0" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="biceps_der"><span class="field-icon">💪</span> Bíceps derecho</label>
+              <div class="input-wrap">
+                <input type="number" id="biceps_der" name="biceps_der"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('biceps_der', '') }}"
+                       placeholder="ej. 35.0" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="biceps_izq"><span class="field-icon">💪</span> Bíceps izquierdo</label>
+              <div class="input-wrap">
+                <input type="number" id="biceps_izq" name="biceps_izq"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('biceps_izq', '') }}"
+                       placeholder="ej. 34.5" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cuadriceps_der"><span class="field-icon">🦵</span> Cuádriceps derecho</label>
+              <div class="input-wrap">
+                <input type="number" id="cuadriceps_der" name="cuadriceps_der"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('cuadriceps_der', '') }}"
+                       placeholder="ej. 55.0" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cuadriceps_izq"><span class="field-icon">🦵</span> Cuádriceps izquierdo</label>
+              <div class="input-wrap">
+                <input type="number" id="cuadriceps_izq" name="cuadriceps_izq"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('cuadriceps_izq', '') }}"
+                       placeholder="ej. 54.5" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="gemelos_der"><span class="field-icon">🦿</span> Gemelos derechos</label>
+              <div class="input-wrap">
+                <input type="number" id="gemelos_der" name="gemelos_der"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('gemelos_der', '') }}"
+                       placeholder="ej. 37.0" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="gemelos_izq"><span class="field-icon">🦿</span> Gemelos izquierdos</label>
+              <div class="input-wrap">
+                <input type="number" id="gemelos_izq" name="gemelos_izq"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('gemelos_izq', '') }}"
+                       placeholder="ej. 36.5" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+            <div class="field full-width">
+              <label for="pectoral"><span class="field-icon">🫁</span> Pectoral</label>
+              <div class="input-wrap">
+                <input type="number" id="pectoral" name="pectoral"
+                       step="any" min="0" inputmode="decimal"
+                       class="has-unit"
+                       value="{{ request.form.get('pectoral', '') }}"
+                       placeholder="ej. 100.0" />
+                <span class="unit">cm</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">🚀 Calcular mi análisis</button>
     </form>
 
     {% if resultados %}
@@ -880,6 +1050,7 @@
 
   <script>
     (function () {
+      /* ── Cadera required for women ── */
       var radios = document.querySelectorAll('input[name="sexo"]');
       var caderaStar = document.getElementById('cadera-star');
       var caderaInput = document.getElementById('cadera');
@@ -888,10 +1059,49 @@
         var esMujer = document.querySelector('input[name="sexo"]:checked').value === 'mujer';
         caderaStar.style.display = esMujer ? 'inline' : 'none';
         caderaInput.required = esMujer;
+        /* Auto-expand optional section when mujer is selected so user sees cadera */
+        if (esMujer) expandOptional();
       }
 
       radios.forEach(function (r) { r.addEventListener('change', actualizarCadera); });
       actualizarCadera();
+
+      /* ── Optional section toggle ── */
+      var toggleBtn   = document.getElementById('optional-toggle-btn');
+      var toggleText  = document.getElementById('optional-toggle-text');
+      var chevron     = document.getElementById('optional-chevron');
+      var fieldsWrap  = document.getElementById('optional-fields');
+
+      /* Expand if any optional field has a value (POST back) */
+      var optionalInputs = fieldsWrap ? fieldsWrap.querySelectorAll('input') : [];
+      var hasOptionalValue = false;
+      optionalInputs.forEach(function (inp) { if (inp.value.trim() !== '') hasOptionalValue = true; });
+
+      function expandOptional() {
+        if (!fieldsWrap) return;
+        fieldsWrap.classList.remove('collapsed');
+        fieldsWrap.classList.add('expanded');
+        toggleText.textContent = 'Ocultar';
+        chevron.style.transform = 'rotate(180deg)';
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      }
+      function collapseOptional() {
+        if (!fieldsWrap) return;
+        fieldsWrap.classList.remove('expanded');
+        fieldsWrap.classList.add('collapsed');
+        toggleText.textContent = 'Mostrar';
+        chevron.style.transform = '';
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      if (hasOptionalValue) expandOptional();
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+          var isExpanded = fieldsWrap.classList.contains('expanded');
+          if (isExpanded) collapseOptional(); else expandOptional();
+        });
+      }
     })();
   </script>
 
