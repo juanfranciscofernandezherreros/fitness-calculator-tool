@@ -690,7 +690,7 @@
           </div>
           <div class="formula-line">
             <span class="formula-label">Paso 2 · Calcular IMC</span>
-            <span class="formula-expr">{{ p.imc_peso }} / {{ p.imc_altura_m }}² = {{ p.imc_peso }} / {{ (p.imc_altura_m * p.imc_altura_m) | round(4) }} = <strong>{{ p.imc_valor }} kg/m²</strong></span>
+            <span class="formula-expr">{{ p.imc_peso }} / {{ p.imc_altura_m }}² = {{ p.imc_peso }} / {{ p.imc_altura_m_cuadrado }} = <strong>{{ p.imc_valor }} kg/m²</strong></span>
             <span class="formula-result">IMC = {{ p.imc_valor }} kg/m² → Categoría OMS: {{ p.imc_categoria }}</span>
           </div>
           <p class="formula-note">
@@ -714,7 +714,7 @@
           </div>
           <div class="formula-line">
             <span class="formula-label">Paso 1 · FFMI bruto</span>
-            <span class="formula-expr">{{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m }}² = {{ p.ffmi_masa_magra }} / {{ (p.ffmi_altura_m * p.ffmi_altura_m) | round(4) }} = <strong>{{ p.ffmi_valor }} kg/m²</strong></span>
+            <span class="formula-expr">{{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m }}² = {{ p.ffmi_masa_magra }} / {{ p.ffmi_altura_m_cuadrado }} = <strong>{{ p.ffmi_valor }} kg/m²</strong></span>
           </div>
           <div class="formula-line">
             <span class="formula-label">Paso 2 · FFMI normalizado a 1.80 m</span>
@@ -815,6 +815,10 @@
       html2pdf().set(opciones).from(elemento).save().then(function () {
         btn.disabled = false;
         btn.textContent = '📄 Descargar informe en PDF';
+      }).catch(function (err) {
+        btn.disabled = false;
+        btn.textContent = '📄 Descargar informe en PDF';
+        alert('No se pudo generar el PDF. Por favor, inténtalo de nuevo.\n' + (err && err.message ? err.message : ''));
       });
     }
   </script>

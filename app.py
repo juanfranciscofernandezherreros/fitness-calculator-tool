@@ -95,7 +95,9 @@ def index():
                 navy_extra_label = None
                 navy_extra_val = None
             else:
-                navy_dif = round(medidas.cintura + (medidas.cadera or 0) - medidas.cuello, 2)
+                # cadera is guaranteed non-None here: calcular_grasa_navy already
+                # raised ValueError if it were missing for a female subject.
+                navy_dif = round(medidas.cintura + medidas.cadera - medidas.cuello, 2)
                 navy_log_dif = round(math.log10(navy_dif), 6)
                 navy_log_alt = round(math.log10(medidas.altura), 6)
                 navy_denominador = round(
@@ -141,11 +143,13 @@ def index():
                 "imc_peso": medidas.peso,
                 "imc_altura_cm": medidas.altura,
                 "imc_altura_m": altura_m,
+                "imc_altura_m_cuadrado": round(altura_m ** 2, 4),
                 "imc_valor": bmi,
                 "imc_categoria": bmi_categoria,
                 # --- FFMI ---
                 "ffmi_masa_magra": masa_magra,
                 "ffmi_altura_m": altura_m,
+                "ffmi_altura_m_cuadrado": round(altura_m ** 2, 4),
                 "ffmi_valor": ffmi,
                 "ffmi_norm_valor": ffmi_norm,
                 # --- Macros ---
