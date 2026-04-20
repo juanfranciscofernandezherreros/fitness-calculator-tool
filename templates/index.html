@@ -870,11 +870,11 @@
 
     </div>
 
+    </div><!-- /#contenido-informe -->
     <!-- ── Botón descarga PDF ── -->
     <button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">
       📄 Descargar informe en PDF
     </button>
-    </div><!-- /#contenido-informe -->
     {% endif %}
   </div>
 
@@ -1085,8 +1085,8 @@
             allowTaint: false,
             logging: false,
             backgroundColor: '#ffffff',
-            scrollX: 0,
-            scrollY: 0,
+            scrollX: -window.scrollX,
+            scrollY: -window.scrollY,
             onclone: function (clonedDoc) {
               /* Copy rendered chart canvases into the cloned document so they
                  appear in the PDF instead of being blank. */
