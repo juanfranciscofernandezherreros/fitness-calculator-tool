@@ -1035,6 +1035,10 @@
 
       try {
         var elemento = document.getElementById('contenido-informe');
+        if (!elemento) {
+          resetBtn(new Error('No se encontró el contenido del informe.'));
+          return;
+        }
         var opciones = {
           margin:      [10, 10, 10, 10],
           filename:    'informe-fitness.pdf',
@@ -1044,10 +1048,13 @@
             useCORS: true,
             allowTaint: false,
             logging: false,
+            backgroundColor: '#ffffff',
+            scrollX: 0,
+            scrollY: 0,
             onclone: function (clonedDoc) {
               /* Copy rendered chart canvases into the cloned document so they
                  appear in the PDF instead of being blank. */
-              var origCanvases   = document.querySelectorAll('canvas');
+              var origCanvases   = document.querySelectorAll('#contenido-informe canvas');
               var clonedCanvases = clonedDoc.querySelectorAll('canvas');
               origCanvases.forEach(function (orig, i) {
                 var clone = clonedCanvases[i];
