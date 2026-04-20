@@ -1085,21 +1085,98 @@
             allowTaint: false,
             logging: false,
             backgroundColor: '#ffffff',
-            scrollX: -window.scrollX,
-            scrollY: -window.scrollY,
+            scrollX: 0,
+            scrollY: 0,
             onclone: function (clonedDoc) {
-              /* Copy rendered chart canvases into the cloned document so they
-                 appear in the PDF instead of being blank. */
-              var origCanvases   = document.querySelectorAll('#contenido-informe canvas');
-              var clonedCanvases = clonedDoc.querySelectorAll('#contenido-informe canvas');
-              origCanvases.forEach(function (orig, i) {
-                var clone = clonedCanvases[i];
-                if (!clone) { return; }
-                clone.width  = orig.width;
-                clone.height = orig.height;
-                var ctx = clone.getContext('2d');
-                if (ctx) { ctx.drawImage(orig, 0, 0); }
-              });
+              /* Replace every chart canvas with a plain-text comparison table so
+                 the data always appears in the PDF regardless of rendering issues. */
+              var sexo     = {{ resultados.pasos.navy_sexo | tojson }};
+              var grasaRef = sexo === 'hombre' ? { min: 6,  max: 17 } : { min: 14, max: 24 };
+              var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
+
+              var TABLE_STYLE   = 'width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem;';
+              var TH_STYLE      = 'text-align:left;padding:5px 8px;border-bottom:2px solid #e5e7eb;color:#374151;font-weight:700;';
+              var TD_STYLE      = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151;';
+              var TD_VAL_STYLE  = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;font-weight:700;color:#6b21a8;';
+
+              function pct(num, total) {
+                return total > 0 ? (num / total * 100).toFixed(1) + '%' : '—';
+              }
+
+              function makeTable(headers, rows) {
+                var h = '<table style="' + TABLE_STYLE + '"><thead><tr>';
+                headers.forEach(function (hd) { h += '<th style="' + TH_STYLE + '">' + hd + '</th>'; });
+                h += '</tr></thead><tbody>';
+                rows.forEach(function (row) {
+                  h += '<tr>';
+                  row.forEach(function (cell, i) {
+                    h += '<td style="' + (i === 1 ? TD_VAL_STYLE : TD_STYLE) + '">' + cell + '</td>';
+                  });
+                  h += '</tr>';
+                });
+                h += '</tbody></table>';
+                return h;
+              }
+
+              /* Helper: find the .formula-block that contains a given canvas id */
+              function bloqueDeCanvas(canvasId) {
+                var canvas = clonedDoc.getElementById(canvasId);
+                return canvas ? canvas.closest('.formula-block') : null;
+              }
+
+              /* Grasa corporal */
+              var blGrasa = bloqueDeCanvas('chart-grasa');
+              if (blGrasa) {
+                blGrasa.querySelector('.formula-body').innerHTML = makeTable(
+                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
+                  [['% Grasa corporal',
+                    '{{ resultados.grasa_navy }}\u2009%',
+                    grasaRef.min + '\u2009%',
+                    grasaRef.max + '\u2009%']]
+                );
+              }
+
+              /* IMC */
+              var blImc = bloqueDeCanvas('chart-imc');
+              if (blImc) {
+                blImc.querySelector('.formula-body').innerHTML = makeTable(
+                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
+                  [['IMC (kg/m²)',
+                    '{{ resultados.bmi }}\u2009kg/m²',
+                    '18.5\u2009kg/m²',
+                    '24.9\u2009kg/m²']]
+                );
+              }
+
+              /* FFMI */
+              var blFfmi = bloqueDeCanvas('chart-ffmi');
+              if (blFfmi) {
+                blFfmi.querySelector('.formula-body').innerHTML = makeTable(
+                  ['Métrica', 'Tu valor', 'Ref. mínima', 'Ref. máxima'],
+                  [['FFMI normalizado (kg/m²)',
+                    '{{ resultados.ffmi_norm }}\u2009kg/m²',
+                    ffmiRef.min + '\u2009kg/m²',
+                    ffmiRef.max + '\u2009kg/m²']]
+                );
+              }
+
+              /* Macros */
+              var blMacros = bloqueDeCanvas('chart-macros');
+              if (blMacros) {
+                var totalKcal = {{ resultados.pasos.macro_kcal }};
+                var pKcal     = {{ resultados.pasos.macro_cal_proteina }};
+                var gKcal     = {{ resultados.pasos.macro_cal_grasa }};
+                var cKcal     = {{ resultados.pasos.macro_cal_carbos }};
+                blMacros.querySelector('.formula-body').innerHTML = makeTable(
+                  ['Macronutriente', 'Gramos', 'Calorías', '% total'],
+                  [
+                    ['Proteína',      '{{ resultados.pasos.macro_proteina_g }}\u2009g', pKcal + '\u2009kcal', pct(pKcal, totalKcal)],
+                    ['Grasa',         '{{ resultados.pasos.macro_grasa_g }}\u2009g',    gKcal + '\u2009kcal', pct(gKcal, totalKcal)],
+                    ['Carbohidratos', '{{ resultados.pasos.macro_carbos_g }}\u2009g',   cKcal + '\u2009kcal', pct(cKcal, totalKcal)],
+                    ['Total',         '—', totalKcal + '\u2009kcal', '100%']
+                  ]
+                );
+              }
             }
           },
           jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
