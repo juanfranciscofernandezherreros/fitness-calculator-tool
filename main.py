@@ -17,8 +17,10 @@ Uso completo:
     python main.py --calorias 3343 --peso 72.25 --altura 175 \\
                    --grasa 14.5 \\
                    --cintura 84  --cuello 38   --cadera 95 \\
-                   --biceps 35   --cuadriceps 55 \\
-                   --gemelos 37  --pectoral 100 \\
+                   --biceps-der 35  --biceps-izq 34.5 \\
+                   --cuadriceps-der 55 --cuadriceps-izq 54.5 \\
+                   --gemelos-der 37  --gemelos-izq 36.5 \\
+                   --pectoral 100 \\
                    --sexo hombre
 """
 
@@ -73,16 +75,22 @@ def main() -> None:
     parser.add_argument("--grasa", type=float, default=None,
                         metavar="%",
                         help="Porcentaje de grasa medido directamente (ej. báscula).")
-    parser.add_argument("--biceps", type=float, default=None,
-                        metavar="CM", help="Circunferencia de bíceps en cm.")
-    parser.add_argument("--cuadriceps", type=float, default=None,
-                        metavar="CM", help="Circunferencia de cuádriceps en cm.")
+    parser.add_argument("--biceps-der", type=float, default=None,
+                        metavar="CM", help="Circunferencia de bíceps derecho en cm.")
+    parser.add_argument("--biceps-izq", type=float, default=None,
+                        metavar="CM", help="Circunferencia de bíceps izquierdo en cm.")
+    parser.add_argument("--cuadriceps-der", type=float, default=None,
+                        metavar="CM", help="Circunferencia de cuádriceps derecho en cm.")
+    parser.add_argument("--cuadriceps-izq", type=float, default=None,
+                        metavar="CM", help="Circunferencia de cuádriceps izquierdo en cm.")
     parser.add_argument("--cadera", type=float, default=None,
                         metavar="CM",
                         help="Circunferencia de cadera en cm. "
                              "Obligatorio si --sexo mujer.")
-    parser.add_argument("--gemelos", type=float, default=None,
-                        metavar="CM", help="Circunferencia de gemelos en cm.")
+    parser.add_argument("--gemelos-der", type=float, default=None,
+                        metavar="CM", help="Circunferencia de gemelos derecho en cm.")
+    parser.add_argument("--gemelos-izq", type=float, default=None,
+                        metavar="CM", help="Circunferencia de gemelos izquierdo en cm.")
     parser.add_argument("--pectoral", type=float, default=None,
                         metavar="CM", help="Circunferencia de pectoral en cm.")
 
@@ -96,10 +104,13 @@ def main() -> None:
         cuello=args.cuello,
         sexo=args.sexo,
         grasa_directa=args.grasa,
-        biceps=args.biceps,
-        cuadriceps=args.cuadriceps,
+        biceps_der=args.biceps_der,
+        biceps_izq=args.biceps_izq,
+        cuadriceps_der=args.cuadriceps_der,
+        cuadriceps_izq=args.cuadriceps_izq,
         cadera=args.cadera,
-        gemelos=args.gemelos,
+        gemelos_der=args.gemelos_der,
+        gemelos_izq=args.gemelos_izq,
         pectoral=args.pectoral,
     )
 
