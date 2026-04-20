@@ -7,3 +7,4 @@ fitness_tools.egg-info/PKG-INFO
 fitness_tools.egg-info/SOURCES.txt
 fitness_tools.egg-info/dependency_links.txt
 fitness_tools.egg-info/top_level.txt
+tests/test_fitness_tools.py
