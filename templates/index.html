@@ -138,7 +138,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2.5rem 1rem 3rem;
+      padding: calc(2.5rem + 56px) 1rem 3rem;
     }
 
     @media print {
@@ -788,28 +788,47 @@
     .faq-tag-male   { color: #93c5fd; font-weight: 700; }
     .faq-tag-female { color: #f9a8d4; font-weight: 700; }
 
+    /* ── Fixed top language bar ── */
+    .lang-topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: linear-gradient(90deg, #1e1b4b 0%, #5b21b6 50%, #1e1b4b 100%);
+      box-shadow: 0 2px 14px rgba(0,0,0,.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: .5rem 1rem;
+      gap: .5rem;
+    }
+    .lang-topbar .globe-icon {
+      font-size: 1.1rem;
+      color: #e9d5ff;
+      flex-shrink: 0;
+    }
+
     /* ── Language selector ── */
     .lang-selector {
       display: flex;
       flex-wrap: wrap;
-      gap: .35rem;
+      gap: .3rem;
       justify-content: center;
-      margin-top: .9rem;
+      margin-top: 0;
     }
     .lang-btn {
       background: none;
       border: 2px solid transparent;
       border-radius: 8px;
-      padding: .2rem .4rem;
+      padding: .2rem .35rem;
       font-size: 1.25rem;
       cursor: pointer;
       line-height: 1;
       text-decoration: none;
       transition: border-color .15s, background .15s, transform .1s;
     }
-    .header .lang-btn:hover  { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.15); transform: scale(1.1); }
-    .header .lang-btn.active { border-color: #fff; background: rgba(255,255,255,.25); }
-    @media print { .lang-selector { display: none; } }
+    .lang-topbar .lang-btn:hover  { border-color: rgba(233,213,255,.8); background: rgba(255,255,255,.12); transform: scale(1.12); }
+    .lang-topbar .lang-btn.active { border-color: #e9d5ff; background: rgba(233,213,255,.2); box-shadow: 0 0 0 2px rgba(233,213,255,.3); }
+    @media print { .lang-topbar { display: none; } }
 
     /* ── Improved error alert ── */
     .alert-error {
@@ -895,12 +914,10 @@
 </head>
 <body>
 
-  <header class="header">
-    <h1 id="page-h1" data-i18n="page_title" aria-describedby="page-intro">Calculadora de Composición Corporal y Macros 💪</h1>
-    <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
-    <p id="page-intro" class="header-intro" data-i18n="page_intro">Calcula gratis tu grasa corporal (US Navy), masa magra, IMC, FFMI y macronutrientes diarios.</p>
-    <!-- ── Language selector ── -->
-    <nav class="lang-selector no-print" aria-label="Language / Idioma">
+  <!-- ── Fixed language top bar ── -->
+  <div class="lang-topbar no-print" role="navigation" aria-label="Language / Idioma">
+    <span class="globe-icon" aria-hidden="true">🌐</span>
+    <nav class="lang-selector" aria-label="Language / Idioma">
       <a href="/?lang=es" class="lang-btn" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
       <a href="/?lang=en" class="lang-btn" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
       <a href="/?lang=it" class="lang-btn" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')">🇮🇹</a>
@@ -913,6 +930,12 @@
       <a href="/?lang=zh" class="lang-btn" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
       <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
     </nav>
+  </div>
+
+  <header class="header">
+    <h1 id="page-h1" data-i18n="page_title" aria-describedby="page-intro">Calculadora de Composición Corporal y Macros 💪</h1>
+    <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
+    <p id="page-intro" class="header-intro" data-i18n="page_intro">Calcula gratis tu grasa corporal (US Navy), masa magra, IMC, FFMI y macronutrientes diarios.</p>
   </header>
 
   <!-- ── FAQ Section ── -->
