@@ -2634,22 +2634,24 @@
   <!-- ── Cookie consent banner ── -->
   <div id="cookie-banner" class="cookie-banner no-print" role="banner" aria-label="Cookie consent" style="display:none;">
     <span class="cookie-banner-text" id="cookie-banner-text" data-i18n="cookie_msg">🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.</span>
-    <button class="cookie-accept-btn" id="cookie-accept-btn" data-i18n="cookie_accept" onclick="acceptCookies()">Aceptar</button>
+    <button class="cookie-accept-btn" id="cookie-accept-btn" data-i18n="cookie_accept">Aceptar</button>
   </div>
 
   <script>
     (function () {
       function acceptCookies() {
-        localStorage.setItem('fitness-cookies-accepted', '1');
+        localStorage.setItem('fitness-cookies-accepted', 'true');
         var banner = document.getElementById('cookie-banner');
         if (banner) banner.style.display = 'none';
       }
-      window.acceptCookies = acceptCookies;
 
       document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('cookie-accept-btn');
+        if (btn) btn.addEventListener('click', acceptCookies);
+
         if (!localStorage.getItem('fitness-cookies-accepted')) {
           var banner = document.getElementById('cookie-banner');
-          if (banner) banner.style.display = '';
+          if (banner) banner.style.display = 'flex';
         }
       });
     })();
