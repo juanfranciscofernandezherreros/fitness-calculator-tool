@@ -2482,84 +2482,50 @@
         if (err) alert('No se pudo generar el PDF.\n' + (err.message || err));
       }
 
+      /* ── Pre-convert canvas charts to static images so html2canvas can render them ──
+         html2canvas cannot copy canvas pixel data from a cloned document node, so we
+         replace each <canvas> with an <img> (snapshot via toDataURL) before generating
+         the PDF and restore the originals afterwards.
+         Declared outside try-catch so restoreCanvases() is always in scope. */
+      var replacements = [];
+      var restoreCanvases = function () {
+        replacements.forEach(function (r) {
+          try { r.parent.replaceChild(r.canvas, r.img); } catch (e) { /* already restored */ }
+        });
+        replacements = [];
+      };
+
       try {
         var elemento = document.getElementById('contenido-informe');
         if (!elemento) { resetBtn(new Error('No se encontró el contenido del informe.')); return; }
+
+        elemento.querySelectorAll('canvas').forEach(function (canvas) {
+          try {
+            var parent = canvas.parentNode; /* store before replacement */
+            var img = document.createElement('img');
+            img.src = canvas.toDataURL('image/png');
+            img.style.cssText = 'width:100%;height:auto;display:block;';
+            parent.replaceChild(img, canvas);
+            replacements.push({ parent: parent, img: img, canvas: canvas });
+          } catch (e) { /* tainted canvas — leave as-is */ }
+        });
+
         var opciones = {
           margin:      [10, 10, 10, 10],
           filename:    'informe-fitness.pdf',
           image:       { type: 'jpeg', quality: 0.95 },
           html2canvas: {
             scale: 2, useCORS: true, allowTaint: false, logging: false,
-            backgroundColor: '#ffffff', scrollX: -window.scrollX, scrollY: -window.scrollY,
-            onclone: function (clonedDoc) {
-              var resultsEl = clonedDoc.getElementById('results-container');
-              if (!resultsEl) return;
-              var TABLE_STYLE  = 'width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem;';
-              var TH_STYLE     = 'text-align:left;padding:5px 8px;border-bottom:2px solid #e5e7eb;color:#374151;font-weight:700;';
-              var TD_STYLE     = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151;';
-              var TD_VAL_STYLE = 'padding:5px 8px;border-bottom:1px solid #f3f4f6;font-weight:700;color:#6b21a8;';
-              function pct(n, tot) { return tot > 0 ? (n / tot * 100).toFixed(1) + '%' : '\u2014'; }
-              function makeTable(headers, rows) {
-                var h = '<table style="' + TABLE_STYLE + '"><thead><tr>';
-                headers.forEach(function (hd) { h += '<th style="' + TH_STYLE + '">' + hd + '</th>'; });
-                h += '</tr></thead><tbody>';
-                rows.forEach(function (row) {
-                  h += '<tr>';
-                  row.forEach(function (cell, i) { h += '<td style="' + (i === 1 ? TD_VAL_STYLE : TD_STYLE) + '">' + cell + '</td>'; });
-                  h += '</tr>';
-                });
-                return h + '</tbody></table>';
-              }
-              function bloqueDeCanvas(cid) {
-                var canvas = clonedDoc.getElementById(cid);
-                return canvas ? canvas.closest('.formula-block') : null;
-              }
-              /* Read current result values from the DOM data attributes set during rendering */
-              var infoEl = clonedDoc.getElementById('contenido-informe');
-              if (!infoEl) return;
-              var dataEl = clonedDoc.getElementById('spa-result-data');
-              if (!dataEl) return;
-              var rd;
-              try { rd = JSON.parse(dataEl.textContent); } catch (e) { return; }
-              var sexo     = rd.pasos.navy_sexo;
-              var grasaRef = sexo === 'hombre' ? { min: 6, max: 17 } : { min: 14, max: 24 };
-              var ffmiRef  = sexo === 'hombre' ? { min: 17, max: 25 } : { min: 14, max: 22 };
-              var blGrasa = bloqueDeCanvas('chart-grasa');
-              if (blGrasa) blGrasa.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['% Grasa corporal', rd.grasa_navy + '\u2009%', grasaRef.min + '\u2009%', grasaRef.max + '\u2009%']]);
-              var blImc = bloqueDeCanvas('chart-imc');
-              if (blImc) blImc.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['IMC (kg/m\u00b2)', rd.bmi + '\u2009kg/m\u00b2', '18.5\u2009kg/m\u00b2', '24.9\u2009kg/m\u00b2']]);
-              var blFfmi = bloqueDeCanvas('chart-ffmi');
-              if (blFfmi) blFfmi.querySelector('.formula-body').innerHTML = makeTable(['Métrica','Tu valor','Ref. mínima','Ref. máxima'],[['FFMI normalizado (kg/m\u00b2)', rd.ffmi_norm + '\u2009kg/m\u00b2', ffmiRef.min + '\u2009kg/m\u00b2', ffmiRef.max + '\u2009kg/m\u00b2']]);
-              var blMacros = bloqueDeCanvas('chart-macros');
-              if (blMacros) {
-                var pKcal = rd.pasos.macro_cal_proteina, gKcal = rd.pasos.macro_cal_grasa,
-                    cKcal = rd.pasos.macro_cal_carbos, totalKcal = rd.pasos.macro_kcal;
-                blMacros.querySelector('.formula-body').innerHTML = makeTable(['Macronutriente','Gramos','Calorías','% total'],[
-                  ['Proteína',      rd.pasos.macro_proteina_g + '\u2009g', pKcal + '\u2009kcal', pct(pKcal, totalKcal)],
-                  ['Grasa',         rd.pasos.macro_grasa_g    + '\u2009g', gKcal + '\u2009kcal', pct(gKcal, totalKcal)],
-                  ['Carbohidratos', rd.pasos.macro_carbos_g   + '\u2009g', cKcal + '\u2009kcal', pct(cKcal, totalKcal)],
-                  ['Total', '\u2014', totalKcal + '\u2009kcal', '100%']
-                ]);
-              }
-            }
+            backgroundColor: '#ffffff',
+            windowWidth: document.documentElement.scrollWidth
           },
           jsPDF:     { unit: 'mm', format: 'a4', orientation: 'portrait' },
           pagebreak: { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
         };
-        html2pdf().set(opciones).from(elemento).save().then(function () { resetBtn(); }).catch(resetBtn);
-      } catch (err) { resetBtn(err); }
-    };
-
-    /* Expose buildResultsHTML so we can embed the data JSON for PDF */
-    var _origBuild = buildResultsHTML;
-    buildResultsHTML = function (r) {
-      var html = _origBuild(r);
-      /* Append hidden JSON data element used by PDF onclone handler */
-      /* Escape <\/script> sequences to prevent early tag closure */
-      var safeJson = JSON.stringify(r).replace(/<\//g, '<\\/');
-      html += '<script id="spa-result-data" type="application/json">' + safeJson + '<\/script>';
-      return html;
+        html2pdf().set(opciones).from(elemento).save()
+          .then(function () { restoreCanvases(); resetBtn(); })
+          .catch(function (err) { restoreCanvases(); resetBtn(err); });
+      } catch (err) { restoreCanvases(); resetBtn(err); }
     };
   })();
   </script>
