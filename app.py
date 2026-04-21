@@ -335,6 +335,57 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/robots.txt", methods=["GET"])
+def robots():
+    """robots.txt — allow all crawlers and point to sitemap."""
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /api/\n"
+        "\n"
+        "Sitemap: {base}/sitemap.xml\n"
+    ).format(base=_base_url())
+    return app.response_class(content, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    """XML sitemap listing all language variants of the home page."""
+    base = _base_url()
+    langs = SUPPORTED_LANGS  # ["es", "en", "it", ...]
+    urls = []
+    # Root / (es is the default, no lang param)
+    urls.append(
+        "  <url>\n"
+        "    <loc>{base}/</loc>\n"
+        "    <changefreq>monthly</changefreq>\n"
+        "    <priority>1.0</priority>\n"
+        "  </url>".format(base=base)
+    )
+    for lang in langs:
+        if lang == "es":
+            continue  # already added as root
+        urls.append(
+            "  <url>\n"
+            "    <loc>{base}/?lang={lang}</loc>\n"
+            "    <changefreq>monthly</changefreq>\n"
+            "    <priority>0.8</priority>\n"
+            "  </url>".format(base=base, lang=lang)
+        )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls) + "\n"
+        '</urlset>'
+    )
+    return app.response_class(xml, mimetype="application/xml")
+
+
+def _base_url() -> str:
+    """Return the canonical base URL, using the APP_BASE_URL env var if set."""
+    return os.environ.get("APP_BASE_URL", "").rstrip("/") or request.host_url.rstrip("/")
+
+
 def _compute_results(form, lang):
     """Parse form data, run calculations and return a results dict.
 
