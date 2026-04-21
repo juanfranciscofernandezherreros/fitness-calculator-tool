@@ -166,9 +166,9 @@
       opacity: .85;
     }
     .header-intro {
-      font-size: .88rem !important;
-      opacity: .75 !important;
-      margin-top: .25rem !important;
+      font-size: .88rem;
+      opacity: .75;
+      margin-top: .25rem;
     }
 
     /* ── Card ── */
@@ -805,7 +805,7 @@
   </nav>
 
   <header class="header">
-    <h1 id="page-h1" data-i18n="page_title">Calculadora de Composición Corporal y Macros 💪</h1>
+    <h1 id="page-h1" data-i18n="page_title" aria-describedby="page-intro">Calculadora de Composición Corporal y Macros 💪</h1>
     <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
     <p id="page-intro" class="header-intro" data-i18n="page_intro">Calcula gratis tu grasa corporal (US Navy), masa magra, IMC, FFMI y macronutrientes diarios.</p>
   </header>
@@ -1796,7 +1796,6 @@
       // <title>
       var pageTitle = document.getElementById('page-title');
       if (pageTitle) pageTitle.textContent = title;
-      document.title = title;
 
       // <meta name="description">
       var metaDesc = document.getElementById('page-description');
@@ -1833,7 +1832,6 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       applyTranslations();
-      applyHeadSeo(lang);
       // Update URL so each language has its own shareable/crawlable address
       try {
         var url = new URL(window.location.href);
@@ -1843,12 +1841,9 @@
           url.searchParams.set('lang', lang);
         }
         history.replaceState(null, '', url.toString());
-        // Update canonical and OG url to the new URL
-        var canonical = document.getElementById('canonical-link');
-        if (canonical) canonical.setAttribute('href', url.toString());
-        var ogUrl = document.getElementById('og-url');
-        if (ogUrl) ogUrl.setAttribute('content', url.toString());
       } catch (e) { /* ignore in environments without History API */ }
+      // Update head SEO tags after URL has been updated
+      applyHeadSeo(lang);
     }
 
     document.addEventListener('DOMContentLoaded', function () { setLang(currentLang); });
