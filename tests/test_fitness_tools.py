@@ -14,6 +14,7 @@ Cubre:
 import math
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -459,6 +460,8 @@ class TestCarbosFlash:
 # CLI — main.py
 # ─────────────────────────────────────────────────────────────────────────────
 
+_REPO_ROOT = Path(__file__).parent.parent
+
 def _run_cli(*extra_args):
     """Ejecuta main.py con los argumentos dados y devuelve el resultado."""
     cmd = [
@@ -474,7 +477,7 @@ def _run_cli(*extra_args):
         cmd,
         capture_output=True,
         text=True,
-        cwd="/home/runner/work/repo/repo",
+        cwd=_REPO_ROOT,
     )
 
 
@@ -544,7 +547,7 @@ class TestCLI:
             cmd,
             capture_output=True,
             text=True,
-            cwd="/home/runner/work/repo/repo",
+            cwd=_REPO_ROOT,
         )
         assert result.returncode != 0
         assert "ERROR" in result.stderr
@@ -561,7 +564,7 @@ class TestCLI:
             cmd,
             capture_output=True,
             text=True,
-            cwd="/home/runner/work/repo/repo",
+            cwd=_REPO_ROOT,
         )
         assert result.returncode != 0
 
@@ -586,7 +589,7 @@ class TestCLI:
             cmd,
             capture_output=True,
             text=True,
-            cwd="/home/runner/work/repo/repo",
+            cwd=_REPO_ROOT,
         )
         assert result.returncode == 0
         assert "COMPOSICIÓN CORPORAL" in result.stdout
@@ -606,7 +609,7 @@ class TestCLI:
             cmd,
             capture_output=True,
             text=True,
-            cwd="/home/runner/work/repo/repo",
+            cwd=_REPO_ROOT,
         )
         assert result.returncode != 0
         assert "ERROR" in result.stderr

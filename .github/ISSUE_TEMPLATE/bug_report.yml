@@ -1,0 +1,83 @@
+name: Bug Report 🐛
+description: Reporta un error o comportamiento inesperado
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de reportar un bug. Rellena el formulario con el máximo detalle posible para que podamos reproducirlo y resolverlo rápido. 🙏
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción del problema
+      description: Una descripción clara y concisa de qué ocurre.
+      placeholder: "Cuando ejecuto `python main.py --calorias 3000 --peso 70 ...` obtengo un error..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducirlo
+      description: Lista los pasos exactos para reproducir el comportamiento.
+      placeholder: |
+        1. Ejecutar `python main.py ...`
+        2. Introducir los siguientes datos: ...
+        3. Ver el error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+      description: ¿Qué esperabas que ocurriese?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamiento actual
+      description: ¿Qué ocurre en realidad? Incluye el traceback completo si lo hay.
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interfaz afectada
+      options:
+        - CLI (main.py)
+        - Web app (app.py / Flask)
+        - Librería Python (fitness_tools)
+        - Otro
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Versión de Python
+      placeholder: "3.11.9"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Sistema operativo
+      placeholder: "Ubuntu 22.04 / Windows 11 / macOS 14"
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Información adicional
+      description: Capturas de pantalla, contexto extra, etc.
+    validations:
+      required: false

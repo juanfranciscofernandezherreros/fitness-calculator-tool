@@ -6,7 +6,30 @@ build-backend = "setuptools.build_meta"
 name = "fitness_tools"
 version = "0.1.0"
 description = "Herramientas de composición corporal y nutrición deportiva"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Juan Francisco Fernández Herreros" }
+]
+keywords = ["fitness", "body composition", "nutrition", "BMI", "FFMI", "US Navy", "macros"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
 requires-python = ">=3.9"
+
+[project.urls]
+Homepage = "https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool"
+Repository = "https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool"
+"Bug Tracker" = "https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/issues"
+Changelog = "https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest>=7"]

@@ -1,0 +1,6 @@
+name: config
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Pregunta / Discusión
+    url: https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/discussions
+    about: Para preguntas generales o dudas usa las Discussions en lugar de un issue.

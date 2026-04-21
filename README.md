@@ -1,7 +1,12 @@
 # fitness_tools 💪
 
+[![CI](https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue?logo=python)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Flask](https://img.shields.io/badge/Flask-3.x-black?logo=flask)](https://flask.palletsprojects.com/)
+
 Herramienta de **composición corporal** y **distribución de macronutrientes** diarios.
-Disponible como **web app Flask** (lista para Heroku) y como CLI de línea de comandos.
+Disponible como **web app Flask** multiidioma (12 idiomas) y como CLI de línea de comandos.
 
 ---
 
@@ -211,19 +216,44 @@ Un FFMI normalizado > 25 (hombres) o > 22 (mujeres) suele indicar el límite nat
 ## Estructura del proyecto
 
 ```
-repo/
+fitness-calculator-tool/
+├── .github/
+│   ├── workflows/
+│   │   └── ci.yml               # GitHub Actions CI (tests automáticos)
+│   ├── ISSUE_TEMPLATE/          # Plantillas de issues
+│   └── pull_request_template.md
 ├── fitness_tools/
-│   ├── __init__.py          # Exportaciones públicas de la librería
-│   ├── body_composition.py  # Fórmulas US Navy (♂/♀), IMC, FFMI + dataclass MedidasCorporales
-│   └── nutrition.py         # Cálculo de macros y carbohidratos rápidos
+│   ├── __init__.py              # Exportaciones públicas de la librería
+│   ├── body_composition.py      # Fórmulas US Navy (♂/♀), IMC, FFMI + dataclass MedidasCorporales
+│   └── nutrition.py             # Cálculo de macros y carbohidratos rápidos
 ├── templates/
-│   └── index.html           # Plantilla HTML de la web app
-├── app.py                   # Web app Flask (punto de entrada para Heroku)
-├── main.py                  # CLI principal (punto de entrada)
-├── Procfile                 # Comando de arranque para Heroku
-├── requirements.txt         # Dependencias web (Flask, gunicorn)
-├── runtime.txt              # Versión de Python para Heroku
-├── pyproject.toml
+│   └── index.html               # Plantilla HTML de la web app
+├── tests/
+│   └── test_fitness_tools.py    # Suite de tests (pytest)
+├── app.py                       # Web app Flask (punto de entrada para Heroku)
+├── main.py                      # CLI principal
+├── Procfile                     # Comando de arranque para Heroku
+├── requirements.txt             # Dependencias web (Flask, gunicorn)
+├── runtime.txt                  # Versión de Python para Heroku
+├── pyproject.toml               # Metadatos del paquete y dependencias dev
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
 └── README.md
 ```
+
+---
+
+## Contribuir
+
+¿Quieres añadir una nueva fórmula, idioma o mejora? ¡Lee la [guía de contribución](CONTRIBUTING.md)!
+
+- Abre un [issue](https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/issues) para reportar bugs o proponer funcionalidades.
+- Envía un [Pull Request](https://github.com/juanfranciscofernandezherreros/fitness-calculator-tool/pulls) con tus cambios.
+
+---
+
+## Licencia
+
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
 
