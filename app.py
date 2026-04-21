@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 # ── Internationalisation ──────────────────────────────────────────────────────
 
-SUPPORTED_LANGS = ["es", "en", "it", "fr", "de", "pt", "nl", "pl", "ru", "zh", "ja"]
+SUPPORTED_LANGS = ["es", "en", "it", "fr", "de", "pt", "nl", "pl", "ru", "zh", "ja", "ko"]
 DEFAULT_LANG = "es"
 
 # Translated field names used inside error messages
@@ -126,6 +126,15 @@ CAMPO_NAMES: dict[str, dict[str, str]] = {
         "cuadriceps_der": "右大腿四頭筋", "cuadriceps_izq": "左大腿四頭筋",
         "gemelos_der": "右ふくらはぎ", "gemelos_izq": "左ふくらはぎ",
         "pectoral": "胸囲",
+    },
+    "ko": {
+        "calorias": "칼로리", "peso": "체중", "altura": "키",
+        "cintura": "허리", "cuello": "목",
+        "grasa": "체지방률", "cadera": "엉덩이",
+        "biceps_der": "오른쪽 이두근", "biceps_izq": "왼쪽 이두근",
+        "cuadriceps_der": "오른쪽 대퇴사두근", "cuadriceps_izq": "왼쪽 대퇴사두근",
+        "gemelos_der": "오른쪽 종아리", "gemelos_izq": "왼쪽 종아리",
+        "pectoral": "가슴",
     },
 }
 
@@ -240,6 +249,16 @@ ERROR_MESSAGES: dict[str, dict[str, str]] = {
         "hip_sum_invalid": "女性の場合、ウエスト + ヒップは首周りより大きくなければなりません。",
         "insufficient_calories": "{kcal} kcal は不足しています。基本マクロはすでに {needed} kcal 必要です。カロリーを増やすか体重を減らしてください。",
         "unknown_error": "予期しないエラー: {msg}",
+    },
+    "ko": {
+        "field_required": "«{campo}» 필드는 필수이며 비워 둘 수 없습니다.",
+        "invalid_number": "«{value}»는 «{campo}»에 유효한 숫자가 아닙니다. 72.5와 같은 값을 입력하세요.",
+        "positive_values": "모든 측정값은 양수(0보다 큰 값)여야 합니다.",
+        "waist_greater_neck": "공식이 유효하려면 허리 둘레가 목 둘레보다 커야 합니다. 측정값을 확인하세요.",
+        "hip_required": "여성의 경우 엉덩이 둘레가 필수입니다(미 해군 공식). 선택 필드에 입력하세요.",
+        "hip_sum_invalid": "여성의 경우 허리 + 엉덩이가 목보다 커야 합니다.",
+        "insufficient_calories": "{kcal} kcal은 부족합니다. 기본 매크로(단백질 + 지방)에만 이미 {needed} kcal가 필요합니다. 칼로리를 늘리거나 체중을 줄이세요.",
+        "unknown_error": "예기치 않은 오류: {msg}",
     },
 }
 
