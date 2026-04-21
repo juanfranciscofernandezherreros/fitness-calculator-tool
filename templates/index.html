@@ -933,7 +933,7 @@
 
   <!-- ── Fixed language top bar ── -->
   <div class="lang-topbar no-print" role="navigation" aria-label="Language / Idioma">
-    <span class="globe-icon" aria-hidden="true">🌐</span>
+    <span class="globe-icon" id="current-lang-flag" aria-hidden="true">🌐</span>
     <nav class="lang-selector" aria-label="Language / Idioma">
       <a href="/?lang=es" class="lang-btn" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
       <a href="/?lang=en" class="lang-btn" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
@@ -2126,6 +2126,13 @@
       if (root) root.lang = currentLang;
     }
 
+    /* Flag emoji per language */
+    var LANG_FLAGS = {
+      es: '🇪🇸', en: '🇬🇧', it: '🇮🇹', fr: '🇫🇷',
+      de: '🇩🇪', pt: '🇵🇹', nl: '🇳🇱', pl: '🇵🇱',
+      ru: '🇷🇺', zh: '🇨🇳', ja: '🇯🇵', ko: '🇰🇷'
+    };
+
     /* OG locale codes per language */
     var OG_LOCALES = {
       es: 'es_ES', en: 'en_US', it: 'it_IT', fr: 'fr_FR',
@@ -2177,6 +2184,8 @@
       document.querySelectorAll('.lang-btn').forEach(function (btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
+      var flagEl = document.getElementById('current-lang-flag');
+      if (flagEl) flagEl.textContent = LANG_FLAGS[lang] || '🌐';
       applyTranslations();
       // Update URL so each language has its own shareable/crawlable address
       try {
