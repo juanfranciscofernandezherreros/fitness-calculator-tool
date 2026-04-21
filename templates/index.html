@@ -871,66 +871,7 @@
       color: #742a2a;
     }
 
-    /* ── Cookie consent banner ── */
-    .cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9998;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: .6rem 1.2rem;
-      padding: .7rem 1.2rem;
-      background: rgba(var(--color-dark-rgb), 0.96);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 -2px 12px rgba(0,0,0,.4);
-      color: var(--color-light);
-      font-size: .88rem;
-      line-height: 1.4;
-    }
-    .cookie-banner.hidden { display: none; }
-    .cookie-banner-text {
-      flex: 1 1 220px;
-      text-align: center;
-    }
-    .cookie-accept-btn {
-      flex-shrink: 0;
-      background: var(--color-accent);
-      border: 2px solid var(--color-light);
-      border-radius: 8px;
-      padding: .3rem 1.1rem;
-      font-size: .85rem;
-      font-weight: 700;
-      color: var(--color-light);
-      cursor: pointer;
-      transition: background .15s, border-color .15s, transform .1s;
-      white-space: nowrap;
-    }
-    .cookie-accept-btn:hover {
-      background: var(--color-dark);
-      border-color: var(--color-light);
-      transform: scale(1.05);
-    }
-    @media print { .cookie-banner { display: none !important; } }
 
-    /* ── Page footer ── */
-    .page-footer {
-      width: 100%;
-      background: var(--color-dark);
-      color: var(--color-light);
-      font-size: .8rem;
-      text-align: center;
-      padding: .9rem 1.2rem 1rem;
-      margin-top: 2rem;
-      line-height: 1.6;
-    }
-    .page-footer p { margin: .15rem 0; }
-    .page-footer .footer-cookies { color: var(--color-light); }
-    .page-footer .footer-copyright { color: rgba(var(--color-light-rgb), .6); font-size: .75rem; }
-    @media print { .page-footer { display: none; } }
   </style>
 </head>
 <body>
@@ -1332,12 +1273,6 @@
 
   </main>
 
-  <!-- ── Page footer ── -->
-  <footer class="page-footer no-print" role="contentinfo">
-    <p class="footer-cookies" data-i18n="footer_cookies">🍪 Política de cookies: usamos cookies para mejorar la experiencia de usuario.</p>
-    <p class="footer-copyright" data-i18n="footer_copyright">© 2025 Fitness Tools. Todos los derechos reservados.</p>
-  </footer>
-
   <!-- ── noscript fallback for crawlers ── -->
   <noscript>
     <div style="max-width:660px;margin:1rem auto;padding:1rem;background:#fff;border-radius:12px;font-family:system-ui,sans-serif;">
@@ -1410,10 +1345,6 @@
         app_android_label: "Disponible en",
         app_ios: "App Store",
         app_ios_label: "Descárgalo en",
-        cookie_msg: "🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.",
-        cookie_accept: "Aceptar",
-        footer_cookies: "🍪 Política de cookies: usamos cookies para mejorar la experiencia de usuario.",
-        footer_copyright: "© 2025 Fitness Tools. Todos los derechos reservados."
       },
       en: {
         page_title: "Body Composition & Macro Calculator 💪 | Fitness Tools",
@@ -1471,10 +1402,6 @@
         app_android_label: "Get it on",
         app_ios: "App Store",
         app_ios_label: "Download on the",
-        cookie_msg: "🍪 We use cookies to improve your experience. By continuing to browse you accept their use.",
-        cookie_accept: "Accept",
-        footer_cookies: "🍪 Cookie Policy: we use cookies to improve your user experience.",
-        footer_copyright: "© 2025 Fitness Tools. All rights reserved."
       },
       it: {
         page_title: "Calcolatore di Composizione Corporea e Macro 💪 | Fitness Tools",
@@ -1532,10 +1459,6 @@
         app_android_label: "Disponibile su",
         app_ios: "App Store",
         app_ios_label: "Scarica su",
-        cookie_msg: "🍪 Utilizziamo cookie per migliorare la tua esperienza. Continuando a navigare ne accetti l'uso.",
-        cookie_accept: "Accetta",
-        footer_cookies: "🍪 Informativa sui cookie: utilizziamo cookie per migliorare l'esperienza utente.",
-        footer_copyright: "© 2025 Fitness Tools. Tutti i diritti riservati."
       },
       fr: {
         page_title: "Calculateur de Composition Corporelle et Macros 💪 | Fitness Tools",
@@ -1593,10 +1516,6 @@
         app_android_label: "Disponible sur",
         app_ios: "App Store",
         app_ios_label: "Télécharger sur l'",
-        cookie_msg: "🍪 Nous utilisons des cookies pour améliorer votre expérience. En continuant à naviguer, vous en acceptez l'utilisation.",
-        cookie_accept: "Accepter",
-        footer_cookies: "🍪 Politique de cookies : nous utilisons des cookies pour améliorer l'expérience utilisateur.",
-        footer_copyright: "© 2025 Fitness Tools. Tous droits réservés."
       },
       de: {
         page_title: "Körperzusammensetzungs- & Makro-Rechner 💪 | Fitness Tools",
@@ -1654,10 +1573,6 @@
         app_android_label: "Jetzt bei",
         app_ios: "App Store",
         app_ios_label: "Laden im",
-        cookie_msg: "🍪 Wir verwenden Cookies, um dein Erlebnis zu verbessern. Durch weiteres Surfen stimmst du deren Verwendung zu.",
-        cookie_accept: "Akzeptieren",
-        footer_cookies: "🍪 Cookie-Richtlinie: Wir verwenden Cookies, um die Benutzererfahrung zu verbessern.",
-        footer_copyright: "© 2025 Fitness Tools. Alle Rechte vorbehalten."
       },
       pt: {
         page_title: "Calculadora de Composição Corporal e Macros 💪 | Fitness Tools",
@@ -1715,10 +1630,6 @@
         app_android_label: "Disponível no",
         app_ios: "App Store",
         app_ios_label: "Baixar na",
-        cookie_msg: "🍪 Usamos cookies para melhorar a sua experiência. Ao continuar a navegar aceita a sua utilização.",
-        cookie_accept: "Aceitar",
-        footer_cookies: "🍪 Política de cookies: usamos cookies para melhorar a experiência do utilizador.",
-        footer_copyright: "© 2025 Fitness Tools. Todos os direitos reservados."
       },
       nl: {
         page_title: "Lichaamssamenstelling & Macro Calculator 💪 | Fitness Tools",
@@ -1776,10 +1687,6 @@
         app_android_label: "Verkrijgbaar bij",
         app_ios: "App Store",
         app_ios_label: "Download in de",
-        cookie_msg: "🍪 Wij gebruiken cookies om uw ervaring te verbeteren. Door verder te browsen accepteert u het gebruik ervan.",
-        cookie_accept: "Accepteren",
-        footer_cookies: "🍪 Cookiebeleid: wij gebruiken cookies om de gebruikerservaring te verbeteren.",
-        footer_copyright: "© 2025 Fitness Tools. Alle rechten voorbehouden."
       },
       pl: {
         page_title: "Kalkulator Składu Ciała i Makroskładników 💪 | Fitness Tools",
@@ -1837,10 +1744,6 @@
         app_android_label: "Pobierz z",
         app_ios: "App Store",
         app_ios_label: "Pobierz w",
-        cookie_msg: "🍪 Używamy plików cookie, aby poprawić Twoje doświadczenie. Kontynuując przeglądanie, akceptujesz ich użycie.",
-        cookie_accept: "Akceptuj",
-        footer_cookies: "🍪 Polityka cookies: używamy plików cookie w celu poprawy doświadczenia użytkownika.",
-        footer_copyright: "© 2025 Fitness Tools. Wszelkie prawa zastrzeżone."
       },
       ru: {
         page_title: "Калькулятор состава тела и макронутриентов 💪 | Fitness Tools",
@@ -1898,10 +1801,6 @@
         app_android_label: "Доступно в",
         app_ios: "App Store",
         app_ios_label: "Загрузить в",
-        cookie_msg: "🍪 Мы используем файлы cookie для улучшения вашего опыта. Продолжая просмотр, вы принимаете их использование.",
-        cookie_accept: "Принять",
-        footer_cookies: "🍪 Политика файлов cookie: мы используем файлы cookie для улучшения пользовательского опыта.",
-        footer_copyright: "© 2025 Fitness Tools. Все права защищены."
       },
       zh: {
         page_title: "身体成分与宏量营养素计算器 💪 | Fitness Tools",
@@ -1959,10 +1858,6 @@
         app_android_label: "立即下载",
         app_ios: "App Store",
         app_ios_label: "在",
-        cookie_msg: "🍪 我们使用 Cookie 以改善您的体验。继续浏览即表示您接受其使用。",
-        cookie_accept: "接受",
-        footer_cookies: "🍪 Cookie 政策：我们使用 Cookie 来改善用户体验。",
-        footer_copyright: "© 2025 Fitness Tools. 保留所有权利。"
       },
       ja: {
         page_title: "体組成・マクロ栄養素計算ツール 💪 | Fitness Tools",
@@ -2020,10 +1915,6 @@
         app_android_label: "Google Playで手に入れよう",
         app_ios: "App Store",
         app_ios_label: "App Storeでダウンロード",
-        cookie_msg: "🍪 当サイトではクッキーを使用して利用体験を向上させています。閲覧を続けることで使用に同意したものとみなします。",
-        cookie_accept: "同意する",
-        footer_cookies: "🍪 クッキーポリシー：ユーザー体験向上のためクッキーを使用しています。",
-        footer_copyright: "© 2025 Fitness Tools. 全著作権所有。"
       },
       ko: {
         page_title: "체성분 & 매크로 계산기 💪 | Fitness Tools",
@@ -2081,10 +1972,6 @@
         app_android_label: "Google Play에서 받기",
         app_ios: "App Store",
         app_ios_label: "App Store에서 다운로드",
-        cookie_msg: "🍪 저희는 쿠키를 사용하여 경험을 향상시킵니다. 계속 탐색하시면 사용에 동의하시는 것으로 간주됩니다.",
-        cookie_accept: "수락",
-        footer_cookies: "🍪 쿠키 정책: 사용자 경험 향상을 위해 쿠키를 사용합니다.",
-        footer_copyright: "© 2025 Fitness Tools. 모든 권리 보유."
       }
     };
 
@@ -2660,32 +2547,6 @@
     }
 
   })();
-  </script>
-
-  <!-- ── Cookie consent banner ── -->
-  <div id="cookie-banner" class="cookie-banner no-print" role="banner" aria-label="Cookie consent" style="display:none;">
-    <span class="cookie-banner-text" id="cookie-banner-text" data-i18n="cookie_msg">🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.</span>
-    <button class="cookie-accept-btn" id="cookie-accept-btn" data-i18n="cookie_accept">Aceptar</button>
-  </div>
-
-  <script>
-    (function () {
-      function acceptCookies() {
-        localStorage.setItem('fitness-cookies-accepted', 'true');
-        var banner = document.getElementById('cookie-banner');
-        if (banner) banner.style.display = 'none';
-      }
-
-      document.addEventListener('DOMContentLoaded', function () {
-        var btn = document.getElementById('cookie-accept-btn');
-        if (btn) btn.addEventListener('click', acceptCookies);
-
-        if (!localStorage.getItem('fitness-cookies-accepted')) {
-          var banner = document.getElementById('cookie-banner');
-          if (banner) banner.style.display = 'flex';
-        }
-      });
-    })();
   </script>
 
 </body>
