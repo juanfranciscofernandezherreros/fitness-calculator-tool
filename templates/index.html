@@ -2023,7 +2023,7 @@
         });
         if (firstInput) {
           firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          firstInput.focus({ preventScroll: true });
+          setTimeout(function () { firstInput.focus({ preventScroll: true }); }, 300);
         }
         /* Hide any leftover message box */
         var el = document.getElementById('error-container');

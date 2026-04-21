@@ -300,7 +300,7 @@ def _translate_error(exc: Exception, lang: str) -> str:
             return tmpl.format(kcal=m.group(1), needed=m.group(2))
         return tmpl.format(kcal="?", needed="?")
 
-    return msgs.get("unknown_error", "Error: {msg}").format(msg=msg)
+    return msgs.get("unknown_error", "Error inesperado.").format(msg="")
 
 
 @app.route("/", methods=["GET"])
