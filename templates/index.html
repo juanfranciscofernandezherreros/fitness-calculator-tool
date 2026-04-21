@@ -2433,6 +2433,12 @@
 
       html += '</div>'; /* #informe-detallado */
 
+      /* ── PDF download button ── */
+      html += '<div class="pdf-btn-wrapper no-print" style="text-align:center;margin-top:1.6rem;">'
+            + '<button id="btn-download-pdf" class="btn-submit" style="max-width:320px;" data-i18n="btn_pdf">'
+            + '\uD83D\uDCC4 Descargar informe PDF'
+            + '</button></div>';
+
       html += '</div>'; /* #contenido-informe */
 
       return html;
@@ -2542,6 +2548,46 @@
           .catch(function (err) {
             setLoading(false);
             showError('Error de conexión: ' + err.message, []);
+          });
+      });
+    }
+
+    /* ── PDF download handler (event delegation on results container) ── */
+    var resultsContainer = document.getElementById('results-container');
+    if (resultsContainer) {
+      resultsContainer.addEventListener('click', function (e) {
+        var btn = e.target.closest('#btn-download-pdf');
+        if (!btn) return;
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        var data = new FormData(form);
+        fetch('/api/pdf', { method: 'POST', body: data })
+          .then(function (resp) {
+            if (!resp.ok) {
+              return resp.json().then(function (body) {
+                throw new Error(body.error || 'Error al generar PDF');
+              });
+            }
+            return resp.blob();
+          })
+          .then(function (blob) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'fitness-report.pdf';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }, 100);
+          })
+          .catch(function (err) {
+            showError(err.message, []);
+          })
+          .finally(function () {
+            btn.disabled = false;
+            btn.style.opacity = '';
           });
       });
     }
