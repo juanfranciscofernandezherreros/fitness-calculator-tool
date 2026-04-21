@@ -66,7 +66,6 @@
       "Índice de Masa Libre de Grasa (FFMI)",
       "Distribución de macronutrientes",
       "Medidas corporales opcionales",
-      "Descarga de informe en PDF",
       "Disponible en 12 idiomas"
     ]
   }
@@ -542,27 +541,6 @@
     .badge-delta.pos { color: #e53e3e; }
     .badge-delta.neg { color: #16a34a; }
 
-    /* ── PDF download button ── */
-    .btn-pdf {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      padding: .7rem 1.4rem;
-      background: #16a34a;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: .02em;
-      transition: opacity .2s, transform .1s;
-      margin-top: .5rem;
-      width: 100%;
-      justify-content: center;
-    }
-    .btn-pdf:hover  { opacity: .9; }
-    .btn-pdf:active { transform: scale(.99); }
 
     /* ── App download section ── */
     .app-download-section {
@@ -1392,7 +1370,6 @@
         h_bioimpedance: "Báscula de bioimpedancia",
         h_hip_women: "Obligatorio para mujeres (fórmula US Navy)",
         btn_calculate: "🚀 Calcular mi análisis",
-        btn_pdf: "📄 Descargar informe en PDF",
         r_measurements: "Medidas corporales", r_body_comp: "Composición corporal (US Navy)",
         r_imc_ffmi: "IMC y FFMI", r_macros: "Macros del día",
         r_body_fat: "Grasa corporal", r_lean_mass: "Masa magra",
@@ -1454,7 +1431,6 @@
         h_bioimpedance: "From a body fat scale",
         h_hip_women: "Required for women (US Navy formula)",
         btn_calculate: "🚀 Calculate my analysis",
-        btn_pdf: "📄 Download report as PDF",
         r_measurements: "Body measurements", r_body_comp: "Body composition (US Navy)",
         r_imc_ffmi: "BMI and FFMI", r_macros: "Daily macros",
         r_body_fat: "Body fat", r_lean_mass: "Lean mass",
@@ -1516,7 +1492,6 @@
         h_bioimpedance: "Bilancia a bioimpedenza",
         h_hip_women: "Obbligatorio per le donne (formula US Navy)",
         btn_calculate: "🚀 Calcola la mia analisi",
-        btn_pdf: "📄 Scarica il report in PDF",
         r_measurements: "Misure corporee", r_body_comp: "Composizione corporea (US Navy)",
         r_imc_ffmi: "IMC e FFMI", r_macros: "Macro del giorno",
         r_body_fat: "Grasso corporeo", r_lean_mass: "Massa magra",
@@ -1578,7 +1553,6 @@
         h_bioimpedance: "Balance à impédancemétrie",
         h_hip_women: "Obligatoire pour les femmes (formule US Navy)",
         btn_calculate: "🚀 Calculer mon analyse",
-        btn_pdf: "📄 Télécharger le rapport en PDF",
         r_measurements: "Mesures corporelles", r_body_comp: "Composition corporelle (US Navy)",
         r_imc_ffmi: "IMC et FFMI", r_macros: "Macros du jour",
         r_body_fat: "Graisse corporelle", r_lean_mass: "Masse maigre",
@@ -1640,7 +1614,6 @@
         h_bioimpedance: "Von der Körperfettwaage",
         h_hip_women: "Für Frauen erforderlich (US-Navy-Formel)",
         btn_calculate: "🚀 Meine Analyse berechnen",
-        btn_pdf: "📄 Bericht als PDF herunterladen",
         r_measurements: "Körpermaße", r_body_comp: "Körperzusammensetzung (US Navy)",
         r_imc_ffmi: "BMI und FFMI", r_macros: "Tages-Makros",
         r_body_fat: "Körperfett", r_lean_mass: "Magermasse",
@@ -1702,7 +1675,6 @@
         h_bioimpedance: "Balança de bioimpedância",
         h_hip_women: "Obrigatório para mulheres (fórmula US Navy)",
         btn_calculate: "🚀 Calcular minha análise",
-        btn_pdf: "📄 Baixar relatório em PDF",
         r_measurements: "Medidas corporais", r_body_comp: "Composição corporal (US Navy)",
         r_imc_ffmi: "IMC e FFMI", r_macros: "Macros do dia",
         r_body_fat: "Gordura corporal", r_lean_mass: "Massa magra",
@@ -1764,7 +1736,6 @@
         h_bioimpedance: "Lichaamsvetweegschaal",
         h_hip_women: "Verplicht voor vrouwen (US Navy formule)",
         btn_calculate: "🚀 Bereken mijn analyse",
-        btn_pdf: "📄 Rapport downloaden als PDF",
         r_measurements: "Lichaamsmetingen", r_body_comp: "Lichaamssamenstelling (US Navy)",
         r_imc_ffmi: "BMI en FFMI", r_macros: "Dagelijkse macro's",
         r_body_fat: "Lichaamsvet", r_lean_mass: "Magere massa",
@@ -1826,7 +1797,6 @@
         h_bioimpedance: "Waga z analizą składu ciała",
         h_hip_women: "Wymagane dla kobiet (wzór US Navy)",
         btn_calculate: "🚀 Oblicz moją analizę",
-        btn_pdf: "📄 Pobierz raport jako PDF",
         r_measurements: "Wymiary ciała", r_body_comp: "Skład ciała (US Navy)",
         r_imc_ffmi: "BMI i FFMI", r_macros: "Dzienne makroskładniki",
         r_body_fat: "Tkanka tłuszczowa", r_lean_mass: "Masa beztłuszczowa",
@@ -1888,7 +1858,6 @@
         h_bioimpedance: "Весы с биоимпедансом",
         h_hip_women: "Обязательно для женщин (формула US Navy)",
         btn_calculate: "🚀 Рассчитать мой анализ",
-        btn_pdf: "📄 Скачать отчёт в PDF",
         r_measurements: "Антропометрия", r_body_comp: "Состав тела (US Navy)",
         r_imc_ffmi: "ИМТ и FFMI", r_macros: "Макросы дня",
         r_body_fat: "Жировая масса", r_lean_mass: "Безжировая масса",
@@ -1950,7 +1919,6 @@
         h_bioimpedance: "体脂秤测量值",
         h_hip_women: "女性必填（美国海军公式）",
         btn_calculate: "🚀 计算我的分析",
-        btn_pdf: "📄 下载PDF报告",
         r_measurements: "身体测量", r_body_comp: "身体成分（美国海军法）",
         r_imc_ffmi: "BMI 和 FFMI", r_macros: "每日宏量营养素",
         r_body_fat: "体脂", r_lean_mass: "瘦体重",
@@ -2012,7 +1980,6 @@
         h_bioimpedance: "体重計（体脂肪計）の値",
         h_hip_women: "女性には必須（米海軍式）",
         btn_calculate: "🚀 分析を計算する",
-        btn_pdf: "📄 PDFレポートをダウンロード",
         r_measurements: "身体測定値", r_body_comp: "体組成（米海軍法）",
         r_imc_ffmi: "BMI と FFMI", r_macros: "1日のマクロ",
         r_body_fat: "体脂肪", r_lean_mass: "除脂肪体重",
@@ -2074,7 +2041,6 @@
         h_bioimpedance: "체성분 분석기 수치",
         h_hip_women: "여성 필수 (미 해군 공식)",
         btn_calculate: "🚀 분석 계산하기",
-        btn_pdf: "📄 PDF 보고서 다운로드",
         r_measurements: "신체 측정값", r_body_comp: "체성분 (미 해군법)",
         r_imc_ffmi: "BMI와 FFMI", r_macros: "오늘의 매크로",
         r_body_fat: "체지방", r_lean_mass: "제지방 체중",
@@ -2298,9 +2264,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-          integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <!-- ── SPA: form submit + results rendering ── -->
   <script>
@@ -2572,11 +2535,6 @@
 
       html += '</div>'; /* #contenido-informe */
 
-      /* ── PDF button ── */
-      html += '<button class="btn-pdf no-print" id="btn-descargar-pdf" onclick="descargarPDF()">'
-            + '<span data-i18n="btn_pdf">\uD83D\uDCC4 Descargar informe en PDF</span>'
-            + '</button>';
-
       return html;
     }
 
@@ -2688,63 +2646,6 @@
       });
     }
 
-    /* ── PDF download (uses currently rendered #contenido-informe) ── */
-    window.descargarPDF = function () {
-      var btn = document.getElementById('btn-descargar-pdf');
-      if (btn) { btn.disabled = true; btn.textContent = '\u23F3 Generando PDF\u2026'; }
-
-      function resetBtn(err) {
-        if (btn) { btn.disabled = false; btn.textContent = '\uD83D\uDCC4 Descargar informe en PDF'; }
-        if (err) alert('No se pudo generar el PDF.\n' + (err.message || err));
-      }
-
-      /* ── Pre-convert canvas charts to static images so html2canvas can render them ──
-         html2canvas cannot copy canvas pixel data from a cloned document node, so we
-         replace each <canvas> with an <img> (snapshot via toDataURL) before generating
-         the PDF and restore the originals afterwards.
-         Declared outside try-catch so restoreCanvases() is always in scope. */
-      var replacements = [];
-      var restoreCanvases = function () {
-        replacements.forEach(function (r) {
-          try { r.parent.replaceChild(r.canvas, r.img); } catch (e) { /* already restored */ }
-        });
-        replacements = [];
-      };
-
-      try {
-        var elemento = document.getElementById('contenido-informe');
-        if (!elemento) { resetBtn(new Error('No se encontró el contenido del informe.')); return; }
-
-        elemento.querySelectorAll('canvas').forEach(function (canvas) {
-          try {
-            var parent = canvas.parentNode; /* store before replacement */
-            var img = document.createElement('img');
-            img.src = canvas.toDataURL('image/png');
-            img.style.cssText = 'width:100%;height:auto;display:block;';
-            parent.replaceChild(img, canvas);
-            replacements.push({ parent: parent, img: img, canvas: canvas });
-          } catch (e) { /* tainted canvas — leave as-is */ }
-        });
-
-        var opciones = {
-          margin:      [10, 10, 10, 10],
-          filename:    'informe-fitness.pdf',
-          image:       { type: 'jpeg', quality: 0.95 },
-          html2canvas: {
-            scale: 2, useCORS: true, allowTaint: false, logging: false,
-            backgroundColor: '#ffffff',
-            scrollY: -window.scrollY,
-            scrollX: -window.scrollX,
-            windowWidth: document.documentElement.clientWidth
-          },
-          jsPDF:     { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { mode: ['css', 'legacy'], avoid: '.formula-block, .result-card' }
-        };
-        html2pdf().set(opciones).from(elemento).save()
-          .then(function () { restoreCanvases(); resetBtn(); })
-          .catch(function (err) { restoreCanvases(); resetBtn(err); });
-      } catch (err) { restoreCanvases(); resetBtn(err); }
-    };
   })();
   </script>
 
