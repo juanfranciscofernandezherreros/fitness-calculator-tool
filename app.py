@@ -678,7 +678,7 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
     },
     "fr": {
         "title": "Rapport de Composition Corporelle",
-        "generated": "Genere par Fitness Tools",
+        "generated": "G\u00e9n\u00e9r\u00e9 par Fitness Tools",
         "measurements": "Mesures corporelles",
         "body_comp": "Composition corporelle (US Navy)",
         "body_fat": "Graisse corporelle",
@@ -686,35 +686,35 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "imc_ffmi": "IMC et FFMI",
         "imc": "IMC",
         "ffmi": "FFMI",
-        "ffmi_norm": "FFMI normalise (1.80 m)",
-        "bmi_cat": "Categorie OMS",
+        "ffmi_norm": "FFMI normalis\u00e9 (1.80 m)",
+        "bmi_cat": "Cat\u00e9gorie OMS",
         "macros": "Macros journaliers",
-        "report": "Rapport detaille — Formules etape par etape",
+        "report": "Rapport d\u00e9taill\u00e9 \u2014 Formules \u00e9tape par \u00e9tape",
         "formula": "Formule",
-        "result": "Resultat",
+        "result": "R\u00e9sultat",
     },
     "de": {
-        "title": "Koerperzusammensetzungsbericht",
+        "title": "K\u00f6rperzusammensetzungsbericht",
         "generated": "Erstellt von Fitness Tools",
-        "measurements": "Koerpermasse",
-        "body_comp": "Koerperzusammensetzung (US Navy)",
-        "body_fat": "Koerperfett",
+        "measurements": "K\u00f6rpermasse",
+        "body_comp": "K\u00f6rperzusammensetzung (US Navy)",
+        "body_fat": "K\u00f6rperfett",
         "lean_mass": "Magermasse",
         "imc_ffmi": "BMI und FFMI",
         "imc": "BMI",
         "ffmi": "FFMI",
         "ffmi_norm": "Normalisierter FFMI (1.80 m)",
         "bmi_cat": "WHO-Kategorie",
-        "macros": "Taegliche Makros",
-        "report": "Detaillierter Bericht — Formeln Schritt fuer Schritt",
+        "macros": "T\u00e4gliche Makros",
+        "report": "Detaillierter Bericht \u2014 Formeln Schritt f\u00fcr Schritt",
         "formula": "Formel",
         "result": "Ergebnis",
     },
     "pt": {
-        "title": "Relatorio de Composicao Corporal",
+        "title": "Relat\u00f3rio de Composi\u00e7\u00e3o Corporal",
         "generated": "Gerado por Fitness Tools",
         "measurements": "Medidas corporais",
-        "body_comp": "Composicao corporal (US Navy)",
+        "body_comp": "Composi\u00e7\u00e3o corporal (US Navy)",
         "body_fat": "Gordura corporal",
         "lean_mass": "Massa magra",
         "imc_ffmi": "IMC e FFMI",
@@ -722,9 +722,9 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "ffmi": "FFMI",
         "ffmi_norm": "FFMI normalizado (1.80 m)",
         "bmi_cat": "Categoria OMS",
-        "macros": "Macros diarios",
-        "report": "Relatorio detalhado — Formulas passo a passo",
-        "formula": "Formula",
+        "macros": "Macros di\u00e1rios",
+        "report": "Relat\u00f3rio detalhado \u2014 F\u00f3rmulas passo a passo",
+        "formula": "F\u00f3rmula",
         "result": "Resultado",
     },
     "nl": {
@@ -757,8 +757,8 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "ffmi_norm": "Znormalizowany FFMI (1.80 m)",
         "bmi_cat": "Kategoria WHO",
         "macros": "Dzienne makro",
-        "report": "Szczegolowy raport — Wzory krok po kroku",
-        "formula": "Wzor",
+        "report": "Szczegolowy raport - Wzory krok po kroku",
+        "formula": "Wz\u00f3r",
         "result": "Wynik",
     },
     "ru": {
@@ -847,7 +847,8 @@ def _build_pdf(resultados: dict, lang: str) -> bytes:
 
     def s(text) -> str:
         """Convert value to safe Latin-1 string for fpdf."""
-        return str(text).translate(_UNICODE_MAP)
+        result = str(text).translate(_UNICODE_MAP)
+        return result.encode("latin-1", errors="replace").decode("latin-1")
 
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -1021,6 +1022,6 @@ def api_pdf():
         return jsonify({"error": msgs.get("unknown_error", "Error inesperado.").format(msg=""), "fields": []}), 500
 
 
-
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
