@@ -39,6 +39,7 @@
   <link rel="alternate" hreflang="ru" href="/?lang=ru" />
   <link rel="alternate" hreflang="zh" href="/?lang=zh" />
   <link rel="alternate" hreflang="ja" href="/?lang=ja" />
+  <link rel="alternate" hreflang="ko" href="/?lang=ko" />
   <link rel="alternate" hreflang="x-default" href="/" />
 
   <!-- JSON-LD Structured Data: WebApplication -->
@@ -47,12 +48,12 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Fitness Tools — Calculadora de Composición Corporal",
-    "description": "Calculadora gratuita de grasa corporal (método US Navy), masa magra, IMC, FFMI y macronutrientes. Disponible en 11 idiomas.",
+    "description": "Calculadora gratuita de grasa corporal (método US Navy), masa magra, IMC, FFMI y macronutrientes. Disponible en 12 idiomas.",
     "url": "/",
     "applicationCategory": "HealthApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires JavaScript",
-    "inLanguage": ["es","en","it","fr","de","pt","nl","pl","ru","zh","ja"],
+    "inLanguage": ["es","en","it","fr","de","pt","nl","pl","ru","zh","ja","ko"],
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -66,7 +67,7 @@
       "Distribución de macronutrientes",
       "Medidas corporales opcionales",
       "Descarga de informe en PDF",
-      "Disponible en 11 idiomas"
+      "Disponible en 12 idiomas"
     ]
   }
   </script>
@@ -910,6 +911,22 @@
       transform: scale(1.05);
     }
     @media print { .cookie-banner { display: none !important; } }
+
+    /* ── Page footer ── */
+    .page-footer {
+      width: 100%;
+      background: linear-gradient(90deg, #1e1b4b 0%, #5b21b6 50%, #1e1b4b 100%);
+      color: rgba(255,255,255,.8);
+      font-size: .8rem;
+      text-align: center;
+      padding: .9rem 1.2rem 1rem;
+      margin-top: 2rem;
+      line-height: 1.6;
+    }
+    .page-footer p { margin: .15rem 0; }
+    .page-footer .footer-cookies { color: rgba(255,255,255,.9); }
+    .page-footer .footer-copyright { color: rgba(255,255,255,.6); font-size: .75rem; }
+    @media print { .page-footer { display: none; } }
   </style>
 </head>
 <body>
@@ -929,6 +946,7 @@
       <a href="/?lang=ru" class="lang-btn" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')">🇷🇺</a>
       <a href="/?lang=zh" class="lang-btn" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
       <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
+      <a href="/?lang=ko" class="lang-btn" data-lang="ko" title="한국어"      onclick="event.preventDefault(); setLang('ko')">🇰🇷</a>
     </nav>
   </div>
 
@@ -1310,6 +1328,12 @@
 
   </main>
 
+  <!-- ── Page footer ── -->
+  <footer class="page-footer no-print" role="contentinfo">
+    <p class="footer-cookies" data-i18n="footer_cookies">🍪 Política de cookies: usamos cookies para mejorar la experiencia de usuario.</p>
+    <p class="footer-copyright" data-i18n="footer_copyright">© 2025 Fitness Tools. Todos los derechos reservados.</p>
+  </footer>
+
   <!-- ── noscript fallback for crawlers ── -->
   <noscript>
     <div style="max-width:660px;margin:1rem auto;padding:1rem;background:#fff;border-radius:12px;font-family:system-ui,sans-serif;">
@@ -1384,7 +1408,9 @@
         app_ios: "App Store",
         app_ios_label: "Descárgalo en",
         cookie_msg: "🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.",
-        cookie_accept: "Aceptar"
+        cookie_accept: "Aceptar",
+        footer_cookies: "🍪 Política de cookies: usamos cookies para mejorar la experiencia de usuario.",
+        footer_copyright: "© 2025 Fitness Tools. Todos los derechos reservados."
       },
       en: {
         page_title: "Body Composition & Macro Calculator 💪 | Fitness Tools",
@@ -1444,7 +1470,9 @@
         app_ios: "App Store",
         app_ios_label: "Download on the",
         cookie_msg: "🍪 We use cookies to improve your experience. By continuing to browse you accept their use.",
-        cookie_accept: "Accept"
+        cookie_accept: "Accept",
+        footer_cookies: "🍪 Cookie Policy: we use cookies to improve your user experience.",
+        footer_copyright: "© 2025 Fitness Tools. All rights reserved."
       },
       it: {
         page_title: "Calcolatore di Composizione Corporea e Macro 💪 | Fitness Tools",
@@ -1504,7 +1532,9 @@
         app_ios: "App Store",
         app_ios_label: "Scarica su",
         cookie_msg: "🍪 Utilizziamo cookie per migliorare la tua esperienza. Continuando a navigare ne accetti l'uso.",
-        cookie_accept: "Accetta"
+        cookie_accept: "Accetta",
+        footer_cookies: "🍪 Informativa sui cookie: utilizziamo cookie per migliorare l'esperienza utente.",
+        footer_copyright: "© 2025 Fitness Tools. Tutti i diritti riservati."
       },
       fr: {
         page_title: "Calculateur de Composition Corporelle et Macros 💪 | Fitness Tools",
@@ -1564,7 +1594,9 @@
         app_ios: "App Store",
         app_ios_label: "Télécharger sur l'",
         cookie_msg: "🍪 Nous utilisons des cookies pour améliorer votre expérience. En continuant à naviguer, vous en acceptez l'utilisation.",
-        cookie_accept: "Accepter"
+        cookie_accept: "Accepter",
+        footer_cookies: "🍪 Politique de cookies : nous utilisons des cookies pour améliorer l'expérience utilisateur.",
+        footer_copyright: "© 2025 Fitness Tools. Tous droits réservés."
       },
       de: {
         page_title: "Körperzusammensetzungs- & Makro-Rechner 💪 | Fitness Tools",
@@ -1624,7 +1656,9 @@
         app_ios: "App Store",
         app_ios_label: "Laden im",
         cookie_msg: "🍪 Wir verwenden Cookies, um dein Erlebnis zu verbessern. Durch weiteres Surfen stimmst du deren Verwendung zu.",
-        cookie_accept: "Akzeptieren"
+        cookie_accept: "Akzeptieren",
+        footer_cookies: "🍪 Cookie-Richtlinie: Wir verwenden Cookies, um die Benutzererfahrung zu verbessern.",
+        footer_copyright: "© 2025 Fitness Tools. Alle Rechte vorbehalten."
       },
       pt: {
         page_title: "Calculadora de Composição Corporal e Macros 💪 | Fitness Tools",
@@ -1684,7 +1718,9 @@
         app_ios: "App Store",
         app_ios_label: "Baixar na",
         cookie_msg: "🍪 Usamos cookies para melhorar a sua experiência. Ao continuar a navegar aceita a sua utilização.",
-        cookie_accept: "Aceitar"
+        cookie_accept: "Aceitar",
+        footer_cookies: "🍪 Política de cookies: usamos cookies para melhorar a experiência do utilizador.",
+        footer_copyright: "© 2025 Fitness Tools. Todos os direitos reservados."
       },
       nl: {
         page_title: "Lichaamssamenstelling & Macro Calculator 💪 | Fitness Tools",
@@ -1744,7 +1780,9 @@
         app_ios: "App Store",
         app_ios_label: "Download in de",
         cookie_msg: "🍪 Wij gebruiken cookies om uw ervaring te verbeteren. Door verder te browsen accepteert u het gebruik ervan.",
-        cookie_accept: "Accepteren"
+        cookie_accept: "Accepteren",
+        footer_cookies: "🍪 Cookiebeleid: wij gebruiken cookies om de gebruikerservaring te verbeteren.",
+        footer_copyright: "© 2025 Fitness Tools. Alle rechten voorbehouden."
       },
       pl: {
         page_title: "Kalkulator Składu Ciała i Makroskładników 💪 | Fitness Tools",
@@ -1804,7 +1842,9 @@
         app_ios: "App Store",
         app_ios_label: "Pobierz w",
         cookie_msg: "🍪 Używamy plików cookie, aby poprawić Twoje doświadczenie. Kontynuując przeglądanie, akceptujesz ich użycie.",
-        cookie_accept: "Akceptuj"
+        cookie_accept: "Akceptuj",
+        footer_cookies: "🍪 Polityka cookies: używamy plików cookie w celu poprawy doświadczenia użytkownika.",
+        footer_copyright: "© 2025 Fitness Tools. Wszelkie prawa zastrzeżone."
       },
       ru: {
         page_title: "Калькулятор состава тела и макронутриентов 💪 | Fitness Tools",
@@ -1864,7 +1904,9 @@
         app_ios: "App Store",
         app_ios_label: "Загрузить в",
         cookie_msg: "🍪 Мы используем файлы cookie для улучшения вашего опыта. Продолжая просмотр, вы принимаете их использование.",
-        cookie_accept: "Принять"
+        cookie_accept: "Принять",
+        footer_cookies: "🍪 Политика файлов cookie: мы используем файлы cookie для улучшения пользовательского опыта.",
+        footer_copyright: "© 2025 Fitness Tools. Все права защищены."
       },
       zh: {
         page_title: "身体成分与宏量营养素计算器 💪 | Fitness Tools",
@@ -1924,7 +1966,9 @@
         app_ios: "App Store",
         app_ios_label: "在",
         cookie_msg: "🍪 我们使用 Cookie 以改善您的体验。继续浏览即表示您接受其使用。",
-        cookie_accept: "接受"
+        cookie_accept: "接受",
+        footer_cookies: "🍪 Cookie 政策：我们使用 Cookie 来改善用户体验。",
+        footer_copyright: "© 2025 Fitness Tools. 保留所有权利。"
       },
       ja: {
         page_title: "体組成・マクロ栄養素計算ツール 💪 | Fitness Tools",
@@ -1984,7 +2028,71 @@
         app_ios: "App Store",
         app_ios_label: "App Storeでダウンロード",
         cookie_msg: "🍪 当サイトではクッキーを使用して利用体験を向上させています。閲覧を続けることで使用に同意したものとみなします。",
-        cookie_accept: "同意する"
+        cookie_accept: "同意する",
+        footer_cookies: "🍪 クッキーポリシー：ユーザー体験向上のためクッキーを使用しています。",
+        footer_copyright: "© 2025 Fitness Tools. 全著作権所有。"
+      },
+      ko: {
+        page_title: "체성분 & 매크로 계산기 💪 | Fitness Tools",
+        page_description: "미 해군 공식으로 체지방, 제지방 체중, BMI, FFMI, 일일 매크로영양소를 무료로 계산하세요. 상세 그래프와 즉시 결과.",
+        page_intro: "체지방(미 해군식), 제지방 체중, BMI, FFMI, 일일 매크로를 무료로 계산하세요.",
+        subtitle: "체성분 및 매크로영양소 분배",
+        err_title: "오류",
+        male: "남성", female: "여성",
+        required_section: "필수 항목", optional_section: "선택 항목",
+        show_fields: "표시", hide_fields: "숨기기",
+        f_calories: "총 칼로리", f_weight: "체중", f_height: "키",
+        f_waist: "허리", f_neck: "목",
+        f_fat_pct: "직접 체지방률", f_hip: "엉덩이",
+        f_bicep_r: "오른쪽 이두근", f_bicep_l: "왼쪽 이두근",
+        f_quad_r: "오른쪽 대퇴사두근", f_quad_l: "왼쪽 대퇴사두근",
+        f_calf_r: "오른쪽 종아리", f_calf_l: "왼쪽 종아리",
+        f_chest: "가슴",
+        h_calories: "하루 총 섭취 칼로리",
+        h_weight: "체중 (kg)",
+        h_height: "키 (cm)",
+        h_waist: "복부에서 가장 좁은 부분",
+        h_neck: "목 하부, 쇄골 위",
+        h_bioimpedance: "체성분 분석기 수치",
+        h_hip_women: "여성 필수 (미 해군 공식)",
+        btn_calculate: "🚀 분석 계산하기",
+        btn_pdf: "📄 PDF 보고서 다운로드",
+        r_measurements: "신체 측정값", r_body_comp: "체성분 (미 해군법)",
+        r_imc_ffmi: "BMI와 FFMI", r_macros: "오늘의 매크로",
+        r_body_fat: "체지방", r_lean_mass: "제지방 체중",
+        r_imc: "BMI (kg/m²)", r_ffmi: "FFMI (kg/m²)", r_ffmi_norm: "정규화 FFMI (1.80m)",
+        charts_title: "그래프 — 결과 분석",
+        chart_fat: "체지방률",
+        chart_imc_title: "체질량지수 (BMI)",
+        chart_ffmi_title: "정규화 FFMI (1.80m)",
+        chart_macros_title: "매크로영양소 분배 (kcal)",
+        report_title: "상세 보고서 — 단계별 공식",
+        report_navy: "1. 체지방률 — 미 해군법",
+        report_lean: "2. 제지방 체중 (Lean Body Mass)",
+        report_imc: "3. 체질량지수 (BMI)",
+        report_ffmi: "4. 제지방 체중 지수 (FFMI)",
+        report_macros: "5. 매크로영양소 분배",
+        faq_title: "자주 묻는 질문 — 공식은 어떻게 작동하나요?",
+        faq_q1: "미 해군 공식이란 무엇이며 어떻게 체지방률을 계산하나요?",
+        faq_q2: "제지방 체중이란 무엇이며 어떻게 계산하나요?",
+        faq_q3: "BMI(체질량지수)란 무엇인가요?",
+        faq_q4: "FFMI란 무엇이며 남녀 차이가 있는 이유는 무엇인가요?",
+        faq_q5: "매크로영양소는 어떻게 분배되나요?",
+        faq_q6: "이 계산기에서 남성과 여성의 주요 차이점은 무엇인가요?",
+        p_calories: "예: 3343", p_weight: "예: 72.5", p_height: "예: 175.5",
+        p_waist: "예: 84.0", p_neck: "예: 38.0", p_fat_pct: "예: 14.5",
+        p_hip: "예: 95.0", p_bicep: "예: 35.0", p_quad: "예: 55.0",
+        p_calf: "예: 37.0", p_chest: "예: 100.0",
+        app_download_title: "📱 앱 다운로드",
+        app_download_subtitle: "피트니스 계산기를 언제 어디서나 함께",
+        app_android: "Google Play",
+        app_android_label: "Google Play에서 받기",
+        app_ios: "App Store",
+        app_ios_label: "App Store에서 다운로드",
+        cookie_msg: "🍪 저희는 쿠키를 사용하여 경험을 향상시킵니다. 계속 탐색하시면 사용에 동의하시는 것으로 간주됩니다.",
+        cookie_accept: "수락",
+        footer_cookies: "🍪 쿠키 정책: 사용자 경험 향상을 위해 쿠키를 사용합니다.",
+        footer_copyright: "© 2025 Fitness Tools. 모든 권리 보유."
       }
     };
 
@@ -2022,7 +2130,7 @@
     var OG_LOCALES = {
       es: 'es_ES', en: 'en_US', it: 'it_IT', fr: 'fr_FR',
       de: 'de_DE', pt: 'pt_PT', nl: 'nl_NL', pl: 'pl_PL',
-      ru: 'ru_RU', zh: 'zh_CN', ja: 'ja_JP'
+      ru: 'ru_RU', zh: 'zh_CN', ja: 'ja_JP', ko: 'ko_KR'
     };
 
     function applyHeadSeo(lang) {
