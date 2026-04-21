@@ -854,6 +854,51 @@
       font-size: .92rem;
       color: #742a2a;
     }
+
+    /* ── Cookie consent banner ── */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9998;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem 1.2rem;
+      padding: .7rem 1.2rem;
+      background: rgba(30, 15, 60, 0.92);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 -2px 12px rgba(0,0,0,.4);
+      color: rgba(255,255,255,.9);
+      font-size: .88rem;
+      line-height: 1.4;
+    }
+    .cookie-banner.hidden { display: none; }
+    .cookie-banner-text {
+      flex: 1 1 220px;
+      text-align: center;
+    }
+    .cookie-accept-btn {
+      flex-shrink: 0;
+      background: rgba(255,255,255,.18);
+      border: 2px solid rgba(255,255,255,.6);
+      border-radius: 8px;
+      padding: .3rem 1.1rem;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .1s;
+      white-space: nowrap;
+    }
+    .cookie-accept-btn:hover {
+      background: rgba(255,255,255,.3);
+      border-color: #fff;
+      transform: scale(1.05);
+    }
+    @media print { .cookie-banner { display: none !important; } }
   </style>
 </head>
 <body>
@@ -1323,7 +1368,9 @@
         app_android: "Google Play",
         app_android_label: "Disponible en",
         app_ios: "App Store",
-        app_ios_label: "Descárgalo en"
+        app_ios_label: "Descárgalo en",
+        cookie_msg: "🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.",
+        cookie_accept: "Aceptar"
       },
       en: {
         page_title: "Body Composition & Macro Calculator 💪 | Fitness Tools",
@@ -1381,7 +1428,9 @@
         app_android: "Google Play",
         app_android_label: "Get it on",
         app_ios: "App Store",
-        app_ios_label: "Download on the"
+        app_ios_label: "Download on the",
+        cookie_msg: "🍪 We use cookies to improve your experience. By continuing to browse you accept their use.",
+        cookie_accept: "Accept"
       },
       it: {
         page_title: "Calcolatore di Composizione Corporea e Macro 💪 | Fitness Tools",
@@ -1439,7 +1488,9 @@
         app_android: "Google Play",
         app_android_label: "Disponibile su",
         app_ios: "App Store",
-        app_ios_label: "Scarica su"
+        app_ios_label: "Scarica su",
+        cookie_msg: "🍪 Utilizziamo cookie per migliorare la tua esperienza. Continuando a navigare ne accetti l'uso.",
+        cookie_accept: "Accetta"
       },
       fr: {
         page_title: "Calculateur de Composition Corporelle et Macros 💪 | Fitness Tools",
@@ -1497,7 +1548,9 @@
         app_android: "Google Play",
         app_android_label: "Disponible sur",
         app_ios: "App Store",
-        app_ios_label: "Télécharger sur l'"
+        app_ios_label: "Télécharger sur l'",
+        cookie_msg: "🍪 Nous utilisons des cookies pour améliorer votre expérience. En continuant à naviguer, vous en acceptez l'utilisation.",
+        cookie_accept: "Accepter"
       },
       de: {
         page_title: "Körperzusammensetzungs- & Makro-Rechner 💪 | Fitness Tools",
@@ -1555,7 +1608,9 @@
         app_android: "Google Play",
         app_android_label: "Jetzt bei",
         app_ios: "App Store",
-        app_ios_label: "Laden im"
+        app_ios_label: "Laden im",
+        cookie_msg: "🍪 Wir verwenden Cookies, um dein Erlebnis zu verbessern. Durch weiteres Surfen stimmst du deren Verwendung zu.",
+        cookie_accept: "Akzeptieren"
       },
       pt: {
         page_title: "Calculadora de Composição Corporal e Macros 💪 | Fitness Tools",
@@ -1613,7 +1668,9 @@
         app_android: "Google Play",
         app_android_label: "Disponível no",
         app_ios: "App Store",
-        app_ios_label: "Baixar na"
+        app_ios_label: "Baixar na",
+        cookie_msg: "🍪 Usamos cookies para melhorar a sua experiência. Ao continuar a navegar aceita a sua utilização.",
+        cookie_accept: "Aceitar"
       },
       nl: {
         page_title: "Lichaamssamenstelling & Macro Calculator 💪 | Fitness Tools",
@@ -1671,7 +1728,9 @@
         app_android: "Google Play",
         app_android_label: "Verkrijgbaar bij",
         app_ios: "App Store",
-        app_ios_label: "Download in de"
+        app_ios_label: "Download in de",
+        cookie_msg: "🍪 Wij gebruiken cookies om uw ervaring te verbeteren. Door verder te browsen accepteert u het gebruik ervan.",
+        cookie_accept: "Accepteren"
       },
       pl: {
         page_title: "Kalkulator Składu Ciała i Makroskładników 💪 | Fitness Tools",
@@ -1729,7 +1788,9 @@
         app_android: "Google Play",
         app_android_label: "Pobierz z",
         app_ios: "App Store",
-        app_ios_label: "Pobierz w"
+        app_ios_label: "Pobierz w",
+        cookie_msg: "🍪 Używamy plików cookie, aby poprawić Twoje doświadczenie. Kontynuując przeglądanie, akceptujesz ich użycie.",
+        cookie_accept: "Akceptuj"
       },
       ru: {
         page_title: "Калькулятор состава тела и макронутриентов 💪 | Fitness Tools",
@@ -1787,7 +1848,9 @@
         app_android: "Google Play",
         app_android_label: "Доступно в",
         app_ios: "App Store",
-        app_ios_label: "Загрузить в"
+        app_ios_label: "Загрузить в",
+        cookie_msg: "🍪 Мы используем файлы cookie для улучшения вашего опыта. Продолжая просмотр, вы принимаете их использование.",
+        cookie_accept: "Принять"
       },
       zh: {
         page_title: "身体成分与宏量营养素计算器 💪 | Fitness Tools",
@@ -1845,7 +1908,9 @@
         app_android: "Google Play",
         app_android_label: "立即下载",
         app_ios: "App Store",
-        app_ios_label: "在"
+        app_ios_label: "在",
+        cookie_msg: "🍪 我们使用 Cookie 以改善您的体验。继续浏览即表示您接受其使用。",
+        cookie_accept: "接受"
       },
       ja: {
         page_title: "体組成・マクロ栄養素計算ツール 💪 | Fitness Tools",
@@ -1903,7 +1968,9 @@
         app_android: "Google Play",
         app_android_label: "Google Playで手に入れよう",
         app_ios: "App Store",
-        app_ios_label: "App Storeでダウンロード"
+        app_ios_label: "App Storeでダウンロード",
+        cookie_msg: "🍪 当サイトではクッキーを使用して利用体験を向上させています。閲覧を続けることで使用に同意したものとみなします。",
+        cookie_accept: "同意する"
       }
     };
 
@@ -2562,6 +2629,30 @@
       return html;
     };
   })();
+  </script>
+
+  <!-- ── Cookie consent banner ── -->
+  <div id="cookie-banner" class="cookie-banner no-print" role="banner" aria-label="Cookie consent" style="display:none;">
+    <span class="cookie-banner-text" id="cookie-banner-text" data-i18n="cookie_msg">🍪 Usamos cookies para mejorar tu experiencia. Al continuar navegando aceptas su uso.</span>
+    <button class="cookie-accept-btn" id="cookie-accept-btn" data-i18n="cookie_accept" onclick="acceptCookies()">Aceptar</button>
+  </div>
+
+  <script>
+    (function () {
+      function acceptCookies() {
+        localStorage.setItem('fitness-cookies-accepted', '1');
+        var banner = document.getElementById('cookie-banner');
+        if (banner) banner.style.display = 'none';
+      }
+      window.acceptCookies = acceptCookies;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        if (!localStorage.getItem('fitness-cookies-accepted')) {
+          var banner = document.getElementById('cookie-banner');
+          if (banner) banner.style.display = '';
+        }
+      });
+    })();
   </script>
 
 </body>
