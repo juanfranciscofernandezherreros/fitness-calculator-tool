@@ -132,9 +132,12 @@
   <style>
     /* ── Design System — Brand Tokens ── */
     :root {
-      --color-dark:   #1B263B;  /* Azul oscuro  */
-      --color-light:  #F0F4F8;  /* Blanco hielo */
-      --color-accent: #415A77;  /* Azul acero   */
+      --color-dark:       #1B263B;     /* Azul oscuro  */
+      --color-dark-rgb:   27, 38, 59;
+      --color-light:      #F0F4F8;     /* Blanco hielo */
+      --color-light-rgb:  240, 244, 248;
+      --color-accent:     #415A77;     /* Azul acero   */
+      --color-accent-rgb: 65, 90, 119;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -447,9 +450,9 @@
 
     /* ── Submit button ── */
     @keyframes btn-pulse {
-      0%   { box-shadow: 0 0 0 0 rgba(65,90,119,.55); }
-      70%  { box-shadow: 0 0 0 10px rgba(65,90,119,0); }
-      100% { box-shadow: 0 0 0 0 rgba(65,90,119,0); }
+      0%   { box-shadow: 0 0 0 0 rgba(var(--color-accent-rgb), .55); }
+      70%  { box-shadow: 0 0 0 10px rgba(var(--color-accent-rgb), 0); }
+      100% { box-shadow: 0 0 0 0 rgba(var(--color-accent-rgb), 0); }
     }
     .btn-submit {
       width: 100%;
@@ -834,8 +837,8 @@
       text-decoration: none;
       transition: border-color .15s, background .15s, transform .1s;
     }
-    .lang-topbar .lang-btn:hover  { border-color: var(--color-light); background: rgba(240,244,248,.15); transform: scale(1.12); }
-    .lang-topbar .lang-btn.active { border-color: var(--color-light); background: var(--color-accent); box-shadow: 0 0 0 2px rgba(240,244,248,.3); }
+    .lang-topbar .lang-btn:hover  { border-color: var(--color-light); background: rgba(var(--color-light-rgb), .15); transform: scale(1.12); }
+    .lang-topbar .lang-btn.active { border-color: var(--color-light); background: var(--color-accent); box-shadow: 0 0 0 2px rgba(var(--color-light-rgb), .3); }
     @media print { .lang-topbar { display: none; } }
 
     /* ── Improved error alert ── */
@@ -887,7 +890,7 @@
       justify-content: center;
       gap: .6rem 1.2rem;
       padding: .7rem 1.2rem;
-      background: rgba(27, 38, 59, 0.96);
+      background: rgba(var(--color-dark-rgb), 0.96);
       backdrop-filter: blur(6px);
       box-shadow: 0 -2px 12px rgba(0,0,0,.4);
       color: var(--color-light);
@@ -932,7 +935,7 @@
     }
     .page-footer p { margin: .15rem 0; }
     .page-footer .footer-cookies { color: var(--color-light); }
-    .page-footer .footer-copyright { color: rgba(240,244,248,.6); font-size: .75rem; }
+    .page-footer .footer-copyright { color: rgba(var(--color-light-rgb), .6); font-size: .75rem; }
     @media print { .page-footer { display: none; } }
   </style>
 </head>
