@@ -293,6 +293,22 @@
       background: #f0fdf4;
     }
     input[type="number"]:focus ~ .unit { color: #7c3aed; }
+
+    /* ── Input error state ── */
+    @keyframes input-shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-5px); }
+      40%       { transform: translateX(5px); }
+      60%       { transform: translateX(-4px); }
+      80%       { transform: translateX(4px); }
+    }
+    input[type="number"].input-error {
+      border-color: #e53e3e !important;
+      background: #fff5f5 !important;
+      box-shadow: 0 0 0 3px rgba(229,62,62,.18) !important;
+      animation: input-shake .4s ease;
+    }
+
     /* Remove spin buttons */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
@@ -1976,20 +1992,60 @@
     }
 
     /* ── Show / hide error ── */
-    function showError(msg) {
-      var el = document.getElementById('error-container');
-      if (!el) return;
-      el.innerHTML = '<div class="alert-error" role="alert">'
-        + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
-        + '<div class="alert-error-body">'
-        + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
-        + '<span class="alert-error-message">' + esc(msg) + '</span>'
-        + '</div></div>';
-      el.style.display = '';
+    function clearFieldErrors() {
+      document.querySelectorAll('input.input-error').forEach(function (inp) {
+        inp.classList.remove('input-error');
+      });
     }
+
+    function showError(msg, fields) {
+      clearFieldErrors();
+      if (fields && fields.length > 0) {
+        /* Highlight each errored input; expand optional section if needed */
+        var firstInput = null;
+        fields.forEach(function (fieldId) {
+          var inp = document.getElementById(fieldId);
+          if (!inp) return;
+          inp.classList.add('input-error');
+          /* If the input lives inside the collapsible optional section, expand it */
+          var optWrap = document.getElementById('optional-fields');
+          if (optWrap && optWrap.contains(inp) && optWrap.classList.contains('collapsed')) {
+            optWrap.classList.remove('collapsed');
+            optWrap.classList.add('expanded');
+            var btn = document.getElementById('optional-toggle-btn');
+            var txt = document.getElementById('optional-toggle-text');
+            var chev = document.getElementById('optional-chevron');
+            if (btn) btn.setAttribute('aria-expanded', 'true');
+            if (txt) txt.textContent = t('hide_fields');
+            if (chev) chev.style.transform = 'rotate(180deg)';
+          }
+          if (!firstInput) firstInput = inp;
+        });
+        if (firstInput) {
+          firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(function () { firstInput.focus({ preventScroll: true }); }, 300);
+        }
+        /* Hide any leftover message box */
+        var el = document.getElementById('error-container');
+        if (el) { el.innerHTML = ''; el.style.display = 'none'; }
+      } else {
+        /* Fallback: no specific field known, show the alert box */
+        var el = document.getElementById('error-container');
+        if (!el) return;
+        el.innerHTML = '<div class="alert-error" role="alert">'
+          + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
+          + '<div class="alert-error-body">'
+          + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
+          + '<span class="alert-error-message">' + esc(msg) + '</span>'
+          + '</div></div>';
+        el.style.display = '';
+      }
+    }
+
     function hideError() {
       var el = document.getElementById('error-container');
       if (el) { el.innerHTML = ''; el.style.display = 'none'; }
+      clearFieldErrors();
     }
 
     /* ── Show loading state on button ── */
@@ -2027,12 +2083,12 @@
               requestAnimationFrame(function () { initCharts(res.body.resultados); });
             } else {
               container.innerHTML = '';
-              showError(res.body.error || 'Error inesperado');
+              showError(res.body.error || 'Error inesperado', res.body.fields || []);
             }
           })
           .catch(function (err) {
             setLoading(false);
-            showError('Error de conexión: ' + err.message);
+            showError('Error de conexión: ' + err.message, []);
           });
       });
     }

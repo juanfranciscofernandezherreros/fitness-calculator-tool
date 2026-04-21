@@ -247,10 +247,29 @@ ERROR_MESSAGES: dict[str, dict[str, str]] = {
 class AppError(ValueError):
     """Structured application error carrying a translation key and parameters."""
 
-    def __init__(self, key: str, **params):
+    def __init__(self, key: str, fields: list | None = None, **params):
         self.error_key = key
+        self.fields: list[str] = fields or []
         self.params = params
         super().__init__(key)
+
+
+def _get_error_fields(exc: Exception) -> list[str]:
+    """Return the HTML input IDs associated with an error."""
+    if isinstance(exc, AppError):
+        return exc.fields
+    msg = str(exc)
+    if "valores positivos" in msg or re.search(r"debe ser un valor positivo", msg):
+        return ["calorias", "peso", "altura", "cintura", "cuello"]
+    if "cintura debe ser mayor que el cuello" in msg:
+        return ["cintura", "cuello"]
+    if "cadera" in msg and "obligatorio" in msg:
+        return ["cadera"]
+    if "cintura+cadera" in msg or ("cintura" in msg and "cadera" in msg and "cuello" in msg):
+        return ["cintura", "cadera"]
+    if "insuficiente" in msg and "kcal" in msg:
+        return ["calorias"]
+    return []
 
 
 def _translate_error(exc: Exception, lang: str) -> str:
@@ -281,7 +300,7 @@ def _translate_error(exc: Exception, lang: str) -> str:
             return tmpl.format(kcal=m.group(1), needed=m.group(2))
         return tmpl.format(kcal="?", needed="?")
 
-    return msgs.get("unknown_error", "Error: {msg}").format(msg=msg)
+    return msgs.get("unknown_error", "Error inesperado.").format(msg="")
 
 
 @app.route("/", methods=["GET"])
@@ -295,24 +314,24 @@ def _compute_results(form, lang):
     Raises AppError (or any ValueError from fitness_tools) on invalid input.
     """
     campos = CAMPO_NAMES.get(lang, CAMPO_NAMES[DEFAULT_LANG])
-    calorias = _parse_float(form.get("calorias", ""), campos["calorias"])
-    peso = _parse_float(form.get("peso", ""), campos["peso"])
-    altura = _parse_float(form.get("altura", ""), campos["altura"])
-    cintura = _parse_float(form.get("cintura", ""), campos["cintura"])
-    cuello = _parse_float(form.get("cuello", ""), campos["cuello"])
+    calorias = _parse_float(form.get("calorias", ""), campos["calorias"], "calorias")
+    peso = _parse_float(form.get("peso", ""), campos["peso"], "peso")
+    altura = _parse_float(form.get("altura", ""), campos["altura"], "altura")
+    cintura = _parse_float(form.get("cintura", ""), campos["cintura"], "cintura")
+    cuello = _parse_float(form.get("cuello", ""), campos["cuello"], "cuello")
     sexo = form.get("sexo", "hombre")
     if sexo not in ("hombre", "mujer"):
         sexo = "hombre"
 
-    grasa = _optional_float(form.get("grasa"), campos["grasa"])
-    biceps_der = _optional_float(form.get("biceps_der"), campos["biceps_der"])
-    biceps_izq = _optional_float(form.get("biceps_izq"), campos["biceps_izq"])
-    cuadriceps_der = _optional_float(form.get("cuadriceps_der"), campos["cuadriceps_der"])
-    cuadriceps_izq = _optional_float(form.get("cuadriceps_izq"), campos["cuadriceps_izq"])
-    cadera = _optional_float(form.get("cadera"), campos["cadera"])
-    gemelos_der = _optional_float(form.get("gemelos_der"), campos["gemelos_der"])
-    gemelos_izq = _optional_float(form.get("gemelos_izq"), campos["gemelos_izq"])
-    pectoral = _optional_float(form.get("pectoral"), campos["pectoral"])
+    grasa = _optional_float(form.get("grasa"), campos["grasa"], "grasa")
+    biceps_der = _optional_float(form.get("biceps_der"), campos["biceps_der"], "biceps_der")
+    biceps_izq = _optional_float(form.get("biceps_izq"), campos["biceps_izq"], "biceps_izq")
+    cuadriceps_der = _optional_float(form.get("cuadriceps_der"), campos["cuadriceps_der"], "cuadriceps_der")
+    cuadriceps_izq = _optional_float(form.get("cuadriceps_izq"), campos["cuadriceps_izq"], "cuadriceps_izq")
+    cadera = _optional_float(form.get("cadera"), campos["cadera"], "cadera")
+    gemelos_der = _optional_float(form.get("gemelos_der"), campos["gemelos_der"], "gemelos_der")
+    gemelos_izq = _optional_float(form.get("gemelos_izq"), campos["gemelos_izq"], "gemelos_izq")
+    pectoral = _optional_float(form.get("pectoral"), campos["pectoral"], "pectoral")
 
     medidas = MedidasCorporales(
         peso=peso,
@@ -461,30 +480,30 @@ def api_calculate():
         resultados = _compute_results(request.form, lang)
         return jsonify({"resultados": resultados})
     except (AppError, ValueError) as exc:
-        return jsonify({"error": _translate_error(exc, lang)}), 400
+        return jsonify({"error": _translate_error(exc, lang), "fields": _get_error_fields(exc)}), 400
     except Exception:
         msgs = ERROR_MESSAGES.get(lang, ERROR_MESSAGES[DEFAULT_LANG])
-        return jsonify({"error": msgs.get("unknown_error", "Error inesperado.").format(msg="")}), 500
+        return jsonify({"error": msgs.get("unknown_error", "Error inesperado.").format(msg=""), "fields": []}), 500
 
 
-def _parse_float(value: str | None, campo: str) -> float:
+def _parse_float(value: str | None, campo: str, field_id: str = "") -> float:
     """Convierte un valor de formulario a float; lanza AppError con clave i18n."""
     if value is None or value.strip() == "":
-        raise AppError("field_required", campo=campo)
+        raise AppError("field_required", fields=[field_id] if field_id else [], campo=campo)
     try:
         return float(value)
     except ValueError:
-        raise AppError("invalid_number", value=value, campo=campo)
+        raise AppError("invalid_number", fields=[field_id] if field_id else [], value=value, campo=campo)
 
 
-def _optional_float(value: str | None, campo: str = "") -> float | None:
+def _optional_float(value: str | None, campo: str = "", field_id: str = "") -> float | None:
     """Devuelve float si el valor tiene contenido, None en caso contrario."""
     if value is None or value.strip() == "":
         return None
     try:
         return float(value)
     except ValueError:
-        raise AppError("invalid_number", value=value, campo=campo or "?")
+        raise AppError("invalid_number", fields=[field_id] if field_id else [], value=value, campo=campo or "?")
 
 
 if __name__ == "__main__":
