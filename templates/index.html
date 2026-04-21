@@ -2025,21 +2025,27 @@
           firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
           setTimeout(function () { firstInput.focus({ preventScroll: true }); }, 300);
         }
-        /* Hide any leftover message box */
-        var el = document.getElementById('error-container');
-        if (el) { el.innerHTML = ''; el.style.display = 'none'; }
-      } else {
-        /* Fallback: no specific field known, show the alert box */
-        var el = document.getElementById('error-container');
-        if (!el) return;
-        el.innerHTML = '<div class="alert-error" role="alert">'
-          + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
-          + '<div class="alert-error-body">'
-          + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
-          + '<span class="alert-error-message">' + esc(msg) + '</span>'
-          + '</div></div>';
-        el.style.display = '';
       }
+      /* Always show the error message box */
+      var el = document.getElementById('error-container');
+      if (!el) return;
+      var safeMsg = msg || '';
+      var lines = safeMsg.split('\n').filter(function(l) { return l.trim(); });
+      var msgHtml;
+      if (lines.length > 1) {
+        msgHtml = '<ul style="margin:.25rem 0 0 1rem;padding:0">'
+          + lines.map(function(l) { return '<li>' + esc(l) + '</li>'; }).join('')
+          + '</ul>';
+      } else {
+        msgHtml = '<span class="alert-error-message">' + esc(safeMsg) + '</span>';
+      }
+      el.innerHTML = '<div class="alert-error" role="alert">'
+        + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
+        + '<div class="alert-error-body">'
+        + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
+        + msgHtml
+        + '</div></div>';
+      el.style.display = '';
     }
 
     function hideError() {
