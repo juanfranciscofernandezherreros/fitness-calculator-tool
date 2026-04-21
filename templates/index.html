@@ -429,6 +429,67 @@
     .btn-pdf:hover  { opacity: .9; }
     .btn-pdf:active { transform: scale(.99); }
 
+    /* ── App download section ── */
+    .app-download-section {
+      margin-top: 2rem;
+      padding: 1.5rem 1.2rem;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1.5px solid #bbf7d0;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .app-download-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: .3rem;
+    }
+    .app-download-subtitle {
+      font-size: .82rem;
+      color: #6b7280;
+      margin-bottom: 1.1rem;
+    }
+    .app-download-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    @media (min-width: 480px) {
+      .app-download-buttons { flex-direction: row; justify-content: center; }
+    }
+    .btn-store {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .55rem;
+      padding: .75rem 1.4rem;
+      border-radius: 12px;
+      font-size: .9rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: .02em;
+      transition: opacity .2s, transform .1s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-store:hover  { opacity: .88; }
+    .btn-store:active { transform: scale(.98); }
+    .btn-store-android {
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .btn-store-ios {
+      background: #1d4ed8;
+      color: #fff;
+    }
+    .btn-store-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+    .btn-store-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+    .btn-store-label { font-size: .68rem; font-weight: 400; opacity: .8; }
+    .btn-store-name  { font-size: .92rem; font-weight: 700; }
+
     /* ── Formula report ── */
     .formula-report {
       margin-top: 2rem;
@@ -1037,6 +1098,28 @@
     <!-- Results injected here by JavaScript -->
     <div id="results-container"></div>
 
+    <!-- App download section -->
+    <div class="app-download-section no-print">
+      <div class="app-download-title" data-i18n="app_download_title">📱 Descarga la aplicación</div>
+      <div class="app-download-subtitle" data-i18n="app_download_subtitle">Lleva tu calculadora de fitness siempre contigo</div>
+      <div class="app-download-buttons">
+        <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" class="btn-store btn-store-android">
+          <span class="btn-store-icon">🤖</span>
+          <span class="btn-store-text">
+            <span class="btn-store-label" data-i18n="app_android_label">Disponible en</span>
+            <span class="btn-store-name" data-i18n="app_android">Google Play</span>
+          </span>
+        </a>
+        <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer" class="btn-store btn-store-ios">
+          <span class="btn-store-icon">🍎</span>
+          <span class="btn-store-text">
+            <span class="btn-store-label" data-i18n="app_ios_label">Descárgalo en</span>
+            <span class="btn-store-name" data-i18n="app_ios">App Store</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
   </div>
 
 
@@ -1093,7 +1176,13 @@
         p_calories: "ej. 3343", p_weight: "ej. 72.5", p_height: "ej. 175.5",
         p_waist: "ej. 84.0", p_neck: "ej. 38.0", p_fat_pct: "ej. 14.5",
         p_hip: "ej. 95.0", p_bicep: "ej. 35.0", p_quad: "ej. 55.0",
-        p_calf: "ej. 37.0", p_chest: "ej. 100.0"
+        p_calf: "ej. 37.0", p_chest: "ej. 100.0",
+        app_download_title: "📱 Descarga la aplicación",
+        app_download_subtitle: "Lleva tu calculadora de fitness siempre contigo",
+        app_android: "Google Play",
+        app_android_label: "Disponible en",
+        app_ios: "App Store",
+        app_ios_label: "Descárgalo en"
       },
       en: {
         subtitle: "Body composition and macronutrient distribution",
@@ -1142,7 +1231,13 @@
         p_calories: "e.g. 3343", p_weight: "e.g. 72.5", p_height: "e.g. 175.5",
         p_waist: "e.g. 84.0", p_neck: "e.g. 38.0", p_fat_pct: "e.g. 14.5",
         p_hip: "e.g. 95.0", p_bicep: "e.g. 35.0", p_quad: "e.g. 55.0",
-        p_calf: "e.g. 37.0", p_chest: "e.g. 100.0"
+        p_calf: "e.g. 37.0", p_chest: "e.g. 100.0",
+        app_download_title: "📱 Download the app",
+        app_download_subtitle: "Take your fitness calculator everywhere with you",
+        app_android: "Google Play",
+        app_android_label: "Get it on",
+        app_ios: "App Store",
+        app_ios_label: "Download on the"
       },
       it: {
         subtitle: "Composizione corporea e distribuzione dei macronutrienti",
@@ -1191,7 +1286,13 @@
         p_calories: "es. 3343", p_weight: "es. 72.5", p_height: "es. 175.5",
         p_waist: "es. 84.0", p_neck: "es. 38.0", p_fat_pct: "es. 14.5",
         p_hip: "es. 95.0", p_bicep: "es. 35.0", p_quad: "es. 55.0",
-        p_calf: "es. 37.0", p_chest: "es. 100.0"
+        p_calf: "es. 37.0", p_chest: "es. 100.0",
+        app_download_title: "📱 Scarica l'app",
+        app_download_subtitle: "Porta il tuo calcolatore fitness sempre con te",
+        app_android: "Google Play",
+        app_android_label: "Disponibile su",
+        app_ios: "App Store",
+        app_ios_label: "Scarica su"
       },
       fr: {
         subtitle: "Composition corporelle et distribution des macronutriments",
@@ -1240,7 +1341,13 @@
         p_calories: "ex. 3343", p_weight: "ex. 72.5", p_height: "ex. 175.5",
         p_waist: "ex. 84.0", p_neck: "ex. 38.0", p_fat_pct: "ex. 14.5",
         p_hip: "ex. 95.0", p_bicep: "ex. 35.0", p_quad: "ex. 55.0",
-        p_calf: "ex. 37.0", p_chest: "ex. 100.0"
+        p_calf: "ex. 37.0", p_chest: "ex. 100.0",
+        app_download_title: "📱 Télécharger l'application",
+        app_download_subtitle: "Emportez votre calculateur fitness partout avec vous",
+        app_android: "Google Play",
+        app_android_label: "Disponible sur",
+        app_ios: "App Store",
+        app_ios_label: "Télécharger sur l'"
       },
       de: {
         subtitle: "Körperzusammensetzung und Makronährstoffverteilung",
@@ -1289,7 +1396,13 @@
         p_calories: "z.B. 3343", p_weight: "z.B. 72,5", p_height: "z.B. 175,5",
         p_waist: "z.B. 84,0", p_neck: "z.B. 38,0", p_fat_pct: "z.B. 14,5",
         p_hip: "z.B. 95,0", p_bicep: "z.B. 35,0", p_quad: "z.B. 55,0",
-        p_calf: "z.B. 37,0", p_chest: "z.B. 100,0"
+        p_calf: "z.B. 37,0", p_chest: "z.B. 100,0",
+        app_download_title: "📱 App herunterladen",
+        app_download_subtitle: "Nehmen Sie Ihren Fitness-Rechner überall mit",
+        app_android: "Google Play",
+        app_android_label: "Jetzt bei",
+        app_ios: "App Store",
+        app_ios_label: "Laden im"
       },
       pt: {
         subtitle: "Composição corporal e distribuição de macronutrientes",
@@ -1338,7 +1451,13 @@
         p_calories: "ex. 3343", p_weight: "ex. 72,5", p_height: "ex. 175,5",
         p_waist: "ex. 84,0", p_neck: "ex. 38,0", p_fat_pct: "ex. 14,5",
         p_hip: "ex. 95,0", p_bicep: "ex. 35,0", p_quad: "ex. 55,0",
-        p_calf: "ex. 37,0", p_chest: "ex. 100,0"
+        p_calf: "ex. 37,0", p_chest: "ex. 100,0",
+        app_download_title: "📱 Baixar o aplicativo",
+        app_download_subtitle: "Leve a sua calculadora de fitness para todo o lado",
+        app_android: "Google Play",
+        app_android_label: "Disponível no",
+        app_ios: "App Store",
+        app_ios_label: "Baixar na"
       },
       nl: {
         subtitle: "Lichaamssamenstelling en verdeling van macronutriënten",
@@ -1387,7 +1506,13 @@
         p_calories: "bijv. 3343", p_weight: "bijv. 72,5", p_height: "bijv. 175,5",
         p_waist: "bijv. 84,0", p_neck: "bijv. 38,0", p_fat_pct: "bijv. 14,5",
         p_hip: "bijv. 95,0", p_bicep: "bijv. 35,0", p_quad: "bijv. 55,0",
-        p_calf: "bijv. 37,0", p_chest: "bijv. 100,0"
+        p_calf: "bijv. 37,0", p_chest: "bijv. 100,0",
+        app_download_title: "📱 Download de app",
+        app_download_subtitle: "Neem uw fitnesscalculator overal mee naartoe",
+        app_android: "Google Play",
+        app_android_label: "Verkrijgbaar bij",
+        app_ios: "App Store",
+        app_ios_label: "Download in de"
       },
       pl: {
         subtitle: "Skład ciała i rozkład makroskładników",
@@ -1436,7 +1561,13 @@
         p_calories: "np. 3343", p_weight: "np. 72,5", p_height: "np. 175,5",
         p_waist: "np. 84,0", p_neck: "np. 38,0", p_fat_pct: "np. 14,5",
         p_hip: "np. 95,0", p_bicep: "np. 35,0", p_quad: "np. 55,0",
-        p_calf: "np. 37,0", p_chest: "np. 100,0"
+        p_calf: "np. 37,0", p_chest: "np. 100,0",
+        app_download_title: "📱 Pobierz aplikację",
+        app_download_subtitle: "Zabierz swój kalkulator fitness wszędzie ze sobą",
+        app_android: "Google Play",
+        app_android_label: "Pobierz z",
+        app_ios: "App Store",
+        app_ios_label: "Pobierz w"
       },
       ru: {
         subtitle: "Состав тела и распределение макронутриентов",
@@ -1485,7 +1616,13 @@
         p_calories: "напр. 3343", p_weight: "напр. 72,5", p_height: "напр. 175,5",
         p_waist: "напр. 84,0", p_neck: "напр. 38,0", p_fat_pct: "напр. 14,5",
         p_hip: "напр. 95,0", p_bicep: "напр. 35,0", p_quad: "напр. 55,0",
-        p_calf: "напр. 37,0", p_chest: "напр. 100,0"
+        p_calf: "напр. 37,0", p_chest: "напр. 100,0",
+        app_download_title: "📱 Скачать приложение",
+        app_download_subtitle: "Возьмите свой фитнес-калькулятор с собой везде",
+        app_android: "Google Play",
+        app_android_label: "Доступно в",
+        app_ios: "App Store",
+        app_ios_label: "Загрузить в"
       },
       zh: {
         subtitle: "身体成分与宏量营养素分配",
@@ -1534,7 +1671,13 @@
         p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
         p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
         p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
-        p_calf: "例: 37.0", p_chest: "例: 100.0"
+        p_calf: "例: 37.0", p_chest: "例: 100.0",
+        app_download_title: "📱 下载应用",
+        app_download_subtitle: "随时随地携带您的健身计算器",
+        app_android: "Google Play",
+        app_android_label: "立即下载",
+        app_ios: "App Store",
+        app_ios_label: "在"
       },
       ja: {
         subtitle: "体組成とマクロ栄養素の分配",
@@ -1583,7 +1726,13 @@
         p_calories: "例: 3343", p_weight: "例: 72.5", p_height: "例: 175.5",
         p_waist: "例: 84.0", p_neck: "例: 38.0", p_fat_pct: "例: 14.5",
         p_hip: "例: 95.0", p_bicep: "例: 35.0", p_quad: "例: 55.0",
-        p_calf: "例: 37.0", p_chest: "例: 100.0"
+        p_calf: "例: 37.0", p_chest: "例: 100.0",
+        app_download_title: "📱 アプリをダウンロード",
+        app_download_subtitle: "フィットネス計算機をいつでもどこでも持ち歩こう",
+        app_android: "Google Play",
+        app_android_label: "Google Playで手に入れよう",
+        app_ios: "App Store",
+        app_ios_label: "App Storeでダウンロード"
       }
     };
 
