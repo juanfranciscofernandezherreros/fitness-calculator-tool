@@ -130,11 +130,21 @@
   }
   </script>
   <style>
+    /* ── Design System — Brand Tokens ── */
+    :root {
+      --color-dark:       #1B263B;     /* Azul oscuro  */
+      --color-dark-rgb:   27, 38, 59;
+      --color-light:      #F0F4F8;     /* Blanco hielo */
+      --color-light-rgb:  240, 244, 248;
+      --color-accent:     #415A77;     /* Azul acero   */
+      --color-accent-rgb: 65, 90, 119;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-accent) 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -440,15 +450,15 @@
 
     /* ── Submit button ── */
     @keyframes btn-pulse {
-      0%   { box-shadow: 0 0 0 0 rgba(124,58,237,.45); }
-      70%  { box-shadow: 0 0 0 10px rgba(124,58,237,0); }
-      100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+      0%   { box-shadow: 0 0 0 0 rgba(var(--color-accent-rgb), .55); }
+      70%  { box-shadow: 0 0 0 10px rgba(var(--color-accent-rgb), 0); }
+      100% { box-shadow: 0 0 0 0 rgba(var(--color-accent-rgb), 0); }
     }
     .btn-submit {
       width: 100%;
       padding: .9rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-dark) 100%);
+      color: var(--color-light);
       border: none;
       border-radius: 12px;
       font-size: 1.05rem;
@@ -604,8 +614,8 @@
       color: #fff;
     }
     .btn-store-ios {
-      background: #1d4ed8;
-      color: #fff;
+      background: var(--color-accent);
+      color: var(--color-light);
     }
     .btn-store-icon {
       font-size: 1.15rem;
@@ -789,12 +799,12 @@
     .faq-tag-male   { color: #93c5fd; font-weight: 700; }
     .faq-tag-female { color: #f9a8d4; font-weight: 700; }
 
-    /* ── Fixed top language bar ── */
+    /* ── Fixed top language bar (Navbar) ── */
     .lang-topbar {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 1000;
-      background: linear-gradient(90deg, #1e1b4b 0%, #5b21b6 50%, #1e1b4b 100%);
+      background: var(--color-dark);
       box-shadow: 0 2px 14px rgba(0,0,0,.4);
       display: flex;
       align-items: center;
@@ -804,7 +814,7 @@
     }
     .lang-topbar .globe-icon {
       font-size: 1.1rem;
-      color: #e9d5ff;
+      color: var(--color-light);
       flex-shrink: 0;
     }
 
@@ -827,8 +837,8 @@
       text-decoration: none;
       transition: border-color .15s, background .15s, transform .1s;
     }
-    .lang-topbar .lang-btn:hover  { border-color: rgba(233,213,255,.8); background: rgba(255,255,255,.12); transform: scale(1.12); }
-    .lang-topbar .lang-btn.active { border-color: #e9d5ff; background: rgba(233,213,255,.2); box-shadow: 0 0 0 2px rgba(233,213,255,.3); }
+    .lang-topbar .lang-btn:hover  { border-color: var(--color-light); background: rgba(var(--color-light-rgb), .15); transform: scale(1.12); }
+    .lang-topbar .lang-btn.active { border-color: var(--color-light); background: var(--color-accent); box-shadow: 0 0 0 2px rgba(var(--color-light-rgb), .3); }
     @media print { .lang-topbar { display: none; } }
 
     /* ── Improved error alert ── */
@@ -880,10 +890,10 @@
       justify-content: center;
       gap: .6rem 1.2rem;
       padding: .7rem 1.2rem;
-      background: rgba(30, 15, 60, 0.92);
+      background: rgba(var(--color-dark-rgb), 0.96);
       backdrop-filter: blur(6px);
       box-shadow: 0 -2px 12px rgba(0,0,0,.4);
-      color: rgba(255,255,255,.9);
+      color: var(--color-light);
       font-size: .88rem;
       line-height: 1.4;
     }
@@ -894,20 +904,20 @@
     }
     .cookie-accept-btn {
       flex-shrink: 0;
-      background: rgba(255,255,255,.18);
-      border: 2px solid rgba(255,255,255,.6);
+      background: var(--color-accent);
+      border: 2px solid var(--color-light);
       border-radius: 8px;
       padding: .3rem 1.1rem;
       font-size: .85rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--color-light);
       cursor: pointer;
       transition: background .15s, border-color .15s, transform .1s;
       white-space: nowrap;
     }
     .cookie-accept-btn:hover {
-      background: rgba(255,255,255,.3);
-      border-color: #fff;
+      background: var(--color-dark);
+      border-color: var(--color-light);
       transform: scale(1.05);
     }
     @media print { .cookie-banner { display: none !important; } }
@@ -915,8 +925,8 @@
     /* ── Page footer ── */
     .page-footer {
       width: 100%;
-      background: linear-gradient(90deg, #1e1b4b 0%, #5b21b6 50%, #1e1b4b 100%);
-      color: rgba(255,255,255,.8);
+      background: var(--color-dark);
+      color: var(--color-light);
       font-size: .8rem;
       text-align: center;
       padding: .9rem 1.2rem 1rem;
@@ -924,8 +934,8 @@
       line-height: 1.6;
     }
     .page-footer p { margin: .15rem 0; }
-    .page-footer .footer-cookies { color: rgba(255,255,255,.9); }
-    .page-footer .footer-copyright { color: rgba(255,255,255,.6); font-size: .75rem; }
+    .page-footer .footer-cookies { color: var(--color-light); }
+    .page-footer .footer-copyright { color: rgba(var(--color-light-rgb), .6); font-size: .75rem; }
     @media print { .page-footer { display: none; } }
   </style>
 </head>
