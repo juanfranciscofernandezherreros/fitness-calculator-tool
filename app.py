@@ -254,8 +254,25 @@ class AppError(ValueError):
         super().__init__(key)
 
 
+class MultipleAppError(ValueError):
+    """Aggregates multiple AppError instances so all can be reported at once."""
+
+    def __init__(self, errors: list[AppError]):
+        self.errors: list[AppError] = errors
+        super().__init__("; ".join(e.error_key for e in errors))
+
+
 def _get_error_fields(exc: Exception) -> list[str]:
     """Return the HTML input IDs associated with an error."""
+    if isinstance(exc, MultipleAppError):
+        seen: set[str] = set()
+        result: list[str] = []
+        for e in exc.errors:
+            for f in e.fields:
+                if f not in seen:
+                    seen.add(f)
+                    result.append(f)
+        return result
     if isinstance(exc, AppError):
         return exc.fields
     msg = str(exc)
@@ -275,6 +292,16 @@ def _get_error_fields(exc: Exception) -> list[str]:
 def _translate_error(exc: Exception, lang: str) -> str:
     """Return a translated, human-friendly error message."""
     msgs = ERROR_MESSAGES.get(lang, ERROR_MESSAGES[DEFAULT_LANG])
+
+    if isinstance(exc, MultipleAppError):
+        parts = []
+        for e in exc.errors:
+            template = msgs.get(e.error_key, msgs.get("unknown_error", str(e)))
+            try:
+                parts.append(template.format(**e.params))
+            except (KeyError, ValueError):
+                parts.append(template)
+        return "\n".join(parts)
 
     if isinstance(exc, AppError):
         template = msgs.get(exc.error_key, msgs.get("unknown_error", str(exc)))
@@ -311,14 +338,30 @@ def index():
 def _compute_results(form, lang):
     """Parse form data, run calculations and return a results dict.
 
-    Raises AppError (or any ValueError from fitness_tools) on invalid input.
+    Raises MultipleAppError (or any ValueError from fitness_tools) on invalid input.
     """
     campos = CAMPO_NAMES.get(lang, CAMPO_NAMES[DEFAULT_LANG])
-    calorias = _parse_float(form.get("calorias", ""), campos["calorias"], "calorias")
-    peso = _parse_float(form.get("peso", ""), campos["peso"], "peso")
-    altura = _parse_float(form.get("altura", ""), campos["altura"], "altura")
-    cintura = _parse_float(form.get("cintura", ""), campos["cintura"], "cintura")
-    cuello = _parse_float(form.get("cuello", ""), campos["cuello"], "cuello")
+
+    # Collect all required-field errors before raising so every invalid input
+    # is highlighted at once instead of stopping at the first failure.
+    _required_errors: list[AppError] = []
+
+    def _safe_parse(value, campo, field_id):
+        try:
+            return _parse_float(value, campo, field_id)
+        except AppError as e:
+            _required_errors.append(e)
+            return None
+
+    calorias = _safe_parse(form.get("calorias", ""), campos["calorias"], "calorias")
+    peso     = _safe_parse(form.get("peso", ""),     campos["peso"],     "peso")
+    altura   = _safe_parse(form.get("altura", ""),   campos["altura"],   "altura")
+    cintura  = _safe_parse(form.get("cintura", ""),  campos["cintura"],  "cintura")
+    cuello   = _safe_parse(form.get("cuello", ""),   campos["cuello"],   "cuello")
+
+    if _required_errors:
+        raise MultipleAppError(_required_errors)
+
     sexo = form.get("sexo", "hombre")
     if sexo not in ("hombre", "mujer"):
         sexo = "hombre"
