@@ -888,7 +888,7 @@ def _build_pdf(resultados: dict, lang: str) -> bytes:
     def formula_row(label: str, expr: str) -> None:
         pdf.set_text_color(60, 60, 60)
         pdf.set_font("Helvetica", "I", 9)
-        pdf.multi_cell(170, 6, s(f"  {label}: {expr}"))
+        pdf.multi_cell(170, 6, s(f"  {label}: {expr}"), new_x="LMARGIN", new_y="NEXT")
 
     def result_row(label: str, value: str) -> None:
         pdf.set_fill_color(237, 233, 254)
