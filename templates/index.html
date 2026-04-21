@@ -3,9 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fitness Tools 💪</title>
+
+  <!-- Primary SEO meta tags -->
+  <title id="page-title">Calculadora de Composición Corporal y Macros | Fitness Tools</title>
+  <meta name="description" id="page-description" content="Calcula tu grasa corporal (método US Navy), masa magra, IMC, FFMI y distribución de macronutrientes de forma gratuita. Resultados instantáneos con gráficos detallados." />
+  <meta name="keywords" content="calculadora grasa corporal, composición corporal, IMC, FFMI, masa magra, macronutrientes, método US Navy, body fat calculator" />
+  <meta name="author" content="Fitness Tools" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" id="canonical-link" href="/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" id="og-url" content="/" />
+  <meta property="og:title" id="og-title" content="Calculadora de Composición Corporal y Macros | Fitness Tools" />
+  <meta property="og:description" id="og-description" content="Calcula tu grasa corporal (método US Navy), masa magra, IMC, FFMI y distribución de macronutrientes de forma gratuita. Resultados instantáneos con gráficos detallados." />
+  <meta property="og:image" content="/static/og-image.png" />
+  <meta property="og:locale" id="og-locale" content="es_ES" />
+  <meta property="og:site_name" content="Fitness Tools" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" id="tw-title" content="Calculadora de Composición Corporal y Macros | Fitness Tools" />
+  <meta name="twitter:description" id="tw-description" content="Calcula tu grasa corporal (método US Navy), masa magra, IMC, FFMI y distribución de macronutrientes de forma gratuita." />
+  <meta name="twitter:image" content="/static/og-image.png" />
+
   <!-- hreflang alternate links for SEO -->
-  <link rel="alternate" hreflang="es" href="/?lang=es" />
+  <link rel="alternate" hreflang="es" href="/" />
   <link rel="alternate" hreflang="en" href="/?lang=en" />
   <link rel="alternate" hreflang="it" href="/?lang=it" />
   <link rel="alternate" hreflang="fr" href="/?lang=fr" />
@@ -17,6 +40,94 @@
   <link rel="alternate" hreflang="zh" href="/?lang=zh" />
   <link rel="alternate" hreflang="ja" href="/?lang=ja" />
   <link rel="alternate" hreflang="x-default" href="/" />
+
+  <!-- JSON-LD Structured Data: WebApplication -->
+  <script type="application/ld+json" id="schema-webapp">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fitness Tools — Calculadora de Composición Corporal",
+    "description": "Calculadora gratuita de grasa corporal (método US Navy), masa magra, IMC, FFMI y macronutrientes. Disponible en 11 idiomas.",
+    "url": "/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "inLanguage": ["es","en","it","fr","de","pt","nl","pl","ru","zh","ja"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "featureList": [
+      "Cálculo de grasa corporal — Método US Navy",
+      "Masa magra (Lean Body Mass)",
+      "Índice de Masa Corporal (IMC / BMI)",
+      "Índice de Masa Libre de Grasa (FFMI)",
+      "Distribución de macronutrientes",
+      "Medidas corporales opcionales",
+      "Descarga de informe en PDF",
+      "Disponible en 11 idiomas"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD Structured Data: FAQPage -->
+  <script type="application/ld+json" id="schema-faq">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué es la fórmula US Navy y cómo calcula la grasa corporal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La fórmula US Navy estima el porcentaje de grasa corporal usando medidas de circunferencia corporal y la altura. Para hombres: %GC = 495 / (1.0324 − 0.19077 × log₁₀(cintura − cuello) + 0.15456 × log₁₀(altura)) − 450. Para mujeres requiere también la medida de cadera."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es la masa magra y cómo se calcula?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La masa magra (Lean Body Mass) es todo lo que no es grasa: músculos, huesos, agua y órganos. Se calcula como: Masa magra (kg) = Peso − (Peso × %GC / 100)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es el IMC (Índice de Masa Corporal)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El IMC mide el peso relativo a la talla: IMC = Peso (kg) / Altura (m)². Clasificación OMS: menos de 18.5 Bajo peso · 18.5–24.9 Normal · 25–29.9 Sobrepeso · 30 o más Obesidad."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué es el FFMI y por qué varía entre hombres y mujeres?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El FFMI (Fat-Free Mass Index) mide la masa muscular relativa a la estatura: FFMI = Masa magra (kg) / Altura (m)². Los límites naturales son: hombres menos de 25 kg/m² y mujeres menos de 22 kg/m²."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo se distribuyen los macronutrientes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Los macros se calculan por kg de peso: Proteína = Peso × 2.0 g/kg (× 4 kcal/g), Grasa = Peso × 0.8 g/kg (× 9 kcal/g), Carbohidratos = (Calorías totales − kcal proteína − kcal grasa) / 4."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuáles son las diferencias principales entre hombres y mujeres en esta calculadora?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Los hombres usan cintura y cuello para la fórmula US Navy (grasa saludable 6–17 %, FFMI natural menos de 25 kg/m²). Las mujeres también necesitan la medida de cadera (grasa saludable 14–24 %, FFMI natural menos de 22 kg/m²)."
+        }
+      }
+    ]
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -53,6 +164,11 @@
       margin-top: .4rem;
       font-size: 1rem;
       opacity: .85;
+    }
+    .header-intro {
+      font-size: .88rem !important;
+      opacity: .75 !important;
+      margin-top: .25rem !important;
     }
 
     /* ── Card ── */
@@ -688,10 +804,11 @@
     <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
   </nav>
 
-  <div class="header">
-    <h1>Fitness Tools 💪</h1>
+  <header class="header">
+    <h1 id="page-h1" data-i18n="page_title">Calculadora de Composición Corporal y Macros 💪</h1>
     <p data-i18n="subtitle">Composición corporal y distribución de macronutrientes</p>
-  </div>
+    <p id="page-intro" class="header-intro" data-i18n="page_intro">Calcula gratis tu grasa corporal (US Navy), masa magra, IMC, FFMI y macronutrientes diarios.</p>
+  </header>
 
   <!-- ── FAQ Section ── -->
   <section class="faq-section no-print" aria-label="FAQ">
@@ -800,6 +917,8 @@
     </div>
 
   </section>
+
+  <main>
 
   <div class="card">
 
@@ -1039,6 +1158,17 @@
 
   </div>
 
+  </main>
+
+  <!-- ── noscript fallback for crawlers ── -->
+  <noscript>
+    <div style="max-width:660px;margin:1rem auto;padding:1rem;background:#fff;border-radius:12px;font-family:system-ui,sans-serif;">
+      <h2>Calculadora de Composición Corporal — Fitness Tools</h2>
+      <p>Esta herramienta calcula: <strong>grasa corporal</strong> (método US Navy), <strong>masa magra</strong>, <strong>IMC</strong>, <strong>FFMI</strong> y <strong>macronutrientes</strong> (proteínas, grasas e hidratos de carbono).</p>
+      <p>Por favor, activa JavaScript para usar la calculadora.</p>
+    </div>
+  </noscript>
+
 
 
 
@@ -1047,6 +1177,9 @@
     /* ── Translation data ── */
     var TRANSLATIONS = {
       es: {
+        page_title: "Calculadora de Composición Corporal y Macros 💪 | Fitness Tools",
+        page_description: "Calcula tu grasa corporal (método US Navy), masa magra, IMC, FFMI y distribución de macronutrientes de forma gratuita. Resultados instantáneos con gráficos detallados.",
+        page_intro: "Calcula gratis tu grasa corporal (US Navy), masa magra, IMC, FFMI y macronutrientes diarios.",
         subtitle: "Composición corporal y distribución de macronutrientes",
         err_title: "Error",
         male: "Hombre", female: "Mujer",
@@ -1096,6 +1229,9 @@
         p_calf: "ej. 37.0", p_chest: "ej. 100.0"
       },
       en: {
+        page_title: "Body Composition & Macro Calculator 💪 | Fitness Tools",
+        page_description: "Free body fat calculator (US Navy method), lean mass, BMI, FFMI and daily macronutrient distribution. Instant results with detailed charts.",
+        page_intro: "Free body fat (US Navy), lean mass, BMI, FFMI and daily macro calculator.",
         subtitle: "Body composition and macronutrient distribution",
         err_title: "Error",
         male: "Male", female: "Female",
@@ -1145,6 +1281,9 @@
         p_calf: "e.g. 37.0", p_chest: "e.g. 100.0"
       },
       it: {
+        page_title: "Calcolatore di Composizione Corporea e Macro 💪 | Fitness Tools",
+        page_description: "Calcola gratis il tuo grasso corporeo (metodo US Navy), massa magra, IMC, FFMI e distribuzione dei macronutrienti. Risultati immediati con grafici dettagliati.",
+        page_intro: "Calcola gratis grasso corporeo (US Navy), massa magra, IMC, FFMI e macro giornalieri.",
         subtitle: "Composizione corporea e distribuzione dei macronutrienti",
         err_title: "Errore",
         male: "Uomo", female: "Donna",
@@ -1194,6 +1333,9 @@
         p_calf: "es. 37.0", p_chest: "es. 100.0"
       },
       fr: {
+        page_title: "Calculateur de Composition Corporelle et Macros 💪 | Fitness Tools",
+        page_description: "Calculez gratuitement votre graisse corporelle (méthode US Navy), masse maigre, IMC, FFMI et répartition des macronutriments. Résultats instantanés avec graphiques détaillés.",
+        page_intro: "Calculez gratuitement graisse corporelle (US Navy), masse maigre, IMC, FFMI et macros quotidiens.",
         subtitle: "Composition corporelle et distribution des macronutriments",
         err_title: "Erreur",
         male: "Homme", female: "Femme",
@@ -1243,6 +1385,9 @@
         p_calf: "ex. 37.0", p_chest: "ex. 100.0"
       },
       de: {
+        page_title: "Körperzusammensetzungs- & Makro-Rechner 💪 | Fitness Tools",
+        page_description: "Berechne kostenlos deinen Körperfettanteil (US-Navy-Methode), Magermasse, BMI, FFMI und Makronährstoffverteilung. Sofortige Ergebnisse mit detaillierten Diagrammen.",
+        page_intro: "Kostenlos: Körperfett (US Navy), Magermasse, BMI, FFMI und tägliche Makros berechnen.",
         subtitle: "Körperzusammensetzung und Makronährstoffverteilung",
         err_title: "Fehler",
         male: "Mann", female: "Frau",
@@ -1292,6 +1437,9 @@
         p_calf: "z.B. 37,0", p_chest: "z.B. 100,0"
       },
       pt: {
+        page_title: "Calculadora de Composição Corporal e Macros 💪 | Fitness Tools",
+        page_description: "Calcule gratuitamente sua gordura corporal (método US Navy), massa magra, IMC, FFMI e distribuição de macronutrientes. Resultados instantâneos com gráficos detalhados.",
+        page_intro: "Calcule grátis gordura corporal (US Navy), massa magra, IMC, FFMI e macros diários.",
         subtitle: "Composição corporal e distribuição de macronutrientes",
         err_title: "Erro",
         male: "Homem", female: "Mulher",
@@ -1341,6 +1489,9 @@
         p_calf: "ex. 37,0", p_chest: "ex. 100,0"
       },
       nl: {
+        page_title: "Lichaamssamenstelling & Macro Calculator 💪 | Fitness Tools",
+        page_description: "Bereken gratis je lichaamsvetpercentage (US Navy methode), magere massa, BMI, FFMI en macronutriëntenverdeling. Directe resultaten met gedetailleerde grafieken.",
+        page_intro: "Bereken gratis lichaamsvet (US Navy), magere massa, BMI, FFMI en dagelijkse macro's.",
         subtitle: "Lichaamssamenstelling en verdeling van macronutriënten",
         err_title: "Fout",
         male: "Man", female: "Vrouw",
@@ -1390,6 +1541,9 @@
         p_calf: "bijv. 37,0", p_chest: "bijv. 100,0"
       },
       pl: {
+        page_title: "Kalkulator Składu Ciała i Makroskładników 💪 | Fitness Tools",
+        page_description: "Oblicz bezpłatnie procent tkanki tłuszczowej (metoda US Navy), masę beztłuszczową, BMI, FFMI i rozkład makroskładników. Natychmiastowe wyniki z wykresami.",
+        page_intro: "Oblicz bezpłatnie tkankę tłuszczową (US Navy), masę beztłuszczową, BMI, FFMI i dzienne makro.",
         subtitle: "Skład ciała i rozkład makroskładników",
         err_title: "Błąd",
         male: "Mężczyzna", female: "Kobieta",
@@ -1439,6 +1593,9 @@
         p_calf: "np. 37,0", p_chest: "np. 100,0"
       },
       ru: {
+        page_title: "Калькулятор состава тела и макронутриентов 💪 | Fitness Tools",
+        page_description: "Бесплатно рассчитайте процент жира (метод US Navy), безжировую массу, ИМТ, FFMI и распределение макронутриентов. Мгновенные результаты с графиками.",
+        page_intro: "Бесплатный расчёт жира тела (US Navy), безжировой массы, ИМТ, FFMI и суточных макросов.",
         subtitle: "Состав тела и распределение макронутриентов",
         err_title: "Ошибка",
         male: "Мужчина", female: "Женщина",
@@ -1488,6 +1645,9 @@
         p_calf: "напр. 37,0", p_chest: "напр. 100,0"
       },
       zh: {
+        page_title: "身体成分与宏量营养素计算器 💪 | Fitness Tools",
+        page_description: "免费计算体脂率（美国海军法）、瘦体重、BMI、FFMI和每日宏量营养素分配。即时结果，附详细图表。",
+        page_intro: "免费计算体脂（美国海军法）、瘦体重、BMI、FFMI和每日宏量营养素。",
         subtitle: "身体成分与宏量营养素分配",
         err_title: "错误",
         male: "男性", female: "女性",
@@ -1537,6 +1697,9 @@
         p_calf: "例: 37.0", p_chest: "例: 100.0"
       },
       ja: {
+        page_title: "体組成・マクロ栄養素計算ツール 💪 | Fitness Tools",
+        page_description: "体脂肪率（米海軍式）、除脂肪体重、BMI、FFMI、1日のマクロ栄養素を無料で計算。詳細グラフ付き即時結果。",
+        page_intro: "体脂肪（米海軍式）、除脂肪体重、BMI、FFMI、1日のマクロ栄養素を無料計算。",
         subtitle: "体組成とマクロ栄養素の分配",
         err_title: "エラー",
         male: "男性", female: "女性",
@@ -1617,6 +1780,49 @@
       if (root) root.lang = currentLang;
     }
 
+    /* OG locale codes per language */
+    var OG_LOCALES = {
+      es: 'es_ES', en: 'en_US', it: 'it_IT', fr: 'fr_FR',
+      de: 'de_DE', pt: 'pt_PT', nl: 'nl_NL', pl: 'pl_PL',
+      ru: 'ru_RU', zh: 'zh_CN', ja: 'ja_JP'
+    };
+
+    function applyHeadSeo(lang) {
+      var title  = t('page_title');
+      var desc   = t('page_description');
+      var locale = OG_LOCALES[lang] || 'es_ES';
+      var url    = window.location.href;
+
+      // <title>
+      var pageTitle = document.getElementById('page-title');
+      if (pageTitle) pageTitle.textContent = title;
+      document.title = title;
+
+      // <meta name="description">
+      var metaDesc = document.getElementById('page-description');
+      if (metaDesc) metaDesc.setAttribute('content', desc);
+
+      // Canonical
+      var canonical = document.getElementById('canonical-link');
+      if (canonical) canonical.setAttribute('href', url);
+
+      // Open Graph
+      var ogUrl   = document.getElementById('og-url');
+      var ogTitle = document.getElementById('og-title');
+      var ogDesc  = document.getElementById('og-description');
+      var ogLoc   = document.getElementById('og-locale');
+      if (ogUrl)   ogUrl.setAttribute('content', url);
+      if (ogTitle) ogTitle.setAttribute('content', title);
+      if (ogDesc)  ogDesc.setAttribute('content', desc);
+      if (ogLoc)   ogLoc.setAttribute('content', locale);
+
+      // Twitter
+      var twTitle = document.getElementById('tw-title');
+      var twDesc  = document.getElementById('tw-description');
+      if (twTitle) twTitle.setAttribute('content', title);
+      if (twDesc)  twDesc.setAttribute('content', desc);
+    }
+
     function setLang(lang) {
       if (!TRANSLATIONS[lang]) return;
       currentLang = lang;
@@ -1627,6 +1833,7 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       applyTranslations();
+      applyHeadSeo(lang);
       // Update URL so each language has its own shareable/crawlable address
       try {
         var url = new URL(window.location.href);
@@ -1636,6 +1843,11 @@
           url.searchParams.set('lang', lang);
         }
         history.replaceState(null, '', url.toString());
+        // Update canonical and OG url to the new URL
+        var canonical = document.getElementById('canonical-link');
+        if (canonical) canonical.setAttribute('href', url.toString());
+        var ogUrl = document.getElementById('og-url');
+        if (ogUrl) ogUrl.setAttribute('content', url.toString());
       } catch (e) { /* ignore in environments without History API */ }
     }
 
