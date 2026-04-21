@@ -817,11 +817,19 @@
       border: 2px solid transparent;
       border-radius: 8px;
       padding: .2rem .35rem;
-      font-size: 1.25rem;
       cursor: pointer;
       line-height: 1;
       text-decoration: none;
       transition: border-color .15s, background .15s, transform .1s;
+      display: inline-flex;
+      align-items: center;
+    }
+    .lang-flag-img {
+      width: 20px;
+      height: 15px;
+      border-radius: 2px;
+      display: block;
+      object-fit: cover;
     }
     .lang-topbar .lang-btn:hover  { border-color: var(--color-light); background: rgba(var(--color-light-rgb), .15); transform: scale(1.12); }
     .lang-topbar .lang-btn.active { border-color: var(--color-light); background: var(--color-accent); box-shadow: 0 0 0 2px rgba(var(--color-light-rgb), .3); }
@@ -931,18 +939,18 @@
   <div class="lang-topbar no-print" role="navigation" aria-label="Language / Idioma">
     <span class="globe-icon" id="current-lang-flag" aria-hidden="true">🌐</span>
     <nav class="lang-selector" aria-label="Language / Idioma">
-      <a href="/?lang=es" class="lang-btn" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')">🇪🇸</a>
-      <a href="/?lang=en" class="lang-btn" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')">🇬🇧</a>
-      <a href="/?lang=it" class="lang-btn" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')">🇮🇹</a>
-      <a href="/?lang=fr" class="lang-btn" data-lang="fr" title="Français"   onclick="event.preventDefault(); setLang('fr')">🇫🇷</a>
-      <a href="/?lang=de" class="lang-btn" data-lang="de" title="Deutsch"    onclick="event.preventDefault(); setLang('de')">🇩🇪</a>
-      <a href="/?lang=pt" class="lang-btn" data-lang="pt" title="Português"  onclick="event.preventDefault(); setLang('pt')">🇵🇹</a>
-      <a href="/?lang=nl" class="lang-btn" data-lang="nl" title="Nederlands" onclick="event.preventDefault(); setLang('nl')">🇳🇱</a>
-      <a href="/?lang=pl" class="lang-btn" data-lang="pl" title="Polski"     onclick="event.preventDefault(); setLang('pl')">🇵🇱</a>
-      <a href="/?lang=ru" class="lang-btn" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')">🇷🇺</a>
-      <a href="/?lang=zh" class="lang-btn" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')">🇨🇳</a>
-      <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')">🇯🇵</a>
-      <a href="/?lang=ko" class="lang-btn" data-lang="ko" title="한국어"      onclick="event.preventDefault(); setLang('ko')">🇰🇷</a>
+      <a href="/?lang=es" class="lang-btn" data-lang="es" title="Español"    onclick="event.preventDefault(); setLang('es')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/es.png" alt="Español"    loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=en" class="lang-btn" data-lang="en" title="English"    onclick="event.preventDefault(); setLang('en')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/gb.png" alt="English"    loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=it" class="lang-btn" data-lang="it" title="Italiano"   onclick="event.preventDefault(); setLang('it')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/it.png" alt="Italiano"   loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=fr" class="lang-btn" data-lang="fr" title="Français"   onclick="event.preventDefault(); setLang('fr')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/fr.png" alt="Français"   loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=de" class="lang-btn" data-lang="de" title="Deutsch"    onclick="event.preventDefault(); setLang('de')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/de.png" alt="Deutsch"    loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=pt" class="lang-btn" data-lang="pt" title="Português"  onclick="event.preventDefault(); setLang('pt')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/pt.png" alt="Português"  loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=nl" class="lang-btn" data-lang="nl" title="Nederlands" onclick="event.preventDefault(); setLang('nl')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/nl.png" alt="Nederlands" loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=pl" class="lang-btn" data-lang="pl" title="Polski"     onclick="event.preventDefault(); setLang('pl')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/pl.png" alt="Polski"     loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=ru" class="lang-btn" data-lang="ru" title="Русский"    onclick="event.preventDefault(); setLang('ru')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/ru.png" alt="Русский"    loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=zh" class="lang-btn" data-lang="zh" title="中文"        onclick="event.preventDefault(); setLang('zh')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/cn.png" alt="中文"        loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=ja" class="lang-btn" data-lang="ja" title="日本語"      onclick="event.preventDefault(); setLang('ja')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/jp.png" alt="日本語"      loading="lazy" width="20" height="15"></a>
+      <a href="/?lang=ko" class="lang-btn" data-lang="ko" title="한국어"      onclick="event.preventDefault(); setLang('ko')"><img class="lang-flag-img" src="https://flagcdn.com/20x15/kr.png" alt="한국어"      loading="lazy" width="20" height="15"></a>
     </nav>
   </div>
 
@@ -2110,11 +2118,11 @@
       if (root) root.lang = currentLang;
     }
 
-    /* Flag emoji per language */
+    /* Flag image CDN country codes per language */
     var LANG_FLAGS = {
-      es: '🇪🇸', en: '🇬🇧', it: '🇮🇹', fr: '🇫🇷',
-      de: '🇩🇪', pt: '🇵🇹', nl: '🇳🇱', pl: '🇵🇱',
-      ru: '🇷🇺', zh: '🇨🇳', ja: '🇯🇵', ko: '🇰🇷'
+      es: 'es', en: 'gb', it: 'it', fr: 'fr',
+      de: 'de', pt: 'pt', nl: 'nl', pl: 'pl',
+      ru: 'ru', zh: 'cn', ja: 'jp', ko: 'kr'
     };
 
     /* OG locale codes per language */
@@ -2169,7 +2177,12 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
       });
       var flagEl = document.getElementById('current-lang-flag');
-      if (flagEl) flagEl.textContent = LANG_FLAGS[lang] || '🌐';
+      if (flagEl) {
+        var cc = LANG_FLAGS[lang];
+        flagEl.innerHTML = cc
+          ? '<img class="lang-flag-img" src="https://flagcdn.com/20x15/' + cc + '.png" alt="" loading="lazy" width="20" height="15">'
+          : '🌐';
+      }
       applyTranslations();
       // Update URL so each language has its own shareable/crawlable address
       try {
