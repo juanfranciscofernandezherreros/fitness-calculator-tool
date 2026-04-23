@@ -435,6 +435,13 @@
       60%       { transform: translateX(-4px); }
       80%       { transform: translateX(4px); }
     }
+    input[type="text"].input-error {
+      border-color: #ef4444 !important;
+      background: #fff5f5 !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.18) !important;
+      animation: input-shake .4s ease;
+    }
+    input[type="text"].input-error ~ .unit { color: #ef4444; }
 
     /* ── Submit button ── */
     @keyframes btn-pulse {
@@ -2394,12 +2401,26 @@
 
     /* ── Show / hide error ── */
     function showError(msg, fields) {
+      /* Clear any previous error highlights */
+      hideError();
+
       if (fields && fields.length > 0) {
         /* Scroll to first errored input; expand optional section if needed */
         var firstInput = null;
         fields.forEach(function (fieldId) {
           var inp = document.getElementById(fieldId);
           if (!inp) return;
+          /* Mark input in red */
+          inp.classList.add('input-error');
+          /* Re-trigger animation if already present */
+          inp.style.animation = 'none';
+          inp.offsetHeight; /* reflow */
+          inp.style.animation = '';
+          /* Remove error style once the user starts correcting the value */
+          inp.addEventListener('input', function onFix() {
+            inp.classList.remove('input-error');
+            inp.removeEventListener('input', onFix);
+          });
           /* If the input lives inside the collapsible optional section, expand it */
           var optWrap = document.getElementById('optional-fields');
           if (optWrap && optWrap.contains(inp) && optWrap.classList.contains('collapsed')) {
@@ -2421,7 +2442,11 @@
       }
     }
 
-    function hideError() {}
+    function hideError() {
+      document.querySelectorAll('input[type="text"].input-error').forEach(function (inp) {
+        inp.classList.remove('input-error');
+      });
+    }
 
     /* ── Show loading state on button ── */
     function setLoading(on) {
