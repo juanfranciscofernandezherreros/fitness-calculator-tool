@@ -38,6 +38,69 @@ Los archivos necesarios para Heroku ya están incluidos:
 
 ---
 
+## REST API + Swagger UI
+
+La aplicación incluye una **API REST pública** documentada con Swagger UI.
+
+### Endpoints
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `POST` | `/api/v1/calculate` | Calcula composición corporal y macros del día |
+
+### Swagger UI (documentación interactiva)
+
+Una vez arrancada la aplicación, accede a la documentación interactiva en:
+
+```
+http://localhost:5000/api/docs
+```
+
+> En Heroku: `https://<nombre-de-tu-app>.herokuapp.com/api/docs`
+
+Desde la interfaz Swagger puedes probar la API directamente en el navegador sin necesidad de ningún cliente externo.
+
+### Ejemplo de petición
+
+```bash
+curl -X POST http://localhost:5000/api/v1/calculate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "calorias": 3343,
+    "peso": 72.25,
+    "altura": 175,
+    "cintura": 84,
+    "cuello": 38,
+    "sexo": "hombre"
+  }'
+```
+
+### Ejemplo de respuesta
+
+```json
+{
+  "resultados": {
+    "grasa_navy": 14.82,
+    "masa_magra": 61.55,
+    "grasa_directa": null,
+    "diferencia_grasa": null,
+    "bmi": 23.59,
+    "bmi_categoria": "Peso normal",
+    "ffmi": 20.1,
+    "ffmi_norm": 20.41,
+    "macros": {
+      "Proteína (g)": 144.5,
+      "Grasas (g)": 57.8,
+      "Carbohidratos (g)": 619.1,
+      "Calorías Totales": 3343.0
+    },
+    "medidas": { "...": "..." }
+  }
+}
+```
+
+---
+
 ## CLI (línea de comandos)
 
 ### Instalación
@@ -218,6 +281,7 @@ repo/
 │   └── nutrition.py         # Cálculo de macros y carbohidratos rápidos
 ├── templates/
 │   └── index.html           # Plantilla HTML de la web app
+├── api_rest.py              # API REST pública con Swagger UI (flask-restx)
 ├── app.py                   # Web app Flask (punto de entrada para Heroku)
 ├── main.py                  # CLI principal (punto de entrada)
 ├── Procfile                 # Comando de arranque para Heroku
