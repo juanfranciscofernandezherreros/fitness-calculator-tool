@@ -460,21 +460,6 @@
     .btn-submit:hover  { opacity: .93; transform: translateY(-1px); }
     .btn-submit:active { transform: scale(.98); animation: none; }
 
-    /* ── Alert ── */
-    .alert-error {
-      display: flex;
-      align-items: flex-start;
-      gap: .6rem;
-      background: #fff5f5;
-      border: 1.5px solid #fc8181;
-      color: #c53030;
-      border-radius: 10px;
-      padding: .9rem 1rem;
-      margin-bottom: 1.5rem;
-      font-size: .88rem;
-      line-height: 1.45;
-    }
-
     /* ── Results ── */
     .results {
       margin-top: 2rem;
@@ -824,41 +809,6 @@
     .lang-topbar .lang-btn.active { border-color: var(--color-light); background: var(--color-accent); box-shadow: 0 0 0 2px rgba(var(--color-light-rgb), .3); }
     @media print { .lang-topbar { display: none; } }
 
-    /* ── Improved error alert ── */
-    .alert-error {
-      display: flex;
-      align-items: flex-start;
-      gap: .75rem;
-      background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
-      border: 2px solid #fc8181;
-      border-left: 5px solid #e53e3e;
-      color: #742a2a;
-      border-radius: 10px;
-      padding: 1rem 1.1rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-    .alert-error-icon {
-      font-size: 1.4rem;
-      flex-shrink: 0;
-      margin-top: .05rem;
-    }
-    .alert-error-body {
-      display: flex;
-      flex-direction: column;
-      gap: .2rem;
-    }
-    .alert-error-title {
-      font-size: .8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: #e53e3e;
-    }
-    .alert-error-message {
-      font-size: .92rem;
-      color: #742a2a;
-    }
 
 
   </style>
@@ -1001,9 +951,6 @@
   <main>
 
   <div class="card">
-
-    <!-- ── Error container (rendered by JS) ── -->
-    <div id="error-container" style="display:none;"></div>
 
     <form id="fitness-form" novalidate>
       <!-- Hidden field: current language sent to server for translated errors -->
@@ -2472,32 +2419,9 @@
           setTimeout(function () { firstInput.focus({ preventScroll: true }); }, 300);
         }
       }
-      /* Always show the error message box */
-      var el = document.getElementById('error-container');
-      if (!el) return;
-      var safeMsg = msg || '';
-      var lines = safeMsg.split('\n').filter(function(l) { return l.trim(); });
-      var msgHtml;
-      if (lines.length > 1) {
-        msgHtml = '<ul style="margin:.25rem 0 0 1rem;padding:0">'
-          + lines.map(function(l) { return '<li>' + esc(l) + '</li>'; }).join('')
-          + '</ul>';
-      } else {
-        msgHtml = '<span class="alert-error-message">' + esc(safeMsg) + '</span>';
-      }
-      el.innerHTML = '<div class="alert-error" role="alert">'
-        + '<span class="alert-error-icon">\u26A0\uFE0F</span>'
-        + '<div class="alert-error-body">'
-        + '<span class="alert-error-title" data-i18n="err_title">Error</span>'
-        + msgHtml
-        + '</div></div>';
-      el.style.display = '';
     }
 
-    function hideError() {
-      var el = document.getElementById('error-container');
-      if (el) { el.innerHTML = ''; el.style.display = 'none'; }
-    }
+    function hideError() {}
 
     /* ── Show loading state on button ── */
     function setLoading(on) {
