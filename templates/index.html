@@ -436,13 +436,6 @@
       60%       { transform: translateX(-4px); }
       80%       { transform: translateX(4px); }
     }
-    input[type="number"].input-error {
-      border-color: #e53e3e !important;
-      background: #fff5f5 !important;
-      box-shadow: 0 0 0 3px rgba(229,62,62,.18) !important;
-      animation: input-shake .4s ease;
-    }
-
     /* Remove spin buttons */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
@@ -2457,21 +2450,13 @@
     }
 
     /* ── Show / hide error ── */
-    function clearFieldErrors() {
-      document.querySelectorAll('input.input-error').forEach(function (inp) {
-        inp.classList.remove('input-error');
-      });
-    }
-
     function showError(msg, fields) {
-      clearFieldErrors();
       if (fields && fields.length > 0) {
-        /* Highlight each errored input; expand optional section if needed */
+        /* Scroll to first errored input; expand optional section if needed */
         var firstInput = null;
         fields.forEach(function (fieldId) {
           var inp = document.getElementById(fieldId);
           if (!inp) return;
-          inp.classList.add('input-error');
           /* If the input lives inside the collapsible optional section, expand it */
           var optWrap = document.getElementById('optional-fields');
           if (optWrap && optWrap.contains(inp) && optWrap.classList.contains('collapsed')) {
@@ -2516,7 +2501,6 @@
     function hideError() {
       var el = document.getElementById('error-container');
       if (el) { el.innerHTML = ''; el.style.display = 'none'; }
-      clearFieldErrors();
     }
 
     /* ── Show loading state on button ── */
