@@ -606,21 +606,29 @@ def api_calculate():
 
 
 def _parse_float(value: str | None, campo: str, field_id: str = "") -> float:
-    """Convierte un valor de formulario a float; lanza AppError con clave i18n."""
+    """Convierte un valor de formulario a float; lanza AppError con clave i18n.
+
+    Acepta tanto punto como coma como separador decimal (p. ej. «72,5» o «72.5»).
+    """
     if value is None or value.strip() == "":
         raise AppError("field_required", fields=[field_id] if field_id else [], campo=campo)
+    normalized = value.strip().replace(",", ".")
     try:
-        return float(value)
+        return float(normalized)
     except ValueError:
         raise AppError("invalid_number", fields=[field_id] if field_id else [], value=value, campo=campo)
 
 
 def _optional_float(value: str | None, campo: str = "", field_id: str = "") -> float | None:
-    """Devuelve float si el valor tiene contenido, None en caso contrario."""
+    """Devuelve float si el valor tiene contenido, None en caso contrario.
+
+    Acepta tanto punto como coma como separador decimal.
+    """
     if value is None or value.strip() == "":
         return None
+    normalized = value.strip().replace(",", ".")
     try:
-        return float(value)
+        return float(normalized)
     except ValueError:
         raise AppError("invalid_number", fields=[field_id] if field_id else [], value=value, campo=campo or "?")
 
