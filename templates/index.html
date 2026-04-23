@@ -2502,6 +2502,31 @@
         btn.disabled = true;
         btn.style.opacity = '0.6';
         var data = new FormData(form);
+
+        /* Attach chart images as base64 */
+        var chartMap = [
+          ['chart-grasa', 'chart_grasa'],
+          ['chart-imc',   'chart_imc'],
+          ['chart-ffmi',  'chart_ffmi'],
+          ['chart-macros','chart_macros']
+        ];
+        chartMap.forEach(function (pair) {
+          var canvas = document.getElementById(pair[0]);
+          if (canvas) {
+            try { data.set(pair[1], canvas.toDataURL('image/png')); } catch (err) {}
+          }
+        });
+
+        /* Build dd_mm_yyyy_hh_mm_ss filename */
+        var now = new Date();
+        var dd   = String(now.getDate()).padStart(2, '0');
+        var mm   = String(now.getMonth() + 1).padStart(2, '0');
+        var yyyy = now.getFullYear();
+        var hh   = String(now.getHours()).padStart(2, '0');
+        var mi   = String(now.getMinutes()).padStart(2, '0');
+        var ss   = String(now.getSeconds()).padStart(2, '0');
+        var pdfFilename = 'fitness-report_' + dd + '_' + mm + '_' + yyyy + '_' + hh + '_' + mi + '_' + ss + '.pdf';
+
         fetch('/api/pdf', { method: 'POST', body: data })
           .then(function (resp) {
             if (!resp.ok) {
@@ -2515,7 +2540,7 @@
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url;
-            a.download = 'fitness-report.pdf';
+            a.download = pdfFilename;
             document.body.appendChild(a);
             a.click();
             setTimeout(function () {
