@@ -12,6 +12,7 @@ import re
 from flask import Flask, jsonify, render_template, request, send_file
 from fpdf import FPDF
 
+from api_rest import api as rest_api
 from fitness_tools import (
     MedidasCorporales,
     calcular_bmi,
@@ -22,6 +23,9 @@ from fitness_tools import (
 )
 
 app = Flask(__name__)
+
+# ── Public REST API with Swagger UI ───────────────────────────────────────────
+rest_api.init_app(app)
 
 # ── Internationalisation ──────────────────────────────────────────────────────
 
