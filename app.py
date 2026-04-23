@@ -4,6 +4,7 @@ app.py — Web app de composición corporal y nutrición deportiva.
 Punto de entrada para Heroku (gunicorn app:app).
 """
 
+import base64
 import io
 import math
 import os
@@ -653,6 +654,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Informe detallado — Fórmulas paso a paso",
         "formula": "Fórmula",
         "result": "Resultado",
+        "charts": "Gr\u00e1ficos \u2014 An\u00e1lisis de resultados",
+        "chart_fat": "Porcentaje de grasa corporal",
+        "chart_imc": "\u00cdndice de Masa Corporal (IMC)",
+        "chart_ffmi": "FFMI normalizado (1.80 m)",
+        "chart_macros": "Distribuci\u00f3n de macronutrientes (kcal)",
     },
     "en": {
         "title": "Body Composition Report",
@@ -670,6 +676,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Detailed report — Step-by-step formulas",
         "formula": "Formula",
         "result": "Result",
+        "charts": "Charts — Results analysis",
+        "chart_fat": "Body fat percentage",
+        "chart_imc": "Body Mass Index (BMI)",
+        "chart_ffmi": "Normalized FFMI (1.80 m)",
+        "chart_macros": "Macronutrient distribution (kcal)",
     },
     "it": {
         "title": "Rapporto di Composizione Corporea",
@@ -687,6 +698,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Rapporto dettagliato — Formule passo passo",
         "formula": "Formula",
         "result": "Risultato",
+        "charts": "Grafici — Analisi dei risultati",
+        "chart_fat": "Percentuale di grasso corporeo",
+        "chart_imc": "Indice di Massa Corporea (IMC)",
+        "chart_ffmi": "FFMI normalizzato (1.80 m)",
+        "chart_macros": "Distribuzione dei macronutrienti (kcal)",
     },
     "fr": {
         "title": "Rapport de Composition Corporelle",
@@ -704,6 +720,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Rapport d\u00e9taill\u00e9 \u2014 Formules \u00e9tape par \u00e9tape",
         "formula": "Formule",
         "result": "R\u00e9sultat",
+        "charts": "Graphiques \u2014 Analyse des r\u00e9sultats",
+        "chart_fat": "Pourcentage de graisse corporelle",
+        "chart_imc": "Indice de Masse Corporelle (IMC)",
+        "chart_ffmi": "FFMI normalis\u00e9 (1.80 m)",
+        "chart_macros": "R\u00e9partition des macronutriments (kcal)",
     },
     "de": {
         "title": "K\u00f6rperzusammensetzungsbericht",
@@ -721,6 +742,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Detaillierter Bericht \u2014 Formeln Schritt f\u00fcr Schritt",
         "formula": "Formel",
         "result": "Ergebnis",
+        "charts": "Diagramme \u2014 Ergebnisanalyse",
+        "chart_fat": "K\u00f6rperfettanteil",
+        "chart_imc": "Body-Mass-Index (BMI)",
+        "chart_ffmi": "Normalisierter FFMI (1.80 m)",
+        "chart_macros": "Makron\u00e4hrstoffverteilung (kcal)",
     },
     "pt": {
         "title": "Relat\u00f3rio de Composi\u00e7\u00e3o Corporal",
@@ -738,6 +764,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Relat\u00f3rio detalhado \u2014 F\u00f3rmulas passo a passo",
         "formula": "F\u00f3rmula",
         "result": "Resultado",
+        "charts": "Gr\u00e1ficos \u2014 An\u00e1lise de resultados",
+        "chart_fat": "Percentual de gordura corporal",
+        "chart_imc": "\u00cdndice de Massa Corporal (IMC)",
+        "chart_ffmi": "FFMI normalizado (1.80 m)",
+        "chart_macros": "Distribui\u00e7\u00e3o de macronutrientes (kcal)",
     },
     "nl": {
         "title": "Lichaamssamenstelling Rapport",
@@ -755,6 +786,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Gedetailleerd rapport — Formules stap voor stap",
         "formula": "Formule",
         "result": "Resultaat",
+        "charts": "Grafieken — Resultatenanalyse",
+        "chart_fat": "Lichaamsvetpercentage",
+        "chart_imc": "Body Mass Index (BMI)",
+        "chart_ffmi": "Genormaliseerde FFMI (1.80 m)",
+        "chart_macros": "Macronutrientenverdeling (kcal)",
     },
     "pl": {
         "title": "Raport Sk\u0142adu Cia\u0142a",
@@ -772,6 +808,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Szczeg\u00f3\u0142owy raport - Wzory krok po kroku",
         "formula": "Wz\u00f3r",
         "result": "Wynik",
+        "charts": "Wykresy — Analiza wynikow",
+        "chart_fat": "Procent tkanki tluszczowej",
+        "chart_imc": "Wskaznik Masy Ciala (BMI)",
+        "chart_ffmi": "Znormalizowane FFMI (1.80 m)",
+        "chart_macros": "Rozklad makroskladnikow (kcal)",
     },
     "ru": {
         "title": "Otchet o sostave tela",
@@ -789,6 +830,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Podrobnyj otchet — Formuly shag za shagom",
         "formula": "Formula",
         "result": "Rezul'tat",
+        "charts": "Grafiki — Analiz rezul'tatov",
+        "chart_fat": "Procent zhira v tele",
+        "chart_imc": "Indeks massy tela (IMT)",
+        "chart_ffmi": "Normalizovannyj FFMI (1.80 m)",
+        "chart_macros": "Raspredelenie makronutrientov (kkal)",
     },
     "zh": {
         "title": "Body Composition Report",
@@ -806,6 +852,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Detailed Report - Step-by-step Formulas",
         "formula": "Formula",
         "result": "Result",
+        "charts": "Charts — Results analysis",
+        "chart_fat": "Body fat percentage",
+        "chart_imc": "Body Mass Index (BMI)",
+        "chart_ffmi": "Normalized FFMI (1.80 m)",
+        "chart_macros": "Macronutrient distribution (kcal)",
     },
     "ja": {
         "title": "Body Composition Report",
@@ -823,6 +874,11 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Detailed Report - Step-by-step Formulas",
         "formula": "Formula",
         "result": "Result",
+        "charts": "Charts — Results analysis",
+        "chart_fat": "Body fat percentage",
+        "chart_imc": "Body Mass Index (BMI)",
+        "chart_ffmi": "Normalized FFMI (1.80 m)",
+        "chart_macros": "Macronutrient distribution (kcal)",
     },
     "ko": {
         "title": "Body Composition Report",
@@ -840,11 +896,16 @@ _PDF_LABELS: dict[str, dict[str, str]] = {
         "report": "Detailed Report - Step-by-step Formulas",
         "formula": "Formula",
         "result": "Result",
+        "charts": "Charts — Results analysis",
+        "chart_fat": "Body fat percentage",
+        "chart_imc": "Body Mass Index (BMI)",
+        "chart_ffmi": "Normalized FFMI (1.80 m)",
+        "chart_macros": "Macronutrient distribution (kcal)",
     },
 }
 
 
-def _build_pdf(resultados: dict, lang: str) -> bytes:
+def _build_pdf(resultados: dict, lang: str, charts: dict | None = None) -> bytes:
     """Generate a PDF report from calculation results and return bytes."""
     lbl = _PDF_LABELS.get(lang, _PDF_LABELS["es"])
     r = resultados
@@ -942,7 +1003,25 @@ def _build_pdf(resultados: dict, lang: str) -> bytes:
         row(k, f"{v} {unit}", shade=(i % 2 == 0))
     pdf.ln(4)
 
-    # ── 5. Detailed step-by-step formulas ────────────────────────────────────
+    # ── 5. Charts ────────────────────────────────────────────────────────────
+    if charts:
+        section_title(lbl["charts"])
+        chart_items = [
+            ("chart_grasa", lbl["chart_fat"]),
+            ("chart_imc", lbl["chart_imc"]),
+            ("chart_ffmi", lbl["chart_ffmi"]),
+            ("chart_macros", lbl["chart_macros"]),
+        ]
+        for key, label in chart_items:
+            img_bytes = charts.get(key)
+            if img_bytes:
+                pdf.set_font("Helvetica", "B", 10)
+                pdf.set_text_color(27, 38, 59)
+                pdf.cell(0, 7, s(label), new_x="LMARGIN", new_y="NEXT")
+                pdf.image(io.BytesIO(img_bytes), w=170)
+                pdf.ln(4)
+
+    # ── 6. Detailed step-by-step formulas ────────────────────────────────────
     section_title(lbl["report"])
     pdf.ln(1)
 
@@ -1018,7 +1097,17 @@ def api_pdf():
         lang = DEFAULT_LANG
     try:
         resultados = _compute_results(request.form, lang)
-        pdf_bytes = _build_pdf(resultados, lang)
+        charts: dict[str, bytes] = {}
+        for key in ("chart_grasa", "chart_imc", "chart_ffmi", "chart_macros"):
+            b64 = request.form.get(key)
+            if b64:
+                try:
+                    if "," in b64:
+                        b64 = b64.split(",", 1)[1]
+                    charts[key] = base64.b64decode(b64)
+                except Exception:
+                    pass
+        pdf_bytes = _build_pdf(resultados, lang, charts or None)
         buf = io.BytesIO(pdf_bytes)
         buf.seek(0)
         return send_file(
