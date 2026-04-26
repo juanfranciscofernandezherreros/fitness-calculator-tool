@@ -23,8 +23,13 @@ def calcular_macros_diarios(kcal_quemadas: float, peso: float) -> dict:
             y ``"Calorías Totales"``.
 
     Raises:
-        ValueError: Si kcal_quemadas o peso son no positivos, o si las calorías
-                    disponibles para carbohidratos resultan negativas.
+        ValueError: Si kcal_quemadas o peso son no positivos.
+
+    Nota:
+        Si las calorías indicadas son inferiores a las necesarias para cubrir
+        los pilares fijos de proteína y grasa, los carbohidratos se ajustan a 0
+        en lugar de lanzar un error, permitiendo enviar cualquier valor de
+        calorías positivo.
     """
     if kcal_quemadas <= 0:
         raise ValueError("kcal_quemadas debe ser un valor positivo.")
@@ -38,14 +43,7 @@ def calcular_macros_diarios(kcal_quemadas: float, peso: float) -> dict:
     cal_grasa = grasa_g * 9
 
     cal_restantes = kcal_quemadas - (cal_proteina + cal_grasa)
-    if cal_restantes < 0:
-        raise ValueError(
-            f"El gasto calórico ({kcal_quemadas} kcal) es insuficiente para cubrir "
-            f"los pilares fijos de proteína y grasa "
-            f"({cal_proteina + cal_grasa:.1f} kcal). Aumenta el gasto o reduce el peso."
-        )
-
-    carbohidratos_g = cal_restantes / 4
+    carbohidratos_g = max(cal_restantes / 4, 0.0)
 
     return {
         "Proteína (g)": round(proteina_g, 1),
@@ -66,10 +64,12 @@ def carbos_flash(kcal: float, peso: float) -> float:
         peso:  Peso corporal en kg.
 
     Returns:
-        Gramos de carbohidratos redondeados a 1 decimal.
+        Gramos de carbohidratos redondeados a 1 decimal. Si las calorías
+        fijas superan el gasto total, se devuelve ``0.0`` en lugar de lanzar
+        un error.
 
     Raises:
-        ValueError: Si kcal o peso son no positivos, o si el resultado es negativo.
+        ValueError: Si kcal o peso son no positivos.
     """
     if kcal <= 0:
         raise ValueError("kcal debe ser un valor positivo.")
@@ -77,12 +77,6 @@ def carbos_flash(kcal: float, peso: float) -> float:
         raise ValueError("peso debe ser un valor positivo.")
 
     cal_fijas = (peso * 2.0 * 4) + (peso * 0.8 * 9)
-    g_carbos = (kcal - cal_fijas) / 4
-
-    if g_carbos < 0:
-        raise ValueError(
-            f"Las calorías fijas ({cal_fijas:.1f} kcal) superan el gasto total "
-            f"({kcal} kcal). No hay calorías disponibles para carbohidratos."
-        )
+    g_carbos = max((kcal - cal_fijas) / 4, 0.0)
 
     return round(g_carbos, 1)
