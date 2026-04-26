@@ -524,13 +524,23 @@ def _compute_results(form, lang):
 
     masa_grasa_kg = round(medidas.peso * (grasa_navy / 100), 2)
 
-    # Macros intermedios
-    proteina_g = round(medidas.peso * 2.0, 1)
-    grasa_g = round(medidas.peso * 0.8, 1)
-    cal_proteina = round(proteina_g * 4, 1)
-    cal_grasa_macro = round(grasa_g * 9, 1)
-    cal_carbos = round(calorias - cal_proteina - cal_grasa_macro, 1)
-    carbos_g = round(cal_carbos / 4, 1)
+    # Macros intermedios — usamos los mismos valores sin redondear que
+    # ``calcular_macros_diarios`` para garantizar que el desglose paso a paso
+    # coincide con el resultado mostrado y que los carbohidratos nunca son
+    # negativos cuando las calorías no cubren los pilares fijos.
+    proteina_g_exacto = medidas.peso * 2.0
+    grasa_g_exacto = medidas.peso * 0.8
+    cal_proteina_exacto = proteina_g_exacto * 4
+    cal_grasa_exacto = grasa_g_exacto * 9
+    cal_carbos_exacto = max(calorias - cal_proteina_exacto - cal_grasa_exacto, 0.0)
+    carbos_g_exacto = cal_carbos_exacto / 4
+
+    proteina_g = round(proteina_g_exacto, 1)
+    grasa_g = round(grasa_g_exacto, 1)
+    cal_proteina = round(cal_proteina_exacto, 1)
+    cal_grasa_macro = round(cal_grasa_exacto, 1)
+    cal_carbos = round(cal_carbos_exacto, 1)
+    carbos_g = round(carbos_g_exacto, 1)
 
     pasos = {
         # --- US Navy ---
