@@ -396,12 +396,15 @@ class TestCalcularMacrosDiarios:
         with pytest.raises(ValueError, match="positivo"):
             calcular_macros_diarios(2000, -5.0)
 
-    def test_error_calorias_insuficientes(self):
-        """kcal inferior a los macros fijos debe lanzar ValueError."""
+    def test_calorias_insuficientes_carbos_cero(self):
+        """kcal inferior a los macros fijos no debe lanzar error: carbos = 0."""
         peso = 100.0
         cal_fijas = (peso * 2.0 * 4) + (peso * 0.8 * 9)  # 1520 kcal
-        with pytest.raises(ValueError, match="insuficiente"):
-            calcular_macros_diarios(cal_fijas - 1, peso)
+        r = calcular_macros_diarios(cal_fijas - 1, peso)
+        assert r["Carbohidratos (g)"] == 0.0
+        assert r["Proteína (g)"] == round(peso * 2.0, 1)
+        assert r["Grasas (g)"] == round(peso * 0.8, 1)
+        assert r["Calorías Totales"] == cal_fijas - 1
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -448,11 +451,10 @@ class TestCarbosFlash:
         with pytest.raises(ValueError, match="positivo"):
             carbos_flash(2000, -10.0)
 
-    def test_error_calorias_insuficientes(self):
+    def test_calorias_insuficientes_devuelve_cero(self):
         peso = 80.0
         cal_fijas = (peso * 2.0 * 4) + (peso * 0.8 * 9)
-        with pytest.raises(ValueError, match="superan"):
-            carbos_flash(cal_fijas - 1, peso)
+        assert carbos_flash(cal_fijas - 1, peso) == 0.0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
