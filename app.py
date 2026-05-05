@@ -362,7 +362,7 @@ def index():
 
 @app.route('/activity')
 def activity():
-    return render_template('activity.html')
+    return render_template('activity_calculator.html')
 
 @app.route("/robots.txt", methods=["GET"])
 def robots():
