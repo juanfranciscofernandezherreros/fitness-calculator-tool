@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="page-title">Calculadora Fitness Pro | Fitness Tools</title>
+  <title id="page-title">Perfil Biológico | Fitness Tools</title>
   <style>
     :root {
       --color-dark: #1B263B;
@@ -26,17 +26,9 @@
     main { width: 100%; max-width: 680px; }
     .card { background: #fff; border-radius: var(--radius); padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-    /* FAQ Section */
-    .faq-section { margin-bottom: 20px; width: 100%; }
-    .faq-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; margin-bottom: 8px; color: #fff; }
-    .faq-btn { width: 100%; padding: 12px; background: none; border: none; color: inherit; text-align: left; font-weight: bold; cursor: pointer; }
-    .faq-content { display: none; padding: 15px; background: rgba(0,0,0,0.1); font-size: 0.9rem; }
-    .faq-content.show { display: block; }
-
-    /* Form Styles */
     .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--color-violet); font-weight: 800; margin: 20px 0 10px; border-bottom: 2px solid #ede9fe; padding-bottom: 5px; }
     .sex-group { display: flex; gap: 10px; margin-bottom: 20px; }
-    .sex-label { flex: 1; text-align: center; padding: 15px; border: 2px solid #e5e7eb; border-radius: 12px; cursor: pointer; font-weight: bold; }
+    .sex-label { flex: 1; text-align: center; padding: 15px; border: 2px solid #e5e7eb; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; }
     .sex-label input { display: none; }
     .sex-label.active { border-color: var(--color-violet); background: #f5f3ff; color: var(--color-violet); }
 
@@ -46,62 +38,69 @@
     .field { display: flex; flex-direction: column; gap: 5px; }
     .field label { font-size: 0.85rem; font-weight: bold; color: #4b5563; }
     .input-wrap { position: relative; }
-    input, select { width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; }
-    input:focus { border-color: var(--color-violet); outline: none; }
+    input, select, textarea { width: 100%; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; font-family: inherit; }
+    input:focus, select:focus, textarea:focus { border-color: var(--color-violet); outline: none; }
     .unit { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.8rem; }
 
-    /* Auto-calc highlight */
-    .highlight-box { background: #fdf2f8; border: 2px dashed #f472b6; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+    .highlight-box { background: #fdf2f8; border: 2px dashed #f472b6; padding: 15px; border-radius: 10px; margin: 20px 0; }
+    .btn-main { width: 100%; padding: 15px; background: var(--color-dark); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.2s; }
+    .btn-main:hover { background: #0d1321; }
 
-    .btn-main { width: 100%; padding: 15px; background: var(--color-dark); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 20px; }
-
-    .optional-toggle { width: 100%; padding: 10px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 8px; cursor: pointer; margin: 15px 0; font-weight: bold; }
-    .optional-fields { display: none; }
-    .optional-fields.show { display: block; }
+    textarea { resize: vertical; min-height: 80px; }
   </style>
 </head>
 <body>
 
 <header class="header">
-  <h1>Fitness Analytics Pro 💪</h1>
-  <p>Calcula tu estado físico y macros automáticamente</p>
+  <h1>Análisis Biológico Pro 💪</h1>
+  <p>Gestión de perfil y salud metabólica</p>
 </header>
 
 <main>
-  <section class="faq-section">
-    <div class="faq-item">
-      <button class="faq-btn" onclick="this.nextElementSibling.classList.toggle('show')">❓ ¿Cómo calculamos tus calorías? (Mifflin-St Jeor)</button>
-      <div class="faq-content">
-        Usamos tu peso, altura y edad para saber cuánto quemas en reposo, y luego lo multiplicamos por tu actividad física diario.
-      </div>
-    </div>
-  </section>
-
   <div class="card">
     <form id="fitness-form">
+      <!-- SECCIÓN 1: PERFIL BIOLÓGICO -->
       <div class="section-title">1. Perfil Biológico</div>
       <div class="sex-group">
-        <label class="sex-label active" id="l-h"><input type="radio" name="sexo" value="hombre" checked onchange="updSex()">♂️ Hombre</label>
-        <label class="sex-label" id="l-m"><input type="radio" name="sexo" value="mujer" onchange="updSex()">♀️ Mujer</label>
+        <label class="sex-label active" id="l-h">
+          <input type="radio" name="sexo" value="hombre" checked onchange="updSex()">♂️ Hombre
+        </label>
+        <label class="sex-label" id="l-m">
+          <input type="radio" name="sexo" value="mujer" onchange="updSex()">♀️ Mujer
+        </label>
       </div>
 
       <div class="grid">
-        <div class="field"><label>Peso (kg)</label><div class="input-wrap"><input type="text" id="peso" name="peso" placeholder="70" required oninput="calcTDEE()"></div></div>
-        <div class="field"><label>Altura (cm)</label><div class="input-wrap"><input type="text" id="altura" name="altura" placeholder="175" required oninput="calcTDEE()"></div></div>
-        <div class="field"><label>Edad (años)</label><div class="input-wrap"><input type="text" id="edad" name="edad" placeholder="25" required oninput="calcTDEE()"></div></div>
-
-        <!-- SELECTOR DE ACTIVIDAD PARA NOVATOS -->
+        <div class="field">
+          <label>Peso (kg)</label>
+          <div class="input-wrap">
+            <input type="text" id="peso" name="peso" placeholder="70" required oninput="calcTDEE()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Altura (cm)</label>
+          <div class="input-wrap">
+            <input type="text" id="altura" name="altura" placeholder="175" required oninput="calcTDEE()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Edad (años)</label>
+          <div class="input-wrap">
+            <input type="text" id="edad" name="edad" placeholder="25" required oninput="calcTDEE()">
+          </div>
+        </div>
         <div class="field">
           <label>Nivel de Actividad</label>
           <select id="actividad" onchange="calcTDEE()">
-            <option value="1.2">Sedentario (Oficina / Sin ejercicio)</option>
-            <option value="1.375">Ligero (Ejercicio 1-3 días)</option>
-            <option value="1.55" selected>Moderado (Ejercicio 3-5 días)</option>
+            <option value="1.2">Sedentario (Sin ejercicio)</option>
+            <option value="1.375">Ligero (1-3 días)</option>
+            <option value="1.55" selected>Moderado (3-5 días)</option>
             <option value="1.725">Intenso (Deporte diario)</option>
           </select>
         </div>
       </div>
 
+      <!-- CÁLCULO AUTOMÁTICO DE CALORÍAS -->
       <div class="highlight-box">
         <div class="field">
           <label style="color: #be185d;">🔥 Gasto Diario Estimado (TDEE)</label>
@@ -109,48 +108,33 @@
             <input type="text" id="calorias" name="calorias" readonly style="background: #fff; border-color: #f472b6; font-weight: 800;">
             <span class="unit">kcal</span>
           </div>
-          <small style="font-size: 0.7rem; color: #be185d;">Este valor se calcula solo basándose en los datos de arriba.</small>
+          <small style="font-size: 0.7rem; color: #be185d;">Calculado automáticamente con la fórmula Mifflin-St Jeor.</small>
         </div>
       </div>
 
-      <div class="section-title">2. Medidas para Grasa Corporal (US Navy)</div>
-      <div class="grid">
-        <div class="field"><label>Cintura (cm)</label><input type="text" name="cintura" required placeholder="80"></div>
-        <div class="field"><label>Cuello (cm)</label><input type="text" name="cuello" required placeholder="37"></div>
-        <div id="cadera-box" class="field" style="display:none;"><label>Cadera (cm)</label><input type="text" id="cadera" name="cadera" placeholder="95"></div>
+      <!-- SECCIÓN 2: ANÁLISIS SANGUÍNEO -->
+      <div class="section-title">2. Análisis Sanguíneo</div>
+      <div class="field">
+        <label>Observaciones o Biomarcadores</label>
+        <textarea name="analisis_sangre" placeholder="Ej: Glucosa 90 mg/dL, Colesterol 180 mg/dL, Hierro..."></textarea>
+        <small style="color: #6b7280; font-size: 0.75rem; margin-top: 5px;">Introduce los valores destacados de tu última analítica.</small>
       </div>
 
-      <button type="button" class="optional-toggle" onclick="document.getElementById('opt').classList.toggle('show')">➕ Añadir Medidas Opcionales (Bíceps, Piernas...)</button>
-
-      <div id="opt" class="optional-fields">
-        <div class="section-title">3. Seguimiento Muscular</div>
-        <div class="grid">
-          <div class="field"><label>Grasa Directa (%)</label><input type="text" name="grasa"></div>
-          <div class="field"><label>Bíceps Der. (cm)</label><input type="text" name="biceps_der"></div>
-          <div class="field"><label>Bíceps Izq. (cm)</label><input type="text" name="biceps_izq"></div>
-          <div class="field"><label>Cuádriceps Der. (cm)</label><input type="text" name="cuadriceps_der"></div>
-          <div class="field"><label>Cuádriceps Izq. (cm)</label><input type="text" name="cuadriceps_izq"></div>
-          <div class="field"><label>Gemelo Der. (cm)</label><input type="text" name="gemelos_der"></div>
-          <div class="field"><label>Gemelo Izq. (cm)</label><input type="text" name="gemelos_izq"></div>
-          <div class="field"><label>Pectoral (cm)</label><input type="text" name="pectoral"></div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn-main">🚀 CALCULAR ANÁLISIS COMPLETO</button>
+      <button type="submit" class="btn-main">💾 GUARDAR PERFIL BIOLÓGICO</button>
     </form>
-    <div id="results-container"></div>
   </div>
 </main>
 
 <script>
+  // Actualizar estilo visual del selector de sexo y recalcular
   function updSex() {
     const isM = document.querySelector('input[name="sexo"]:checked').value === 'mujer';
     document.getElementById('l-h').classList.toggle('active', !isM);
     document.getElementById('l-m').classList.toggle('active', isM);
-    document.getElementById('cadera-box').style.display = isM ? 'block' : 'none';
     calcTDEE();
   }
 
+  // Lógica matemática para TDEE
   function calcTDEE() {
     const p = parseFloat(document.getElementById('peso').value) || 0;
     const a = parseFloat(document.getElementById('altura').value) || 0;
@@ -159,18 +143,27 @@
     const sex = document.querySelector('input[name="sexo"]:checked').value;
 
     if(p > 0 && a > 0 && e > 0) {
-      // Mifflin-St Jeor Formula
+      // Fórmula Mifflin-St Jeor[cite: 1]
       let bmr = (10 * p) + (6.25 * a) - (5 * e);
       bmr = (sex === 'hombre') ? bmr + 5 : bmr - 161;
       const tdee = Math.round(bmr * act);
       document.getElementById('calorias').value = tdee;
+    } else {
+      document.getElementById('calorias').value = "";
     }
   }
 
+  // Manejo del formulario
   document.getElementById('fitness-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    alert("Enviando datos... Gasto calórico calculado: " + document.getElementById('calorias').value + " kcal");
+    const kcal = document.getElementById('calorias').value;
+    if(!kcal) {
+      alert("Por favor, rellena los datos del perfil biológico para calcular tu gasto calórico.");
+      return;
+    }
+    alert("Perfil guardado con éxito.\nGasto calórico: " + kcal + " kcal");
   });
 </script>
+
 </body>
 </html>
