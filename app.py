@@ -360,6 +360,9 @@ def _translate_error(exc: Exception, lang: str) -> str:
 def index():
     return render_template("index.html")
 
+@app.route('/activity')
+def activity():
+    return render_template('activity.html')
 
 @app.route("/robots.txt", methods=["GET"])
 def robots():
